@@ -1,0 +1,198 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  LAWYER
+  ADMIN
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum ComplaintStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
+  CLOSED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ArticleStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  phone     String?
+  city      String?
+  role      Role     @default(USER)
+  status    Status   @default(ACTIVE)
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clientProfile ClientProfile?
+  lawyerProfile LawyerProfile?
+  complaints    Complaint[]    @relation("ClientComplaints")
+  assignedCases Complaint[]    @relation("LawyerAssignedCases")
+  packages      Package[]      @relation("LawyerPackages")
+  articles      Article[]
+  notifications Notification[]
+  sentMessages  Message[]      @relation("SentMessages")
+  receivedMessages Message[]   @relation("ReceivedMessages")
+}
+
+model ClientProfile {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  state             String?
+  pincode           String?
+  dob               String?
+  gender            String?
+  preferredLanguage String?
+  address           String?
+  bio               String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model LawyerProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  barCouncilId    String?  @unique
+  specialization  String?
+  experience      Int?
+  location        String?
+  state           String?
+  languages       Json?
+  education       String?
+  bio             String?
+  consultationFee Float?
+  availability    String?
+  linkedIn        String?
+  website         String?
+  isVerified      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Package {
+  id          String   @id @default(uuid())
+  name        String
+  price       Float
+  period      String
+  description String?
+  icon        String?
+  badge       String?
+  active      Boolean  @default(true)
+  features    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lawyerId    String?
+  lawyer      User?    @relation("LawyerPackages", fields: [lawyerId], references: [id], onDelete: Cascade)
+
+  complaints Complaint[]
+}
+
+model Complaint {
+  id            String          @id @default(uuid())
+  title         String
+  category      String
+  priority      Priority        @default(LOW)
+  description   String
+  incidentDate  DateTime?
+  location      String?
+  opposingParty String?
+  status        ComplaintStatus @default(OPEN)
+  
+  clientId      String
+  client        User            @relation("ClientComplaints", fields: [clientId], references: [id])
+  
+  assignedToId  String?
+  assignedTo    User?           @relation("LawyerAssignedCases", fields: [assignedToId], references: [id])
+  
+  packageId     String?
+  package       Package?        @relation(fields: [packageId], references: [id])
+  
+  date          DateTime        @default(now())
+  hearingDate   DateTime?
+  resolutionOutcome String?
+  resolutionSummary String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  documents     Document[]
+}
+
+model Document {
+  id          String   @id @default(uuid())
+  complaintId String
+  complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  type        String
+  url         String
+  size        Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Article {
+  id        String        @id @default(uuid())
+  title     String
+  category  String
+  status    ArticleStatus @default(DRAFT)
+  excerpt   String
+  content   String?
+  views     Int           @default(0)
+  authorId  String
+  author    User          @relation(fields: [authorId], references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  type      String?
+  link      String?
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  text       String   @db.Text
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
