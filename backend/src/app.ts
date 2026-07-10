@@ -15,7 +15,7 @@ app.use(helmet({
   xFrameOptions: false,
 }));
 app.use(cors({
-  origin: env.CLIENT_URL || 'https://law-link-consulatation.vercel.app',
+  origin: 'https://law-link-consulatation.vercel.app',
   credentials: true,
 }));
 
