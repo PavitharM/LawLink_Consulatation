@@ -7,6 +7,170 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id               String         @id @default(uuid())
+  name             String
+  email            String         @unique
+  password         String
+  phone            String?
+  city             String?
+  role             Role           @default(USER)
+  status           Status         @default(ACTIVE)
+  avatar           String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  articles         Article[]
+  clientProfile    ClientProfile?
+  assignedCases    Complaint[]    @relation("LawyerAssignedCases")
+  complaints       Complaint[]    @relation("ClientComplaints")
+  lawyerProfile    LawyerProfile?
+  receivedMessages Message[]      @relation("ReceivedMessages")
+  sentMessages     Message[]      @relation("SentMessages")
+  notifications    Notification[]
+  packages         Package[]      @relation("LawyerPackages")
+}
+
+model ClientProfile {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  state             String?
+  pincode           String?
+  dob               String?
+  gender            String?
+  preferredLanguage String?
+  address           String?
+  bio               String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LawyerProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  barCouncilId    String?  @unique
+  specialization  String?
+  experience      Int?
+  location        String?
+  state           String?
+  languages       Json?
+  education       String?
+  bio             String?
+  consultationFee Float?
+  availability    String?
+  linkedIn        String?
+  website         String?
+  isVerified      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Package {
+  id          String      @id @default(uuid())
+  name        String
+  price       Float
+  period      String
+  description String?
+  icon        String?
+  badge       String?
+  active      Boolean     @default(true)
+  features    Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  lawyerId    String?
+  complaints  Complaint[]
+  lawyer      User?       @relation("LawyerPackages", fields: [lawyerId], references: [id], onDelete: Cascade)
+
+  @@index([lawyerId], map: "Package_lawyerId_fkey")
+}
+
+model Complaint {
+  id                String          @id @default(uuid())
+  title             String
+  category          String
+  priority          Priority        @default(LOW)
+  description       String
+  incidentDate      DateTime?
+  location          String?
+  opposingParty     String?
+  status            ComplaintStatus @default(OPEN)
+  clientId          String
+  assignedToId      String?
+  packageId         String?
+  date              DateTime        @default(now())
+  hearingDate       DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  resolutionOutcome String?
+  resolutionSummary String?
+  assignedTo        User?           @relation("LawyerAssignedCases", fields: [assignedToId], references: [id])
+  client            User            @relation("ClientComplaints", fields: [clientId], references: [id])
+  package           Package?        @relation(fields: [packageId], references: [id])
+  documents         Document[]
+
+  @@index([assignedToId], map: "Complaint_assignedToId_fkey")
+  @@index([clientId], map: "Complaint_clientId_fkey")
+  @@index([packageId], map: "Complaint_packageId_fkey")
+}
+
+model Document {
+  id          String    @id @default(uuid())
+  complaintId String
+  type        String
+  url         String
+  size        Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+
+  @@index([complaintId], map: "Document_complaintId_fkey")
+}
+
+model Article {
+  id        String        @id @default(uuid())
+  title     String
+  category  String
+  status    ArticleStatus @default(DRAFT)
+  excerpt   String
+  content   String?
+  views     Int           @default(0)
+  authorId  String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  author    User          @relation(fields: [authorId], references: [id])
+
+  @@index([authorId], map: "Article_authorId_fkey")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  type      String?
+  createdAt DateTime @default(now())
+  link      String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "Notification_userId_fkey")
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  text       String   @db.Text
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+
+  @@index([receiverId], map: "Message_receiverId_fkey")
+  @@index([senderId], map: "Message_senderId_fkey")
+}
+
 enum Role {
   USER
   LAWYER
@@ -37,162 +201,4 @@ enum ArticleStatus {
   REVIEW
   PUBLISHED
   ARCHIVED
-}
-
-model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  phone     String?
-  city      String?
-  role      Role     @default(USER)
-  status    Status   @default(ACTIVE)
-  avatar    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  clientProfile ClientProfile?
-  lawyerProfile LawyerProfile?
-  complaints    Complaint[]    @relation("ClientComplaints")
-  assignedCases Complaint[]    @relation("LawyerAssignedCases")
-  packages      Package[]      @relation("LawyerPackages")
-  articles      Article[]
-  notifications Notification[]
-  sentMessages  Message[]      @relation("SentMessages")
-  receivedMessages Message[]   @relation("ReceivedMessages")
-}
-
-model ClientProfile {
-  id                String   @id @default(uuid())
-  userId            String   @unique
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  state             String?
-  pincode           String?
-  dob               String?
-  gender            String?
-  preferredLanguage String?
-  address           String?
-  bio               String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-model LawyerProfile {
-  id              String   @id @default(uuid())
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  barCouncilId    String?  @unique
-  specialization  String?
-  experience      Int?
-  location        String?
-  state           String?
-  languages       Json?
-  education       String?
-  bio             String?
-  consultationFee Float?
-  availability    String?
-  linkedIn        String?
-  website         String?
-  isVerified      Boolean  @default(false)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-}
-
-model Package {
-  id          String   @id @default(uuid())
-  name        String
-  price       Float
-  period      String
-  description String?
-  icon        String?
-  badge       String?
-  active      Boolean  @default(true)
-  features    Json?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  lawyerId    String?
-  lawyer      User?    @relation("LawyerPackages", fields: [lawyerId], references: [id], onDelete: Cascade)
-
-  complaints Complaint[]
-}
-
-model Complaint {
-  id            String          @id @default(uuid())
-  title         String
-  category      String
-  priority      Priority        @default(LOW)
-  description   String
-  incidentDate  DateTime?
-  location      String?
-  opposingParty String?
-  status        ComplaintStatus @default(OPEN)
-  
-  clientId      String
-  client        User            @relation("ClientComplaints", fields: [clientId], references: [id])
-  
-  assignedToId  String?
-  assignedTo    User?           @relation("LawyerAssignedCases", fields: [assignedToId], references: [id])
-  
-  packageId     String?
-  package       Package?        @relation(fields: [packageId], references: [id])
-  
-  date          DateTime        @default(now())
-  hearingDate   DateTime?
-  resolutionOutcome String?
-  resolutionSummary String?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-
-  documents     Document[]
-}
-
-model Document {
-  id          String   @id @default(uuid())
-  complaintId String
-  complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
-  type        String
-  url         String
-  size        Int?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Article {
-  id        String        @id @default(uuid())
-  title     String
-  category  String
-  status    ArticleStatus @default(DRAFT)
-  excerpt   String
-  content   String?
-  views     Int           @default(0)
-  authorId  String
-  author    User          @relation(fields: [authorId], references: [id])
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-}
-
-model Notification {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title     String
-  message   String
-  read      Boolean  @default(false)
-  type      String?
-  link      String?
-  createdAt DateTime @default(now())
-}
-
-model Message {
-  id         String   @id @default(uuid())
-  senderId   String
-  receiverId String
-  text       String   @db.Text
-  read       Boolean  @default(false)
-  createdAt  DateTime @default(now())
-
-  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
-  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }
