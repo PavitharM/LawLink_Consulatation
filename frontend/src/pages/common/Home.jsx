@@ -5,20 +5,20 @@ import { Scale, Shield, Users, BookOpen, ArrowRight, Star, CheckCircle, Phone, M
 const features = [
   { icon: <Shield size={32} className="text-primary" />, title: 'Verified Lawyers', desc: 'Every lawyer on LawLink is Bar Council verified and background-checked for your safety.' },
   { icon: <Scale size={32} className="text-primary" />, title: 'Expert Legal Advice', desc: 'Get advice from specialists across Civil, Criminal, Family, Labour, and Corporate law.' },
-  { icon: <BookOpen size={32} className="text-primary" />, title: 'Legal Knowledge Hub', desc: 'Access free articles and guides written by top legal professionals across India.' },
+  { icon: <BookOpen size={32} className="text-primary" />, title: 'Legal Knowledge Hub', desc: 'Access free articles and guides written by top legal professionals across Sri Lanka.' },
   { icon: <Users size={32} className="text-primary" />, title: 'Trusted by Thousands', desc: 'Join over 50,000 users who have successfully resolved their legal matters with LawLink.' },
 ];
 
 const lawyers = [
-  { name: 'Adv. Priya Nair', spec: 'Civil Law', rating: 4.8, cases: 48, city: 'Chennai', avatar: 'PN' },
-  { name: 'Adv. Meena Sharma', spec: 'Family Law', rating: 4.9, cases: 67, city: 'Mumbai', avatar: 'MS' },
-  { name: 'Adv. Rajesh Kumar', spec: 'Criminal Law', rating: 4.5, cases: 31, city: 'Bangalore', avatar: 'RK' },
+  { name: 'Adv.Pravitharan', spec: 'Civil Law', rating: 4.8, cases: 48, city: 'Colombo', avatar: 'PP' },
+  { name: 'Adv. Nishal', spec: 'Family Law', rating: 4.9, cases: 67, city: 'Kandy', avatar: 'AN' },
+  { name: 'Adv. Thirushi', spec: 'Criminal Law', rating: 4.5, cases: 31, city: 'Galle', avatar: 'AT' },
 ];
 
 const testimonials = [
-  { name: 'Sundar R.', location: 'Chennai', text: 'LawLink helped me resolve a property dispute that had been going on for 5 years. I found the right lawyer within days!', rating: 5 },
-  { name: 'Anjali M.', location: 'Mumbai', text: 'The consultation process was seamless and affordable. Highly recommend to anyone facing a family law issue.', rating: 5 },
-  { name: 'Karthik S.', location: 'Bangalore', text: 'Professional, quick, and effective. My labour case was handled with great expertise.', rating: 4 },
+  { name: 'Kavindu Perera', location: 'Colombo', text: 'LawLink helped me resolve a property dispute that had been going on for 5 years. I found the right lawyer within days!', rating: 5 },
+  { name: 'Ishani Silva', location: 'Kandy', text: 'The consultation process was seamless and affordable. Highly recommend to anyone facing a family law issue.', rating: 5 },
+  { name: 'Sahantha Fernando', location: 'Galle', text: 'Professional, quick, and effective. My labour case was handled with great expertise.', rating: 4 },
 ];
 
 const Home = () => {
@@ -60,14 +60,14 @@ const Home = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-sm bg-white/10 border border-white/20 rounded-full px-md py-xs mb-xl text-body-sm">
-              ⚖️ Trusted Legal Platform Across India
+              ⚖️ Trusted Legal Platform Across Sri Lanka.
             </div>
             <h1 className="text-display text-on-primary leading-tight mb-lg">
               Get Expert Legal Help,<br />
               <span className="text-on-primary-container">Right When You Need It</span>
             </h1>
             <p className="text-body-lg text-on-primary/80 mb-2xl max-w-xl leading-relaxed">
-              Connect with verified lawyers, file complaints, and resolve your legal matters — all in one secure, easy-to-use platform built for every Indian citizen.
+              Connect with verified lawyers, file complaints, and resolve your legal matters — all in one secure, easy-to-use platform built for every Srilankan citizen.
             </p>
             <div className="flex flex-col sm:flex-row gap-md">
               <button
@@ -224,7 +224,7 @@ const Home = () => {
       <section className="py-3xl px-lg bg-gradient-to-r from-primary to-primary-container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-headline-lg text-on-primary mb-md">Ready to Get Legal Help?</h2>
-          <p className="text-body-lg text-on-primary/80 mb-2xl">Join thousands of Indians who've found justice through LawLink. Start for free today.</p>
+          <p className="text-body-lg text-on-primary/80 mb-2xl">Join thousands of Srilankans who've found justice through LawLink. Start for free today.</p>
           <button onClick={() => navigate('/register')}
             className="px-2xl py-md rounded-xl bg-white text-primary text-body-lg font-bold hover:bg-on-primary-container transition-colors">
             Create Free Account
@@ -259,7 +259,7 @@ const Home = () => {
             ))}
           </div>
           <div className="border-t border-white/10 pt-lg text-center text-body-sm text-inverse-on-surface/40">
-            © 2024 LawLink. All rights reserved. Making justice accessible for every Indian.
+            © 2026 LawLink. All rights reserved. Making justice accessible for every Sri Lankan.
           </div>
         </div>
       </footer>

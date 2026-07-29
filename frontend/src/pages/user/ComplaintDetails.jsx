@@ -122,7 +122,8 @@ const ComplaintDetails = () => {
               {complaint.assignedTo && (
                 <Link to={`/user/consultation?lawyerId=${complaint.assignedTo.id}`} className="no-underline">
                   <button className="flex items-center gap-sm px-lg py-sm rounded-xl bg-primary text-on-primary text-body-md hover:opacity-90 transition-opacity">
-                    <MessageSquare size={18} /> Message Lawyer
+                    <MessageSquare size={18} /> Consultation
+
                   </button>
                 </Link>
               )}

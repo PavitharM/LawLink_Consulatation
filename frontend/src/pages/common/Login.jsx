@@ -66,11 +66,11 @@ const Login = ({ onLogin }) => {
             Manage your cases, connect with lawyers, and track your legal journey — all in one place.
           </p>
           <div className="space-y-md">
-            {[
-              { icon: '🔒', text: 'Bank-grade 256-bit SSL encryption' },
-              { icon: '✅', text: 'Verified legal professionals' },
-              { icon: '📱', text: 'Available 24/7, anywhere in India' },
-            ].map((item, i) => (
+              {[
+                { icon: '⚖️', text: 'Access to top legal professionals' },
+                { icon: '🔒', text: '100% confidential and secure' },
+                { icon: '📱', text: 'Available 24/7, anywhere in Sri Lanka' },
+              ].map((item, i) => (
               <div key={i} className="flex items-center gap-md">
                 <span className="text-xl">{item.icon}</span>
                 <span className="text-body-md text-on-primary/80">{item.text}</span>
@@ -79,14 +79,15 @@ const Login = ({ onLogin }) => {
           </div>
         </div>
 
-        <div className="relative z-10">
-          <div className="bg-white/10 border border-white/20 rounded-2xl p-lg backdrop-blur-sm">
-            <p className="text-body-sm text-on-primary/70 italic mb-sm">
-              "LawLink helped me find the right lawyer within 2 days. My property case was resolved in 3 months!"
-            </p>
-            <p className="text-label-md text-on-primary font-semibold">— Sundar R., Chennai</p>
+          <div className="relative z-10 h-full flex flex-col justify-end pb-2xl">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-xl border border-white/20">
+              <div className="flex gap-xs text-yellow-400 mb-md">
+                {'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}
+              </div>
+              <p className="text-body-lg font-medium leading-relaxed mb-md">"LawLink made finding the right lawyer incredibly simple. The platform is seamless and the professionals are top-notch."</p>
+              <p className="text-label-md text-on-primary font-semibold">— Kavindu Perera, Colombo</p>
+            </div>
           </div>
-        </div>
       </div>
 
       {/* Right Login Panel */}

@@ -14,7 +14,7 @@ const Footer = () => {
               <span className="text-headline-sm font-bold text-inverse-on-surface">LawLink</span>
             </div>
             <p className="text-body-sm text-inverse-on-surface/60 leading-relaxed">
-              India's trusted platform for accessible, affordable, and transparent legal services.
+              Sri Lanka's trusted platform for accessible, affordable, and transparent legal services.
             </p>
           </div>
 
@@ -53,8 +53,8 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-white/10 pt-lg flex flex-col sm:flex-row items-center justify-between gap-sm">
-          <p className="text-body-sm text-inverse-on-surface/40">© 2024 LawLink. All rights reserved.</p>
-          <p className="text-body-sm text-inverse-on-surface/40">Making justice accessible for every Indian.</p>
+          <p className="text-body-sm text-inverse-on-surface/40">© 2026 LawLink. All rights reserved.</p>
+          <p className="text-body-sm text-inverse-on-surface/40">Making justice accessible for every Sri Lankan.</p>
         </div>
       </div>
     </footer>

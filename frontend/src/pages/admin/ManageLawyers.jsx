@@ -238,7 +238,7 @@ const ManageLawyers = () => {
           <table className="w-full text-left">
             <thead className="bg-surface-container-low border-b border-surface-container-high">
               <tr>
-                {['Lawyer', 'Specialization', 'Experience', 'Cases', 'Bar Council ID', 'Status', 'Actions'].map(h => (
+                {['Lawyer', 'Specialization', 'Experience', 'Cases', 'Bar Association ID', 'Status', 'Actions'].map(h => (
                   <th key={h} className="px-lg py-md text-label-md text-on-surface-variant whitespace-nowrap">{h}</th>
                 ))}
               </tr>
@@ -276,7 +276,7 @@ const ManageLawyers = () => {
                   </td>
                   {/* Cases */}
                   <td className="px-lg py-md text-body-md font-semibold text-on-surface">{lawyer.cases}</td>
-                  {/* Bar Council ID */}
+                  {/* Bar Association ID */}
                   <td className="px-lg py-md text-body-sm text-on-surface-variant font-mono">{lawyer.barCouncilId}</td>
                   {/* Status */}
                   <td className="px-lg py-md">
@@ -390,9 +390,9 @@ const ManageLawyers = () => {
                   {[
                     { icon: <Briefcase size={16} />, label: 'Specialization', value: selected.specialization },
                     { icon: <BarChart2 size={16} />, label: 'Experience', value: `${selected.experience} year(s)` },
-                    { icon: <Shield size={16} />, label: 'Bar Council ID', value: selected.barCouncilId },
+                    { icon: <Shield size={16} />, label: 'Bar Association ID', value: selected.barCouncilId },
                     { icon: <Star size={16} />, label: 'Cases Handled', value: `${selected.cases} cases` },
-                    { icon: <Briefcase size={16} />, label: 'Consultation Fee', value: selected.consultationFee ? `₹${selected.consultationFee}` : 'Not set' },
+                    { icon: <Briefcase size={16} />, label: 'Consultation Fee', value: selected.consultationFee ? `LKR ${selected.consultationFee}` : 'Not set' },
                     { icon: <User size={16} />, label: 'Education', value: selected.education },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-sm bg-surface-container-low rounded-xl p-md">

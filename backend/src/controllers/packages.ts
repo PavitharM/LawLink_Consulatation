@@ -82,7 +82,7 @@ export const updatePackage = async (req: AuthRequest, res: Response, next: NextF
     const pkg = await prisma.package.findUnique({ where: { id: id as string } });
     if (!pkg) throw new NotFoundError('Package not found');
 
-    if (req.user?.role === 'LAWYER' && pkg.lawyerId !== req.user.userId) {
+    if (req.user?.role === 'LAWYER' && pkg.lawyerId  !== req.user.userId) {
       throw new ForbiddenError('You do not have permission to update this package');
     }
 

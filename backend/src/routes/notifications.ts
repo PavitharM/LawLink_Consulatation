@@ -5,7 +5,8 @@ import {
   createNotification,
   markAsRead,
   markAllAsRead,
-  dismissNotification
+  dismissNotification,
+  triggerEmergencyAlert
 } from '../controllers/notifications';
 
 const router = Router();
@@ -14,6 +15,7 @@ router.use(authenticate);
 
 router.get('/', getUserNotifications);
 router.post('/', createNotification);
+router.post('/emergency', triggerEmergencyAlert);
 router.put('/read-all', markAllAsRead);
 router.put('/:id/read', markAsRead);
 router.delete('/:id', dismissNotification);

@@ -464,8 +464,8 @@ const UserProfile = () => {
                 <h4 className="text-headline-sm text-on-surface mb-lg">Active Sessions</h4>
                 <div className="space-y-sm">
                   {[
-                    { device: 'Chrome on Windows', location: 'Chennai, India', time: 'Now — current session', current: true },
-                    { device: 'Safari on iPhone',  location: 'Chennai, India', time: '2 hours ago',           current: false },
+                    { device: 'Chrome on Windows', location: 'Colombo, Sri Lanka', time: 'Now — current session', current: true },
+                    { device: 'Safari on iPhone',  location: 'Colombo, Sri Lanka', time: '2 hours ago',           current: false },
                   ].map((s, i) => (
                     <div key={i} className="flex items-center justify-between bg-surface-container-low rounded-xl p-md">
                       <div>

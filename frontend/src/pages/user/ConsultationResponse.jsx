@@ -115,7 +115,7 @@ const ConsultationResponse = () => {
             <div className="space-y-sm text-body-sm text-on-surface-variant">
               <div className="flex justify-between"><span>Experience</span><span className="font-medium text-on-surface">{lawyer?.lawyerProfile?.experience || 0} years</span></div>
               <div className="flex justify-between"><span>Rating</span><span className="font-medium text-on-surface">⭐ 4.8</span></div>
-              <div className="flex justify-between"><span>Location</span><span className="font-medium text-on-surface">{lawyer?.lawyerProfile?.location || 'India'}</span></div>
+              <div className="flex justify-between"><span>Location</span><span className="font-medium text-on-surface">{lawyer?.lawyerProfile?.location || 'Sri Lanka'}</span></div>
             </div>
           </div>
 
@@ -140,7 +140,7 @@ const ConsultationResponse = () => {
           <div className="bg-primary/5 border border-primary/20 rounded-2xl p-lg">
             <p className="text-label-md text-primary mb-xs">📅 Next Hearing</p>
             <p className="text-body-md font-semibold text-on-surface">June 25, 2024</p>
-            <p className="text-body-sm text-on-surface-variant">10:30 AM — District Court, Chennai</p>
+            <p className="text-body-sm text-on-surface-variant">10:30 AM — District Court, Colombo</p>
           </div>
         </div>
 

@@ -565,7 +565,7 @@ const LawyerProfileManage = () => {
 
                 <div className="space-y-sm">
                   {[
-                    { label: 'Bar Council Certificate', status: 'Verified',        color: 'bg-green-100 text-green-700', expiry: 'Valid for life' },
+                    { label: 'Bar Association Certificate', status: 'Verified',        color: 'bg-green-100 text-green-700', expiry: 'Valid for life' },
                     { label: 'Law Degree Certificate',  status: 'Verified',        color: 'bg-green-100 text-green-700', expiry: 'Permanent' },
                     { label: 'Practice Certificate 2024', status: 'Pending Renewal', color: 'bg-yellow-100 text-yellow-700', expiry: 'Expires Dec 2024' },
                     { label: 'Good Standing Certificate', status: 'Not Uploaded',  color: 'bg-red-100 text-red-600',    expiry: '—' },
@@ -591,9 +591,9 @@ const LawyerProfileManage = () => {
                 </div>
               </div>
 
-              {/* Bar Council ID */}
+              {/* Bar Association ID */}
               <div className="bg-white border border-surface-container-high rounded-2xl p-xl shadow-card">
-                <h3 className="text-headline-sm text-on-surface mb-md">Bar Council Registration</h3>
+                <h3 className="text-headline-sm text-on-surface mb-md">Bar Association Registration</h3>
                 <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl p-lg">
                   <div>
                     <p className="text-label-sm text-green-700">Registered ID</p>

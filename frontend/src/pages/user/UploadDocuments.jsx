@@ -12,7 +12,7 @@ const DOC_SLOTS = [
   {
     id: 'id_proof',
     label: 'Government ID Proof',
-    description: 'Aadhaar Card, PAN Card, Passport, or Voter ID',
+    description: 'NIC, Passport, or Driving License',
     required: true,
     multi: false,
     accept: '.pdf,.jpg,.jpeg,.png',

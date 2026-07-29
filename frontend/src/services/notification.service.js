@@ -19,3 +19,8 @@ export const dismissNotification = async (id) => {
 export const createNotification = async (data) => {
   return api.post('/notifications', data);
 };
+
+export const triggerEmergencyAlert = async () => {
+  return api.post('/notifications/emergency');
+};
+

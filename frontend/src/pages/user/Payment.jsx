@@ -57,15 +57,15 @@ const Payment = () => {
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
+    return new Intl.NumberFormat('en-LK', {
       style: 'currency',
-      currency: 'INR',
+      currency: 'LKR',
       maximumFractionDigits: 0,
     }).format(amount);
   };
 
   const formatDate = () => {
-    return new Intl.DateTimeFormat('en-IN', {
+    return new Intl.DateTimeFormat('en-LK', {
       year: 'numeric',
       month: 'short',
       day: '2-digit',

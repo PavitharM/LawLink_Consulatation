@@ -53,8 +53,8 @@ const NotFound = () => {
           <p className="text-label-md text-on-surface-variant mb-sm">Need Help?</p>
           <p className="text-body-md text-on-surface-variant">
             If you believe this is a mistake, please contact us at{' '}
-            <span className="text-primary font-medium">help@lawlink.in</span> or call{' '}
-            <span className="text-primary font-medium">+91-80-4567-8901</span>.
+            <span className="text-primary font-medium">help@lawlink.lk</span> or call{' '}
+            <span className="text-primary font-medium">+94-11-4567-890</span>.
           </p>
         </div>
       </div>

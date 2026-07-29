@@ -22,7 +22,7 @@ const categories = [
 
 /* ─── Document slot config ───────────────────────────────────── */
 const DOC_SLOTS = [
-  { id: 'id_proof',      label: 'Government ID Proof',            required: true,  multi: false, accept: '.pdf,.jpg,.jpeg,.png',             hint: 'PDF, JPG, PNG · max 10 MB', desc: 'Aadhaar, PAN, Passport or Voter ID' },
+  { id: 'id_proof',      label: 'Government ID Proof',            required: true,  multi: false, accept: '.pdf,.jpg,.jpeg,.png',             hint: 'PDF, JPG, PNG · max 10 MB', desc: 'NIC, Passport, or Driving License' },
   { id: 'complaint_doc', label: 'Complaint / FIR Document',       required: true,  multi: false, accept: '.pdf,.doc,.docx',                  hint: 'PDF, DOC, DOCX · max 10 MB', desc: 'Written complaint or FIR copy' },
   { id: 'evidence',      label: 'Supporting Evidence',            required: false, multi: true,  accept: '.pdf,.jpg,.jpeg,.png,.mp4,.zip,.doc,.docx', hint: 'PDF, JPG, PNG, MP4, ZIP · max 25 MB', desc: 'Photos, screenshots, videos (multiple allowed)' },
   { id: 'agreement',     label: 'Agreement / Contract',           required: false, multi: false, accept: '.pdf,.doc,.docx',                  hint: 'PDF, DOC, DOCX · max 10 MB', desc: 'Sale deed, rental or employment contract' },
@@ -369,7 +369,7 @@ const SubmitComplaint = () => {
               </div>
               <div>
                 <label className="text-label-sm text-on-surface-variant block mb-xs">Location of Incident</label>
-                <input type="text" placeholder="e.g., Chennai, Tamil Nadu" value={formData.location} onChange={e => update('location', e.target.value)}
+                <input type="text" placeholder="e.g., Colombo, Western Province" value={formData.location} onChange={e => update('location', e.target.value)}
                   className="w-full border border-outline-variant rounded-xl px-md py-sm text-body-md focus:outline-none focus:border-primary transition-all" />
               </div>
             </div>

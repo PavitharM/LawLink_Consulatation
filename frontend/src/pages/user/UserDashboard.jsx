@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, FileText, PlusCircle, Scale, Bell, TrendingUp, Clock, CheckCircle, AlertTriangle, ArrowRight, User, Loader2, Phone } from 'lucide-react';
 import { getComplaints } from '../../services/complaint.service';
 import { getMe } from '../../services/user.service';
+import { triggerEmergencyAlert } from '../../services/notification.service';
 
 const statusConfig = {
   'OPEN': { color: 'bg-blue-100 text-blue-700', icon: <Clock size={12} /> },
@@ -17,6 +18,7 @@ const UserDashboard = () => {
   const [userName, setUserName] = useState('');
   const [userProfile, setUserProfile] = useState(null);
   const [showEmergencyModal, setShowEmergencyModal] = useState(false);
+  const [isSendingEmergency, setIsSendingEmergency] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -203,13 +205,22 @@ const UserDashboard = () => {
                   Cancel
                 </button>
                 <button 
-                  onClick={() => {
-                    alert('Emergency alert successfully dispatched to the admin team!');
-                    setShowEmergencyModal(false);
+                  disabled={isSendingEmergency}
+                  onClick={async () => {
+                    try {
+                      setIsSendingEmergency(true);
+                      await triggerEmergencyAlert();
+                      alert('Emergency alert successfully dispatched to the admin team!');
+                      setShowEmergencyModal(false);
+                    } catch (err) {
+                      alert('Failed to send emergency alert.');
+                    } finally {
+                      setIsSendingEmergency(false);
+                    }
                   }}
-                  className="flex-1 py-sm rounded-xl bg-red-600 text-white text-body-md font-bold hover:bg-red-700 transition-colors shadow-md"
+                  className="flex-1 py-sm rounded-xl bg-red-600 text-white text-body-md font-bold hover:bg-red-700 transition-colors shadow-md disabled:opacity-50"
                 >
-                  Confirm & Send
+                  {isSendingEmergency ? <Loader2 size={20} className="animate-spin mx-auto" /> : 'Confirm & Send'}
                 </button>
               </div>
             </div>

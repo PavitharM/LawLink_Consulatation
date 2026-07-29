@@ -111,3 +111,38 @@ export const dismissNotification = async (req: AuthRequest, res: Response, next:
     next(error);
   }
 };
+
+export const triggerEmergencyAlert = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.user!;
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+
+    const admins = await prisma.user.findMany({
+      where: { role: 'ADMIN' },
+      select: { id: true }
+    });
+
+    const notifications = admins.map(admin => ({
+      userId: admin.id,
+      title: '🚨 Emergency Alert',
+      message: `User ${user.name} (${user.email}) has triggered an emergency alert. Please contact them immediately.`,
+      type: 'EMERGENCY',
+      link: `/admin/users`
+    }));
+
+    await prisma.notification.createMany({
+      data: notifications
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Emergency alert dispatched to admins successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};

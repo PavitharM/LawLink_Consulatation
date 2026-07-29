@@ -2,19 +2,28 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Scale, Users, Briefcase, FileText, TrendingUp, AlertTriangle, Bell, Loader2, ArrowRight } from 'lucide-react';
 import { getAdminStats } from '../../services/admin.service';
+import { getNotifications, markNotificationRead } from '../../services/notification.service';
 import { AuthContext } from '../../App';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [stats, setStats] = useState(null);
+  const [emergencies, setEmergencies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await getAdminStats();
-        if (response.success) setStats(response.data);
+        const [statsRes, notifRes] = await Promise.all([
+          getAdminStats(),
+          getNotifications().catch(() => ({ data: [] }))
+        ]);
+        if (statsRes.success) setStats(statsRes.data);
+        if (notifRes.data) {
+          const activeEmergencies = notifRes.data.filter(n => n.type === 'EMERGENCY' && !n.read);
+          setEmergencies(activeEmergencies);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -217,6 +226,24 @@ const AdminDashboard = () => {
               <Bell size={18} className="text-primary" /> Alerts
             </h3>
             <div className="space-y-sm">
+              {emergencies.map(em => (
+                <div key={em.id} className="bg-red-600 border border-red-700 rounded-xl p-md shadow-lg animate-pulse">
+                  <p className="text-label-sm text-white font-bold flex items-center gap-xs">
+                    <AlertTriangle size={16} /> EMERGENCY ALERT
+                  </p>
+                  <p className="text-body-sm text-red-50 mt-xs">{em.message}</p>
+                  <button
+                    onClick={async () => {
+                      await markNotificationRead(em.id);
+                      setEmergencies(prev => prev.filter(e => e.id !== em.id));
+                    }}
+                    className="mt-sm px-sm py-xs bg-white text-red-700 text-label-sm rounded-lg hover:bg-red-50 transition-colors font-bold"
+                  >
+                    Acknowledge
+                  </button>
+                </div>
+              ))}
+
               {(stats?.unassignedComplaints ?? 0) > 0 ? (
                 <div className="bg-red-50 border border-red-200 rounded-xl p-md">
                   <p className="text-label-sm text-red-700 font-semibold">

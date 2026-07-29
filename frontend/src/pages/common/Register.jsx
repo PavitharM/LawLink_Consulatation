@@ -38,7 +38,7 @@ const Register = ({ onLogin }) => {
         email: form.email,
         phone: form.phone,
         password: form.password,
-        city: 'Chennai', // Dummy for now since it's not in the UI
+        city: 'Colombo', // Dummy for now since it's not in the UI
         role: role.toUpperCase(),
       };
 
@@ -75,10 +75,10 @@ const Register = ({ onLogin }) => {
           <span className="text-headline-sm font-bold">LawLink</span>
         </div>
         <div>
-          <h2 className="text-headline-lg font-bold mb-lg">Join India's Most Trusted Legal Platform</h2>
+          <h2 className="text-headline-lg font-bold mb-lg">Join Sri Lanka's Most Trusted Legal Platform</h2>
           <div className="space-y-lg">
             {[
-              { icon: '⚖️', text: 'Access 1,500+ verified lawyers across India' },
+              { icon: '⚖️', text: 'Access 1,500+ verified lawyers across Sri Lanka' },
               { icon: '📋', text: 'File and track legal complaints seamlessly' },
               { icon: '🔒', text: 'Secure, encrypted platform for sensitive matters' },
               { icon: '✅', text: '75%+ case resolution rate' },
@@ -137,7 +137,7 @@ const Register = ({ onLogin }) => {
                 </div>
                 <div>
                   <label className="text-label-sm text-on-surface-variant mb-xs block">Phone Number *</label>
-                  <input type="tel" placeholder="+91 98765 43210"
+                  <input type="tel" placeholder="+94 77 123 4567"
                     value={form.phone} onChange={e => update('phone', e.target.value)} required
                     className="w-full border border-outline-variant rounded-xl px-md py-sm text-body-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
                 </div>
@@ -153,9 +153,9 @@ const Register = ({ onLogin }) => {
               {/* Lawyer-specific fields */}
               {role === 'lawyer' && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-md p-lg bg-primary/5 border border-primary/20 rounded-xl">
-                  <div>
-                    <label className="text-label-sm text-on-surface-variant mb-xs block">Bar Council ID *</label>
-                    <input type="text" placeholder="BCI-TN-XXXX-XXXXX"
+                  <div className="sm:col-span-2">
+                    <label className="text-label-sm text-on-surface-variant mb-xs block">Bar Association ID *</label>
+                    <input type="text" placeholder="e.g. BASL/12345"
                       value={form.barCouncilId} onChange={e => update('barCouncilId', e.target.value)} required
                       className="w-full border border-outline-variant rounded-xl px-md py-sm text-body-md focus:outline-none focus:border-primary transition-all" />
                   </div>
