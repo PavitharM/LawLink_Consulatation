@@ -108,7 +108,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-2xl">
             <h2 className="text-headline-lg text-on-surface">Why Choose LawLink?</h2>
-            <p className="text-body-lg text-on-surface-variant mt-md max-w-2xl mx-auto">We combine technology and legal expertise to make justice accessible for everyone in India.</p>
+            <p className="text-body-lg text-on-surface-variant mt-md max-w-2xl mx-auto">We combine technology and legal expertise to make justice accessible for everyone in Sri Lanka.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
             {features.map((f, i) => (
@@ -241,12 +241,12 @@ const Home = () => {
                 <Scale size={24} className="text-inverse-primary" />
                 <span className="text-headline-sm font-bold text-inverse-on-surface">LawLink</span>
               </div>
-              <p className="text-body-sm text-inverse-on-surface/60 leading-relaxed">India's most trusted platform for accessible legal services.</p>
+              <p className="text-body-sm text-inverse-on-surface/60 leading-relaxed">Sri Lanka's most trusted platform for accessible legal services.</p>
             </div>
             {[
               { title: 'Platform', links: ['For Users', 'For Lawyers', 'Admin Panel', 'Pricing'] },
               { title: 'Legal', links: ['Privacy Policy', 'Terms of Service', 'Disclaimer', 'Cookie Policy'] },
-              { title: 'Contact', links: ['help@lawlink.in', '+91-80-4567-8901', 'Bengaluru, India'] },
+              { title: 'Contact', links: ['help@lawlink.in', '+91-80-4567-8901', 'Bengaluru, Sri Lanka'] },
             ].map((col, i) => (
               <div key={i}>
                 <h4 className="text-label-md text-inverse-on-surface mb-md">{col.title}</h4>
