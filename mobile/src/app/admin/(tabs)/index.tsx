@@ -162,10 +162,10 @@ export default function AdminDashboard() {
         )}
       </Card>
 
-      <Card variant="champagne" onPress={() => router.push('/admin/report')}>
+      <Card variant="white" onPress={() => router.push('/admin/report')}>
         <Feather name="trending-up" size={28} color={colors.onGold} />
         <Text style={[t.h2, { color: colors.onGold, marginTop: space.md }]}>Reports</Text>
-        <Text style={[t.bodySm, { color: '#4A4033' }]}>View full analytics and platform metrics.</Text>
+        <Text style={[t.bodySm, { color: colors.onWhiteMuted }]}>View full analytics and platform metrics.</Text>
         <Text style={[t.label, { color: colors.onGold, marginTop: space.md }]}>View Report →</Text>
       </Card>
     </Screen>

@@ -183,13 +183,13 @@ export const Card = ({
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
-  variant?: 'default' | 'gold' | 'champagne' | 'outline' | 'danger';
+  variant?: 'default' | 'gold' | 'white' | 'outline' | 'danger';
 }) => {
   const v =
     variant === 'gold'
       ? { backgroundColor: colors.goldDim, borderColor: colors.goldBorder }
-      : variant === 'champagne'
-        ? { backgroundColor: colors.goldLight, borderColor: colors.goldLight }
+      : variant === 'white'
+        ? { backgroundColor: colors.paper, borderColor: colors.whiteBorder }
         : variant === 'outline'
           ? { backgroundColor: 'transparent', borderColor: colors.border }
           : variant === 'danger'
@@ -210,7 +210,7 @@ export const Divider = ({ style }: { style?: StyleProp<ViewStyle> }) => (
 );
 
 /* ─── Buttons ───────────────────────────────────────────────── */
-type BtnVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'white' | 'success';
+type BtnVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'white' | 'success' | 'dark' | 'outlineDark';
 
 export const Button = ({
   title,
@@ -240,6 +240,8 @@ export const Button = ({
     ghost: { bg: 'transparent', fg: colors.gold, border: 'transparent' },
     danger: { bg: colors.dangerDim, fg: colors.danger, border: 'rgba(240,106,106,0.4)' },
     success: { bg: colors.successDim, fg: colors.success, border: 'rgba(127,196,138,0.4)' },
+    dark: { bg: colors.onWhite, fg: colors.white, border: colors.onWhite },
+    outlineDark: { bg: 'transparent', fg: colors.onWhite, border: colors.onWhite },
   };
   const p = palette[variant];
   const off = disabled || loading;

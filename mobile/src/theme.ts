@@ -12,6 +12,12 @@ export const colors = {
   border: '#262626',
   borderStrong: '#3A3A3A',
 
+  white: '#FFFFFF',
+  paper: '#F7F5F0', // warm off-white for white panels
+  onWhite: '#0A0A0A',
+  onWhiteMuted: '#5C5C5C',
+  whiteBorder: '#E6E2D8',
+
   text: '#FFFFFF',
   textMuted: '#A1A1A1',
   textDim: '#6B6B6B',

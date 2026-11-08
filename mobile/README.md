@@ -4,7 +4,7 @@ React Native (Expo SDK 58 + Expo Router) version of the LawLink web app. It talk
 Express backend (`../backend`) and has the same three roles: **client**, **lawyer** and **admin**.
 
 Design: black, white and gold — editorial layout with oversized light **Geist** headings, small
-uppercase meta labels and a single gold accent (champagne for highlight panels).
+uppercase meta labels and a single gold accent (champagne for accents, warm white for highlight panels and the tab bar).
 
 ## Run it
 

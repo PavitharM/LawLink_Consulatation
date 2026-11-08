@@ -77,7 +77,7 @@ export default function ComplaintDetails() {
       </Card>
 
       {c.hearingDate ? (
-        <Card variant="champagne" style={{ marginBottom: space.lg, flexDirection: 'row', alignItems: 'center', gap: space.md }}>
+        <Card variant="white" style={{ marginBottom: space.lg, flexDirection: 'row', alignItems: 'center', gap: space.md }}>
           <Feather name="calendar" size={24} color={colors.onGold} />
           <View>
             <Text style={[t.label, { color: colors.onGold }]}>Next Court Hearing</Text>
