@@ -64,8 +64,8 @@ export default function LawyerDashboard() {
         <Stat label="Total Earnings" value={`₹${earnings.toLocaleString()}`} icon="trending-up" tone="info" />
       </StatGrid>
 
-      {/* Upcoming hearings — champagne panel */}
-      <Card variant="champagne" style={{ marginBottom: space.xl }}>
+      {/* Upcoming hearings — white panel */}
+      <Card variant="white" style={{ marginBottom: space.xl }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: space.md }}>
           <Feather name="calendar" size={18} color={colors.onGold} />
           <Text style={[t.h3, { color: colors.onGold }]}>Upcoming Court Hearings</Text>
@@ -74,16 +74,16 @@ export default function LawyerDashboard() {
           upcoming.map((h, i) => (
             <View key={h.id} style={[{ paddingVertical: space.sm }, i > 0 && { borderTopWidth: 0.5, borderTopColor: 'rgba(0,0,0,0.15)' }]}>
               <Text style={[t.h2, { color: colors.onGold }]}>{fmtDateGB(h.hearingDate)}</Text>
-              <Text style={[t.bodySm, { color: '#4A4033' }]}>
+              <Text style={[t.bodySm, { color: colors.onWhiteMuted }]}>
                 {new Date(h.hearingDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} — {h.location || 'TBD'}
               </Text>
-              <Text style={[t.bodySm, { color: '#4A4033' }]}>
+              <Text style={[t.bodySm, { color: colors.onWhiteMuted }]}>
                 {shortId(h.id)} — {h.client?.name || 'Unknown'}
               </Text>
             </View>
           ))
         ) : (
-          <Text style={[t.bodySm, { color: '#4A4033' }]}>No upcoming hearings scheduled.</Text>
+          <Text style={[t.bodySm, { color: colors.onWhiteMuted }]}>No upcoming hearings scheduled.</Text>
         )}
       </Card>
 

@@ -15,11 +15,12 @@ export function RoleStack({ allowed }: { allowed: Role }) {
 
 export const tabScreenOptions = {
   headerShown: false,
-  tabBarActiveTintColor: colors.gold,
-  tabBarInactiveTintColor: colors.textDim,
+  // White tab bar — black active, grey inactive, gold badges
+  tabBarActiveTintColor: colors.onWhite,
+  tabBarInactiveTintColor: '#9A9A9A',
   tabBarStyle: {
-    backgroundColor: colors.bg,
-    borderTopColor: colors.border,
+    backgroundColor: colors.white,
+    borderTopColor: colors.whiteBorder,
     borderTopWidth: 0.5,
   },
   tabBarLabelStyle: { fontFamily: fonts.medium, fontSize: 11 },
