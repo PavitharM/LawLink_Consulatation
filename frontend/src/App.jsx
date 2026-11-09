@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { getMe } from './services/user.service';
 import PageLoader from './components/PageLoader';
+import RouteEffects from './components/RouteEffects';
 
 // Layout & Components
 import ProtectedRoute from './components/ProtectedRoute';
@@ -112,6 +113,7 @@ function App() {
     <AuthContext.Provider value={{ user, role, setAuth: handleAuthChange }}>
       <NotificationProvider userId={user?.id} role={role}>
         <Router>
+          <RouteEffects />
           <Suspense fallback={<PageLoader fullScreen />}>
           <Routes>
             {/* Public Routes */}

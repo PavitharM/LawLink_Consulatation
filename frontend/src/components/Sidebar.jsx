@@ -98,6 +98,7 @@ const Sidebar = ({ role, onClose }) => {
         </div>
         <button
           onClick={onClose}
+          aria-label="Close menu"
           className="p-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
         >
           <X size={20} />
@@ -107,10 +108,10 @@ const Sidebar = ({ role, onClose }) => {
       {/* Section Title */}
       <p className="text-label-sm text-on-surface-variant px-lg mb-md uppercase tracking-widest">{title}</p>
 
-      <nav className="flex flex-col gap-xs flex-1">
-        {links.map((link, index) => (
+      <nav className="flex flex-col gap-xs flex-1" aria-label="Main navigation">
+        {links.map((link) => (
           <NavLink
-            key={index}
+            key={link.to}
             to={link.to}
             end={link.to === '/admin' || link.to === '/user' || link.to === '/lawyer'}
             onClick={onClose}

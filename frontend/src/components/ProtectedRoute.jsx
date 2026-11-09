@@ -1,13 +1,32 @@
-import React, { useState, Suspense } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { useState, useEffect, useRef, Suspense } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import PageLoader from './PageLoader';
 
 const ProtectedRoute = ({ role, allowedRoles, onLogout }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { pathname } = useLocation();
+  const contentRef = useRef(null);
 
-  // In a real app, this would check actual auth state
+  // The content pane scrolls, not the window — reset it on navigation.
+  useEffect(() => {
+    contentRef.current?.scrollTo({ top: 0 });
+  }, [pathname]);
+
+  // Close the mobile drawer with Escape and lock background scroll while open.
+  useEffect(() => {
+    if (!sidebarOpen) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setSidebarOpen(false); };
+    document.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [sidebarOpen]);
+
   const isAuthenticated = !!role;
   const isAuthorized = isAuthenticated && allowedRoles.includes(role);
 
@@ -28,7 +47,8 @@ const ProtectedRoute = ({ role, allowedRoles, onLogout }) => {
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] lg:hidden animate-fade-in"
+          aria-hidden="true"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -48,10 +68,12 @@ const ProtectedRoute = ({ role, allowedRoles, onLogout }) => {
           onLogout={onLogout}
           onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         />
-        <div className="flex-1 p-md sm:p-xl overflow-y-auto">
+        <div ref={contentRef} id="main-content" className="flex-1 p-md sm:p-xl overflow-y-auto">
+          <div className="max-w-container-max mx-auto page-enter" key={pathname}>
           <Suspense fallback={<PageLoader />}>
             <Outlet />
           </Suspense>
+          </div>
         </div>
       </main>
     </div>

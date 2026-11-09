@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Scale, Bell, LogOut, ChevronDown, Settings, Menu,
@@ -46,6 +46,15 @@ const Navbar = ({ role, onLogout, onMenuClick }) => {
 
   const closeAll = () => { setShowMenu(false); setShowNotif(false); };
 
+  useEffect(() => {
+    if (!showMenu && !showNotif) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') { setShowMenu(false); setShowNotif(false); } };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [showMenu, showNotif]);
+
+  const profileRoute = { lawyer: '/lawyer/profile', user: '/user/profile', admin: '/admin/profile' }[role] || '/';
+
   /* show only latest 5 in the dropdown */
   const preview = notifications.slice(0, 5);
 
@@ -83,11 +92,14 @@ const Navbar = ({ role, onLogout, onMenuClick }) => {
         <div className="relative">
           <button
             onClick={() => { setShowNotif((s) => !s); setShowMenu(false); }}
+            aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
+            aria-haspopup="true"
+            aria-expanded={showNotif}
             className="relative p-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-primary transition-all"
           >
             <Bell size={20} />
             {unreadCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] rounded-full flex items-center justify-center font-bold">
+              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-[3px] ring-2 ring-white bg-primary text-on-primary text-[10px] rounded-full flex items-center justify-center font-bold">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -95,7 +107,7 @@ const Navbar = ({ role, onLogout, onMenuClick }) => {
 
           {/* Notification dropdown */}
           {showNotif && (
-            <div className="absolute right-0 top-full mt-sm w-[340px] bg-white border border-surface-container-high rounded-2xl shadow-xl z-50 overflow-hidden">
+            <div className="absolute right-0 top-full mt-sm w-[min(340px,calc(100vw-2rem))] animate-pop-in origin-top-right bg-white border border-surface-container-high rounded-2xl shadow-xl z-50 overflow-hidden">
               {/* header */}
               <div className="flex items-center justify-between px-lg py-md border-b border-surface-container-high">
                 <span className="text-label-md font-semibold text-on-surface">Notifications</span>
@@ -144,7 +156,8 @@ const Navbar = ({ role, onLogout, onMenuClick }) => {
                             {!n.read && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
                             <button
                               onClick={(e) => { e.stopPropagation(); dismiss(n.id); }}
-                              className="opacity-0 group-hover:opacity-100 text-on-surface-variant hover:text-red-500 transition-all"
+                              aria-label="Dismiss notification"
+                              className="opacity-0 group-hover:opacity-100 focus:opacity-100 text-on-surface-variant hover:text-red-500 transition-all"
                               title="Dismiss"
                             >
                               <X size={12} />
@@ -175,6 +188,9 @@ const Navbar = ({ role, onLogout, onMenuClick }) => {
         <div className="relative">
           <button
             onClick={() => { setShowMenu((s) => !s); setShowNotif(false); }}
+            aria-label="Account menu"
+            aria-haspopup="true"
+            aria-expanded={showMenu}
             className="flex items-center gap-sm p-xs rounded-xl hover:bg-surface-container transition-all"
           >
             <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-label-sm font-bold text-on-primary uppercase">
@@ -188,7 +204,7 @@ const Navbar = ({ role, onLogout, onMenuClick }) => {
           </button>
 
           {showMenu && (
-            <div className="absolute right-0 top-full mt-sm w-52 bg-white border border-surface-container-high rounded-2xl shadow-xl z-50 overflow-hidden">
+            <div className="absolute right-0 top-full mt-sm w-52 animate-pop-in origin-top-right bg-white border border-surface-container-high rounded-2xl shadow-xl z-50 overflow-hidden">
               <div className="px-lg py-md border-b border-surface-container-high">
                 <p className="text-label-md font-semibold text-on-surface">{user?.name || role}</p>
                 <p className="text-body-sm text-on-surface-variant capitalize">{role}</p>
@@ -197,11 +213,11 @@ const Navbar = ({ role, onLogout, onMenuClick }) => {
                 <button
                   onClick={() => {
                     setShowMenu(false);
-                    navigate(role === 'lawyer' ? '/lawyer/profile' : role === 'user' ? '/user/profile' : '/admin');
+                    navigate(profileRoute);
                   }}
                   className="w-full flex items-center gap-md px-lg py-sm text-body-md text-on-surface hover:bg-surface-container-low transition-colors"
                 >
-                  <Settings size={16} className="text-on-surface-variant" /> Settings
+                  <Settings size={16} className="text-on-surface-variant" /> Profile &amp; Settings
                 </button>
                 <button
                   onClick={handleLogout}
