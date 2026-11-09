@@ -1,51 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { getMe } from './services/user.service';
-import { Loader2 } from 'lucide-react';
+import PageLoader from './components/PageLoader';
 
 // Layout & Components
 import ProtectedRoute from './components/ProtectedRoute';
 import { NotificationProvider } from './contexts/NotificationContext';
 
 // Common Pages
-import Home from './pages/common/Home';
-import Login from './pages/common/Login';
-import Register from './pages/common/Register';
-import ForgotPassword from './pages/common/ForgotPassword';
-import NotFound from './pages/common/NotFound';
+const Home = lazy(() => import('./pages/common/Home'));
+const Login = lazy(() => import('./pages/common/Login'));
+const Register = lazy(() => import('./pages/common/Register'));
+const ForgotPassword = lazy(() => import('./pages/common/ForgotPassword'));
+const NotFound = lazy(() => import('./pages/common/NotFound'));
 
 // Admin Pages
-import AdminDashboard from './pages/admin/AdminDashboard';
-import ManageUsers from './pages/admin/ManageUsers';
-import ManageLawyers from './pages/admin/ManageLawyers';
-import ManageComplaints from './pages/admin/ManageComplaints';
-import ManageArticles from './pages/admin/ManageArticles';
-import Report from './pages/admin/Report';
-import ManagePackages from './pages/admin/ManagePackages';
-import AdminNotificationSettings from './pages/admin/AdminNotificationSettings';
-import AdminProfile from './pages/admin/AdminProfile';
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const ManageUsers = lazy(() => import('./pages/admin/ManageUsers'));
+const ManageLawyers = lazy(() => import('./pages/admin/ManageLawyers'));
+const ManageComplaints = lazy(() => import('./pages/admin/ManageComplaints'));
+const ManageArticles = lazy(() => import('./pages/admin/ManageArticles'));
+const Report = lazy(() => import('./pages/admin/Report'));
+const ManagePackages = lazy(() => import('./pages/admin/ManagePackages'));
+const AdminNotificationSettings = lazy(() => import('./pages/admin/AdminNotificationSettings'));
+const AdminProfile = lazy(() => import('./pages/admin/AdminProfile'));
 
 // User Pages
-import UserDashboard from './pages/user/UserDashboard';
-import SubmitComplaint from './pages/user/SubmitComplaint';
-import MyComplaints from './pages/user/MyComplaints';
-import ComplaintDetails from './pages/user/ComplaintDetails';
-import SearchLawyers from './pages/user/SearchLawyers';
-import SelectPackage from './pages/user/SelectPackage';
-import Payment from './pages/user/Payment';
-import UploadDocuments from './pages/user/UploadDocuments';
-import Review from './pages/user/Review';
-import Notification from './pages/user/Notification';
-import UserProfile from './pages/user/UserProfile';
-import ConsultationResponse from './pages/user/ConsultationResponse';
+const UserDashboard = lazy(() => import('./pages/user/UserDashboard'));
+const SubmitComplaint = lazy(() => import('./pages/user/SubmitComplaint'));
+const MyComplaints = lazy(() => import('./pages/user/MyComplaints'));
+const ComplaintDetails = lazy(() => import('./pages/user/ComplaintDetails'));
+const SearchLawyers = lazy(() => import('./pages/user/SearchLawyers'));
+const SelectPackage = lazy(() => import('./pages/user/SelectPackage'));
+const Payment = lazy(() => import('./pages/user/Payment'));
+const UploadDocuments = lazy(() => import('./pages/user/UploadDocuments'));
+const Review = lazy(() => import('./pages/user/Review'));
+const Notification = lazy(() => import('./pages/user/Notification'));
+const UserProfile = lazy(() => import('./pages/user/UserProfile'));
+const ConsultationResponse = lazy(() => import('./pages/user/ConsultationResponse'));
 
 // Lawyer Pages
-import LawyerDashboard from './pages/lawyer/LawyerDashboard';
-import AssignedComplaints from './pages/lawyer/AssignedComplaints';
-import ComplaintReview from './pages/lawyer/ComplaintReview';
-import PackageManagement from './pages/lawyer/PackageManagement';
-import LawyerNotifications from './pages/lawyer/LawyerNotifications';
-import LawyerProfileManage from './pages/lawyer/LawyerProfileManage';
+const LawyerDashboard = lazy(() => import('./pages/lawyer/LawyerDashboard'));
+const AssignedComplaints = lazy(() => import('./pages/lawyer/AssignedComplaints'));
+const ComplaintReview = lazy(() => import('./pages/lawyer/ComplaintReview'));
+const PackageManagement = lazy(() => import('./pages/lawyer/PackageManagement'));
+const LawyerNotifications = lazy(() => import('./pages/lawyer/LawyerNotifications'));
+const LawyerProfileManage = lazy(() => import('./pages/lawyer/LawyerProfileManage'));
 
 export const AuthContext = React.createContext({ user: null, role: null, setAuth: () => {} });
 
@@ -104,9 +104,7 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-container-low">
-        <Loader2 className="w-8 h-8 text-primary animate-spin" />
-      </div>
+      <PageLoader fullScreen />
     );
   }
 
@@ -114,6 +112,7 @@ function App() {
     <AuthContext.Provider value={{ user, role, setAuth: handleAuthChange }}>
       <NotificationProvider>
         <Router>
+          <Suspense fallback={<PageLoader fullScreen />}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
@@ -163,6 +162,7 @@ function App() {
             {/* Catch All */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </Router>
       </NotificationProvider>
     </AuthContext.Provider>

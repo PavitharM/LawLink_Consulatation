@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
+import PageLoader from './PageLoader';
 
 const ProtectedRoute = ({ role, allowedRoles, onLogout }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -48,7 +49,9 @@ const ProtectedRoute = ({ role, allowedRoles, onLogout }) => {
           onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         />
         <div className="flex-1 p-md sm:p-xl overflow-y-auto">
-          <Outlet />
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
+          </Suspense>
         </div>
       </main>
     </div>
