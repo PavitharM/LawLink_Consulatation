@@ -5,7 +5,7 @@ This is the Node.js/Express backend for LawLink, handling authentication, role-b
 ## Technology Stack
 
 - **Framework**: Express.js with TypeScript
-- **Database**: PostgreSQL
+- **Database**: MySQL
 - **ORM**: Prisma Client
 - **Authentication**: JSON Web Tokens (JWT) & bcrypt
 - **Validation**: Zod
@@ -39,10 +39,10 @@ npm install
 ```
 
 ### 2. Environment Variables
-Make sure your `.env` file is set up correctly (a `.env.example` is provided). You must define a `DATABASE_URL` for PostgreSQL.
+Make sure your `.env` file is set up correctly (a `.env.example` is provided). You must define a `DATABASE_URL` for MySQL.
 
 ### 3. Database Initialization
-Run the Prisma migrations to set up your PostgreSQL database schema:
+Run the Prisma migrations to set up your MySQL database schema:
 ```bash
 npx prisma migrate dev --name init
 ```

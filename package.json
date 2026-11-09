@@ -1,0 +1,27 @@
+{
+  "name": "lawlink",
+  "private": true,
+  "description": "LawLink monorepo: Express API (backend), React web app (frontend), Expo app (mobile)",
+  "scripts": {
+    "setup": "bash scripts/setup.sh",
+    "dev": "concurrently -k -n api,web,mobile -c yellow,cyan,magenta -i --default-input-target mobile \"npm:dev:backend\" \"npm:dev:web\" \"npm:dev:mobile\"",
+    "dev:web-only": "concurrently -k -n api,web -c yellow,cyan \"npm:dev:backend\" \"npm:dev:web\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:web": "npm --prefix frontend run dev",
+    "dev:mobile": "npm --prefix mobile start",
+    "db:up": "docker compose up -d --wait mysql",
+    "db:down": "docker compose down",
+    "db:migrate": "cd backend && npx prisma migrate deploy && npx prisma generate",
+    "db:seed": "npm --prefix backend run seed",
+    "db:studio": "cd backend && npx prisma studio",
+    "db:reset": "cd backend && npx prisma migrate reset --force",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build",
+    "check": "npm --prefix backend run build && npm --prefix frontend run lint && npm --prefix mobile run typecheck"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -7,7 +7,6 @@ frontend/.env
 backend/node_modules/
 backend/dist
 backend/.env
-backend/.env.example
 
 # Logs
 *.log
@@ -20,3 +19,6 @@ backend/.env.example
 # Uploaded files
 backend/uploads/*
 !backend/uploads/.gitkeep
+
+# Root tooling
+node_modules/

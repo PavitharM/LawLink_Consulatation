@@ -1,0 +1,24 @@
+# Optional: a MySQL server for people who don't have one installed locally.
+# Runs on host port 3307 so it doesn't clash with a Homebrew MySQL on 3306.
+#   npm run db:up    -> start
+#   npm run db:down  -> stop (data is kept in the `mysql-data` volume)
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: lawlink-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: lawlink
+      MYSQL_DATABASE: lawlink
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-plawlink"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql-data:

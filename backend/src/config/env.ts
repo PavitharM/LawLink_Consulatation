@@ -9,7 +9,12 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   JWT_SECRET: z.string().min(32),
   JWT_REFRESH_SECRET: z.string().min(32),
-  CLIENT_URL: z.string().url().default('http://localhost:5173'),
+  // Comma-separated list of allowed browser origins (web app, Expo web, ...)
+  CLIENT_URL: z
+    .string()
+    .default('http://localhost:5173')
+    .transform((v) => v.split(',').map((o) => o.trim()).filter(Boolean))
+    .pipe(z.array(z.string().url()).min(1)),
 });
 
 const _env = envSchema.safeParse(process.env);

@@ -41,12 +41,15 @@ async function main() {
     },
   ];
 
-  for (const pkg of packages) {
-    await prisma.package.create({
-      data: pkg,
-    });
+  // Only seed packages into an empty table so re-running the seed is safe
+  if ((await prisma.package.count()) === 0) {
+    for (const pkg of packages) {
+      await prisma.package.create({ data: pkg });
+    }
+    console.log('✅ Packages seeded');
+  } else {
+    console.log('ℹ️  Packages already exist, skipping');
   }
-  console.log('✅ Packages seeded');
 
   console.log('🌱 Seeding completed successfully!');
 }
