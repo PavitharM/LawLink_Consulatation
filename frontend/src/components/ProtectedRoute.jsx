@@ -31,7 +31,7 @@ const ProtectedRoute = ({ role, allowedRoles, onLogout }) => {
   const isAuthorized = isAuthenticated && allowedRoles.includes(role);
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace state={{ from: pathname }} />;
   }
 
   if (!isAuthorized) {
