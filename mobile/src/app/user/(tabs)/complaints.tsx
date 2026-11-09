@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import { getComplaints } from '@/api/services';
 import { Badge, Banner, Button, Card, Chip, ChipRow, Empty, IconButton, IconName, Input, Loader, MonoTag, PageHeader, Screen, Stat, StatGrid } from '@/components/ui';
 import { colors, space, type as t } from '@/theme';
-import { PRIORITY_TONE, shortId, STATUS } from '@/utils/format';
+import { PRIORITY_TONE, priorityLabel, shortId, STATUS } from '@/utils/format';
 
 const FILTERS = [
   { v: 'All', l: 'All' },
@@ -128,7 +128,7 @@ export default function MyComplaints() {
               <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginBottom: space.sm }}>
                 <MonoTag label={shortId(c.id)} />
                 <Badge label={st.label} tone={st.tone} icon={st.icon as IconName} />
-                {c.priority ? <Badge label={`${c.priority.charAt(0)}${c.priority.slice(1).toLowerCase()} priority`} tone={PRIORITY_TONE[c.priority]} /> : null}
+                {c.priority ? <Badge label={priorityLabel(c.priority)} tone={PRIORITY_TONE[c.priority]} /> : null}
                 {c.category ? <Badge label={c.category} tone="neutral" /> : null}
               </View>
               <Text style={t.h3}>{c.title}</Text>

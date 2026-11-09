@@ -39,4 +39,7 @@ export const STATUS: Record<string, { label: string; tone: Tone; icon: string }>
 
 export const PRIORITY_TONE: Record<string, Tone> = { HIGH: 'danger', MEDIUM: 'warning', LOW: 'success' };
 
+/** "HIGH" → "High priority". */
+export const priorityLabel = (p?: string) => (p ? `${p.charAt(0)}${p.slice(1).toLowerCase()} priority` : '');
+
 export const SPECIALIZATIONS = ['Civil Law', 'Criminal Law', 'Family Law', 'Labour Law', 'Property Law', 'Corporate Law', 'Consumer Law'];

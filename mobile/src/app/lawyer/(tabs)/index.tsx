@@ -6,7 +6,7 @@ import { getComplaints } from '@/api/services';
 import { useAuth } from '@/context/AuthContext';
 import { Badge, Card, Empty, IconName, Loader, Meta, MonoTag, PageHeader, Screen, SectionTitle, Stat, StatGrid } from '@/components/ui';
 import { colors, space, type as t } from '@/theme';
-import { fmtDateGB, PRIORITY_TONE, shortId } from '@/utils/format';
+import { fmtDateGB, PRIORITY_TONE, priorityLabel, shortId, STATUS } from '@/utils/format';
 
 export default function LawyerDashboard() {
   const router = useRouter();
@@ -90,20 +90,31 @@ export default function LawyerDashboard() {
       <SectionTitle title="Active Cases" action="All cases" onAction={() => router.push('/lawyer/cases')} />
       {active.length === 0 ? (
         <Card>
-          <Empty icon="briefcase" title="No active cases assigned to you." />
+          <Empty
+            icon="briefcase"
+            title="No active cases"
+            subtitle="Keep your profile and packages up to date so clients can find you."
+            action={{ label: 'Review my profile', icon: 'user', onPress: () => router.push('/lawyer/profile') }}
+          />
         </Card>
       ) : (
         active.map((c) => (
           <Card key={c.id} onPress={() => router.push(`/lawyer/complaint/${c.id}`)} style={{ marginBottom: space.md }}>
             <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginBottom: space.sm }}>
               <MonoTag label={shortId(c.id)} />
-              <Badge label={c.status === 'OPEN' ? 'NEW REQUEST' : c.status} tone={c.status === 'OPEN' ? 'gold' : 'warning'} />
-              <Badge label={c.priority} tone={PRIORITY_TONE[c.priority]} />
+              <Badge
+                label={c.status === 'OPEN' ? 'New request' : (STATUS[c.status]?.label || c.status)}
+                icon={c.status === 'OPEN' ? 'star' : undefined}
+                tone={c.status === 'OPEN' ? 'gold' : STATUS[c.status]?.tone || 'warning'}
+              />
+              {c.priority ? <Badge label={priorityLabel(c.priority)} tone={PRIORITY_TONE[c.priority]} /> : null}
             </View>
             <Text style={t.h3}>{c.title}</Text>
-            <Text style={[t.bodySm, { marginTop: 4 }]}>
-              👤 {c.client?.name || 'Unknown'} · 📂 {c.category} · 📅 {c.hearingDate ? fmtDateGB(c.hearingDate) : 'TBD'}
-            </Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: space.md, rowGap: 2, marginTop: 6 }}>
+              <MetaBit icon="user" text={c.client?.name || 'Unknown'} />
+              {c.category ? <MetaBit icon="folder" text={c.category} /> : null}
+              <MetaBit icon="calendar" text={c.hearingDate ? fmtDateGB(c.hearingDate) : 'Hearing TBD'} />
+            </View>
           </Card>
         ))
       )}
@@ -146,3 +157,10 @@ export default function LawyerDashboard() {
     </Screen>
   );
 }
+
+const MetaBit = ({ icon, text }: { icon: IconName; text: string }) => (
+  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+    <Feather name={icon} size={12} color={colors.textDim} />
+    <Text style={t.bodySm}>{text}</Text>
+  </View>
+);

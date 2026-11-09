@@ -3,24 +3,24 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { getComplaints } from '@/api/services';
-import { Avatar, Badge, Button, Card, Chip, ChipRow, Empty, IconName, Input, Loader, Meta, MonoTag, PageHeader, Screen, SectionTitle, Stat, StatGrid } from '@/components/ui';
+import { Avatar, Badge, Banner, Button, Card, Chip, ChipRow, Empty, IconName, Input, Loader, Meta, MonoTag, PageHeader, Screen, SectionTitle, Stat, StatGrid } from '@/components/ui';
 import { colors, space, type as t } from '@/theme';
-import { fmtDateGB, PRIORITY_TONE, shortId, STATUS } from '@/utils/format';
+import { fmtDateGB, PRIORITY_TONE, priorityLabel, shortId, STATUS } from '@/utils/format';
 
 function CaseCard({ c, onView }: { c: any; onView: () => void }) {
   const [expanded, setExpanded] = useState(false);
   const st = STATUS[c.status] || STATUS.OPEN;
   return (
-    <Card style={[{ marginBottom: space.md }, expanded && { borderColor: colors.goldBorder }]}>
+    <Card onPress={onView} style={[{ marginBottom: space.md }, expanded && { borderColor: colors.goldBorder }]}>
       <View style={{ flexDirection: 'row', gap: space.md }}>
         <Avatar name={c.client?.name} size={40} />
         <View style={{ flex: 1 }}>
           <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginBottom: 6 }}>
             <MonoTag label={shortId(c.id)} />
             <Badge label={st.label} tone={st.tone} icon={st.icon as IconName} />
-            <Badge label={c.priority} tone={PRIORITY_TONE[c.priority]} />
-            <Badge label={c.category} tone="neutral" />
-            <Badge label={`📦 ${c.packageId ? 'Purchased' : 'None'}`} tone="neutral" />
+            {c.priority ? <Badge label={priorityLabel(c.priority)} tone={PRIORITY_TONE[c.priority]} /> : null}
+            {c.category ? <Badge label={c.category} tone="neutral" /> : null}
+            <Badge label={c.packageId ? 'Package purchased' : 'No package'} icon="package" tone={c.packageId ? 'gold' : 'neutral'} />
           </View>
           <Text style={t.h3}>{c.title}</Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: space.md, rowGap: 2, marginTop: 6 }}>
@@ -37,7 +37,10 @@ function CaseCard({ c, onView }: { c: any; onView: () => void }) {
           <Text style={[t.bodySm, { marginTop: 4, color: colors.text }]}>{c.description}</Text>
           {c.hearingDate ? (
             <Card variant="gold" style={{ marginTop: space.md, padding: space.md }}>
-              <Text style={t.label}>📅 Court Hearing</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <Feather name="calendar" size={13} color={colors.gold} />
+                <Text style={t.label}>Court Hearing</Text>
+              </View>
               <Text style={t.bodySm}>{fmtDateGB(c.hearingDate)}</Text>
             </Card>
           ) : null}
@@ -68,13 +71,17 @@ export default function AssignedCases() {
   const [priorityFilter, setPriorityFilter] = useState('All');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [sortBy, setSortBy] = useState<'filed' | 'priority'>('filed');
+  const [error, setError] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   const load = useCallback(async () => {
     try {
       const res = await getComplaints();
       if (res.success) setCases(res.data);
-    } catch (e) {
-      console.warn(e);
+      setError(null);
+      setLoaded(true);
+    } catch (e: any) {
+      setError(e?.message || 'Could not load your cases.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -88,6 +95,16 @@ export default function AssignedCases() {
   );
 
   if (loading) return <Loader />;
+
+  if (error && !loaded) {
+    return (
+      <Screen>
+        <Empty icon="wifi-off" title="Can't load your cases" subtitle={error}
+          action={{ label: 'Try again', icon: 'refresh-cw', onPress: () => { setLoading(true); load(); } }} />
+      </Screen>
+    );
+  }
+
 
   const categories = ['All', ...Array.from(new Set(cases.map((c) => c.category)))];
   const q = search.toLowerCase();
@@ -112,6 +129,7 @@ export default function AssignedCases() {
   return (
     <Screen refreshing={refreshing} onRefresh={() => { setRefreshing(true); load(); }}>
       <PageHeader index="002" eyebrow="Caseload" title="Assigned Cases" subtitle={`${total} cases assigned · ${active} active · no unread messages`} />
+      {error ? <Banner tone="warning" icon="wifi-off" text="Showing saved data — pull down to refresh." /> : null}
 
       <StatGrid>
         <Stat label="Total" value={total} tone="gold" />
@@ -160,7 +178,20 @@ export default function AssignedCases() {
       </View>
 
       {filtered.length === 0 ? (
-        <Empty icon="briefcase" title="No cases match your filters" subtitle="Try adjusting the search or filter options." />
+        cases.length === 0 ? (
+          <Empty icon="briefcase" title="No cases assigned yet" subtitle="New client requests will appear here as soon as they're assigned to you." />
+        ) : (
+          <Empty
+            icon="search"
+            title="No cases match your filters"
+            subtitle="Try adjusting the search or filter options."
+            action={{
+              label: 'Clear filters',
+              icon: 'x',
+              onPress: () => { setStatusFilter('All'); setPriorityFilter('All'); setCategoryFilter('All'); setSearch(''); },
+            }}
+          />
+        )
       ) : (
         filtered.map((c) => <CaseCard key={c.id} c={c} onView={() => router.push(`/lawyer/complaint/${c.id}`)} />)
       )}
