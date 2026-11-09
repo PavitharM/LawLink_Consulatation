@@ -127,7 +127,7 @@ export default function PackageManagement() {
             <View style={{ flex: 1 }}>
               <Text style={t.h3}>{p.name}</Text>
               <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 6, marginTop: 4 }}>
-                <Text style={{ fontFamily: fonts.light, fontSize: 28, color: colors.goldLight }}>₹{p.price.toLocaleString()}</Text>
+                <Text style={{ fontFamily: fonts.light, fontSize: 28, color: colors.goldText }}>₹{p.price.toLocaleString()}</Text>
                 <Text style={t.bodySm}>{p.period}</Text>
               </View>
             </View>

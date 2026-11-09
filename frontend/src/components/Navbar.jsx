@@ -72,7 +72,7 @@ const Navbar = ({ role, onLogout, onMenuClick }) => {
         </button>
 
         <Link to="/" className="flex items-center gap-sm text-primary no-underline group">
-          <Scale size={24} className="group-hover:rotate-12 transition-transform duration-200" />
+          <Scale size={24} className="text-gold-600 group-hover:rotate-12 transition-transform duration-200" />
           <span className="text-headline-sm font-bold">LawLink</span>
         </Link>
       </div>

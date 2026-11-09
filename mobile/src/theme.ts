@@ -1,45 +1,49 @@
 /**
- * LawLink mobile design tokens — black, white & gold.
- * Inspired by the editorial brand-guideline look: deep black canvases,
- * light oversized Geist headings, small uppercase meta labels and a
- * single warm gold accent (with a pale champagne tint for soft fills).
+ * LawLink mobile design tokens — white, black & gold.
+ * White-first editorial look: clean white canvases, black type and
+ * primary actions, light oversized Geist headings, small uppercase
+ * meta labels and a single antique-gold accent (deep enough to read
+ * on white) with a pale champagne tint for soft fills.
  */
 export const colors = {
-  bg: '#000000',
-  surface: '#0E0E0E',
-  surface2: '#161616',
-  surface3: '#1F1F1F',
-  border: '#262626',
-  borderStrong: '#3A3A3A',
+  bg: '#FFFFFF',
+  surface: '#FBFAF7', // cards: a whisper of warmth on the white canvas
+  surface2: '#F5F3EE',
+  surface3: '#ECE9E2',
+  border: '#E8E4DA',
+  borderStrong: '#CFC8B8',
 
   white: '#FFFFFF',
-  paper: '#F7F5F0', // warm off-white for white panels
+  paper: '#F7F3EA', // warm champagne-white for highlight panels
   onWhite: '#0A0A0A',
   onWhiteMuted: '#5C5C5C',
-  whiteBorder: '#E6E2D8',
+  whiteBorder: '#E6DFCF',
 
-  text: '#FFFFFF',
-  textMuted: '#A1A1A1',
-  textDim: '#6B6B6B',
+  text: '#0A0A0A',
+  textMuted: '#5C5C5C',
+  textDim: '#767676',
 
-  gold: '#D4AF6A',
-  goldLight: '#F3DFB5', // champagne
-  goldDim: 'rgba(212,175,106,0.14)',
-  goldBorder: 'rgba(212,175,106,0.35)',
+  gold: '#A67C2E', // antique gold: icons/accents on white, fills under black text
+  goldText: '#8A6A2B', // deeper gold for display numbers and prices
+  goldLight: '#F3E7C9', // champagne
+  goldDim: 'rgba(166,124,46,0.10)',
+  goldBorder: 'rgba(166,124,46,0.35)',
   onGold: '#0A0A0A',
 
-  success: '#7FC48A',
-  successDim: 'rgba(127,196,138,0.12)',
-  warning: '#E9B44C',
-  warningDim: 'rgba(233,180,76,0.12)',
-  danger: '#F06A6A',
-  dangerDim: 'rgba(240,106,106,0.12)',
-  info: '#9DB0C8', // slate blue
-  infoDim: 'rgba(157,176,200,0.12)',
-  neutral: '#A1A1A1',
-  neutralDim: 'rgba(161,161,161,0.12)',
+  success: '#2E7D4F',
+  successDim: 'rgba(46,125,79,0.10)',
+  successBorder: 'rgba(46,125,79,0.35)',
+  warning: '#A86400',
+  warningDim: 'rgba(168,100,0,0.10)',
+  danger: '#C62828',
+  dangerDim: 'rgba(198,40,40,0.08)',
+  dangerBorder: 'rgba(198,40,40,0.35)',
+  info: '#4A5D78', // slate
+  infoDim: 'rgba(74,93,120,0.10)',
+  neutral: '#6B6B6B',
+  neutralDim: 'rgba(107,107,107,0.10)',
 
-  overlay: 'rgba(0,0,0,0.75)',
+  overlay: 'rgba(10,10,10,0.45)',
 };
 
 export const fonts = {

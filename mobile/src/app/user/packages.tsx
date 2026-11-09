@@ -89,7 +89,7 @@ export default function SelectPackage() {
             <Text style={[t.h2, { marginTop: space.lg }]}>{p.name}</Text>
             {p.description ? <Text style={[t.bodySm, { marginTop: 4 }]}>{p.description}</Text> : null}
             <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 6, marginVertical: space.lg }}>
-              <Text style={{ fontFamily: fonts.light, fontSize: 36, letterSpacing: -1, color: colors.goldLight }}>{formatLKR(p.price)}</Text>
+              <Text style={{ fontFamily: fonts.light, fontSize: 36, letterSpacing: -1, color: colors.goldText }}>{formatLKR(p.price)}</Text>
               <Text style={t.bodySm}>{p.period}</Text>
             </View>
             {(p.features || []).map((f: string, i: number) => (

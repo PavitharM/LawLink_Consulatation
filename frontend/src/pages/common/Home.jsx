@@ -34,7 +34,7 @@ const Home = () => {
       <nav className="sticky top-0 z-50 bg-white border-b border-surface-container-high shadow-sm">
         <div className="max-w-7xl mx-auto px-lg flex items-center justify-between h-16">
           <Link to="/" className="text-headline-sm font-bold text-primary no-underline flex items-center gap-sm">
-            <Scale size={28} className="text-primary" /> LawLink
+            <Scale size={28} className="text-gold-600" /> LawLink
           </Link>
           <div className="hidden md:flex items-center gap-xl">
             <a href="#features" className="text-body-md text-on-surface-variant hover:text-primary transition-colors no-underline">Features</a>
@@ -82,31 +82,31 @@ const Home = () => {
       </nav>
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-container to-[#1a2f7a] text-on-primary py-3xl px-lg">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top_right,_#90a8ff_0%,_transparent_60%)]" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-gold-50 text-on-surface py-3xl px-lg border-b border-outline-variant/60">
+        <div className="absolute inset-0 opacity-60 bg-[radial-gradient(ellipse_at_top_right,_#f5ebd4_0%,_transparent_55%)]" />
         <div className="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-[1.15fr_1fr] gap-3xl items-center">
           <div className="max-w-3xl animate-slide-up">
-            <div className="inline-flex items-center gap-sm bg-white/10 border border-white/20 rounded-full px-md py-xs mb-xl text-body-sm">
+            <div className="inline-flex items-center gap-sm bg-gold-50 border border-gold-200 text-gold-800 rounded-full px-md py-xs mb-xl text-body-sm">
               <BadgeCheck size={14} /> Trusted legal platform across Sri Lanka
             </div>
-            <h1 className="text-display text-on-primary leading-tight mb-lg">
+            <h1 className="text-display text-on-surface leading-tight mb-lg">
               Get Expert Legal Help,<br />
-              <span className="text-on-primary-container">Right When You Need It</span>
+              <span className="text-gold-600">Right When You Need It</span>
             </h1>
-            <p className="text-body-lg text-on-primary/80 mb-2xl max-w-xl leading-relaxed">
+            <p className="text-body-lg text-on-surface-variant mb-2xl max-w-xl leading-relaxed">
               Connect with verified lawyers, file complaints, and resolve your legal matters — all in one secure, easy-to-use platform built for every Sri Lankan.
             </p>
             <div className="flex flex-col sm:flex-row gap-md">
               <Link
                 to={dashboard || '/register'}
-                className="group flex items-center justify-center gap-sm px-2xl py-md rounded-xl bg-white text-primary text-body-lg font-semibold no-underline shadow-lg shadow-black/10 hover:bg-primary-fixed transition-colors"
+                className="group flex items-center justify-center gap-sm px-2xl py-md rounded-xl bg-primary text-on-primary text-body-lg font-semibold no-underline shadow-lg shadow-black/10 hover:bg-primary-container transition-colors"
               >
                 {dashboard ? 'Open your dashboard' : 'Get Started Free'} <ArrowRight size={20} className="group-hover:translate-x-0.5 transition-transform" />
               </Link>
               {!dashboard && (
                 <Link
                   to="/login"
-                  className="flex items-center justify-center gap-sm px-2xl py-md rounded-xl border-2 border-white/40 text-on-primary text-body-lg no-underline hover:bg-white/10 transition-colors"
+                  className="flex items-center justify-center gap-sm px-2xl py-md rounded-xl border-2 border-primary text-on-surface text-body-lg no-underline hover:bg-surface-container-low transition-colors"
                 >
                   Login
                 </Link>
@@ -116,8 +116,8 @@ const Home = () => {
 
           {/* Product preview */}
           <div className="hidden lg:block relative animate-slide-up" style={{ animationDelay: '120ms' }} aria-hidden="true">
-            <div className="absolute -inset-6 bg-white/5 rounded-[2rem] blur-2xl" />
-            <div className="relative bg-white text-on-surface rounded-2xl shadow-2xl shadow-black/30 p-xl rotate-[1.5deg]">
+            <div className="absolute -inset-6 bg-gold-100/60 rounded-[2rem] blur-2xl" />
+            <div className="relative bg-white text-on-surface rounded-2xl border border-outline-variant shadow-2xl shadow-black/10 p-xl rotate-[1.5deg]">
               <div className="flex items-center justify-between mb-lg">
                 <span className="text-label-sm font-mono font-semibold text-primary bg-primary/5 px-sm py-0.5 rounded">#4F2A91C3</span>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-semibold bg-amber-50 text-amber-800 ring-1 ring-inset ring-amber-600/20">
@@ -161,9 +161,9 @@ const Home = () => {
               { value: '98%', label: 'Success Rate' },
               { value: '30+', label: 'Legal Categories' },
             ].map((s, i) => (
-              <div key={i} className="text-center bg-white/10 border border-white/20 rounded-2xl p-lg backdrop-blur-sm">
-                <p className="text-headline-lg font-bold text-on-primary">{s.value}</p>
-                <p className="text-body-sm text-on-primary/70 mt-xs">{s.label}</p>
+              <div key={i} className="text-center bg-white border border-outline-variant rounded-2xl p-lg shadow-card">
+                <p className="text-headline-lg font-bold text-gold-600">{s.value}</p>
+                <p className="text-body-sm text-on-surface-variant mt-xs">{s.label}</p>
               </div>
             ))}
           </div>
@@ -293,7 +293,7 @@ const Home = () => {
           <h2 className="text-headline-lg text-on-primary mb-md">Ready to Get Legal Help?</h2>
           <p className="text-body-lg text-on-primary/80 mb-2xl">Join thousands of Srilankans who've found justice through LawLink. Start for free today.</p>
           <button onClick={() => navigate('/register')}
-            className="px-2xl py-md rounded-xl bg-white text-primary text-body-lg font-bold hover:bg-on-primary-container transition-colors">
+            className="px-2xl py-md rounded-xl bg-gold-500 text-primary text-body-lg font-bold hover:bg-gold-400 transition-colors">
             Create Free Account
           </button>
         </div>

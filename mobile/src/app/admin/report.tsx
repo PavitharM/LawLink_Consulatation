@@ -4,7 +4,7 @@ import { getReportData } from '@/api/services';
 import { Avatar, Badge, Card, Chip, ChipRow, Empty, Loader, PageHeader, ProgressBar, Screen, SectionTitle, Stat, StatGrid } from '@/components/ui';
 import { colors, fonts, space, type as t } from '@/theme';
 
-const CATEGORY_COLORS = [colors.gold, colors.info, colors.goldLight, colors.success, colors.warning, '#C9A0DC', '#8FB8B0', colors.danger, colors.neutral];
+const CATEGORY_COLORS = [colors.gold, colors.info, colors.onWhite, colors.success, colors.warning, '#7E5A9B', '#3F7F75', colors.danger, colors.neutral];
 const RESOLUTION_COLORS: Record<string, string> = { Resolved: colors.success, 'In Review': colors.warning, Open: colors.info, Closed: colors.neutral };
 
 const fmtMoney = (n: number) => (n >= 100000 ? `₹${(n / 100000).toFixed(2)}L` : n >= 1000 ? `₹${(n / 1000).toFixed(1)}k` : `₹${n}`);
@@ -148,7 +148,7 @@ export default function Report() {
             <Text style={t.bodySm}>Overall Success Rate</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: fonts.light, fontSize: 34, color: colors.goldLight }}>{activeCases}</Text>
+            <Text style={{ fontFamily: fonts.light, fontSize: 34, color: colors.goldText }}>{activeCases}</Text>
             <Text style={t.bodySm}>Active Cases</Text>
           </View>
         </View>
@@ -160,7 +160,7 @@ export default function Report() {
         {topLawyers.length ? (
           topLawyers.map((l: any, i: number) => (
             <View key={i} style={[{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.md }, i > 0 && { borderTopWidth: 0.5, borderTopColor: colors.border }]}>
-              <Text style={{ fontFamily: fonts.light, fontSize: 22, width: 24, color: i === 0 ? colors.gold : i < 3 ? colors.goldLight : colors.textDim }}>{i + 1}</Text>
+              <Text style={{ fontFamily: fonts.light, fontSize: 22, width: 24, color: i === 0 ? colors.gold : i < 3 ? colors.goldText : colors.textDim }}>{i + 1}</Text>
               <Avatar name={l.name} size={38} gold={i === 0} />
               <View style={{ flex: 1 }}>
                 <Text style={t.label}>{l.name}</Text>

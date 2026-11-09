@@ -7,7 +7,7 @@ import { homeForRole, useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui';
 import { colors, fonts, space, type as t } from '@/theme';
 
-/** Get Started — logo on black, white action panel with Register / Login. */
+/** Get Started — logo on white, champagne action panel with Register / Login. */
 export default function GetStarted() {
   const { role } = useAuth();
   const router = useRouter();
@@ -53,7 +53,7 @@ export default function GetStarted() {
         </Animated.View>
       </View>
 
-      {/* White action panel */}
+      {/* Action panel */}
       <Animated.View
         style={[
           styles.panel,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: space.xl,
   },
-  word: { fontFamily: fonts.light, fontSize: 48, letterSpacing: -1.8, color: colors.white },
+  word: { fontFamily: fonts.light, fontSize: 48, letterSpacing: -1.8, color: colors.text },
   rule: { width: 56, height: 2, borderRadius: 1, backgroundColor: colors.gold, marginTop: space.lg },
   tagline: { fontFamily: fonts.regular, fontSize: 13, color: colors.textMuted, marginTop: space.lg, letterSpacing: 0.3 },
   panel: {

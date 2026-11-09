@@ -87,7 +87,7 @@ export default function UploadDocuments() {
             { v: docs.optionalFilled, l: 'Optional Added' },
           ].map((s) => (
             <View key={s.l} style={{ flex: 1 }}>
-              <Text style={{ fontFamily: fonts.light, fontSize: 28, color: colors.goldLight }}>{s.v}</Text>
+              <Text style={{ fontFamily: fonts.light, fontSize: 28, color: colors.goldText }}>{s.v}</Text>
               <Text style={t.bodySm}>{s.l}</Text>
             </View>
           ))}

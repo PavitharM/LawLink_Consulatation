@@ -156,7 +156,7 @@ export default function ManagePackages() {
           </View>
           {p.description ? <Text style={[t.bodySm, { marginTop: space.md }]}>{p.description}</Text> : null}
           <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 6, marginTop: space.md }}>
-            <Text style={{ fontFamily: fonts.light, fontSize: 28, color: colors.goldLight }}>₹{p.price.toLocaleString('en-IN')}</Text>
+            <Text style={{ fontFamily: fonts.light, fontSize: 28, color: colors.goldText }}>₹{p.price.toLocaleString('en-IN')}</Text>
             <Text style={t.bodySm}>{p.period}</Text>
           </View>
           <View style={{ flexDirection: 'row', marginVertical: space.md, paddingVertical: space.md, borderTopWidth: 0.5, borderBottomWidth: 0.5, borderColor: colors.border }}>

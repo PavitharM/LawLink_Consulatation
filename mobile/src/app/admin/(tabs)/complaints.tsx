@@ -151,7 +151,7 @@ export default function ManageComplaints() {
         filtered.map((c) => {
           const st = STATUS[c.status] || STATUS.OPEN;
           return (
-            <Card key={c.id} style={[{ marginBottom: space.md }, isUnassigned(c) && { borderColor: 'rgba(240,106,106,0.35)' }]}>
+            <Card key={c.id} style={[{ marginBottom: space.md }, isUnassigned(c) && { borderColor: colors.dangerBorder }]}>
               <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginBottom: space.sm }}>
                 <MonoTag label={shortId(c.id)} />
                 <Badge label={st.label} tone={st.tone} icon={st.icon as IconName} />

@@ -9,7 +9,7 @@ export default function NotFound() {
   return (
     <Screen>
       <PageHeader index="404" title="Page Not Found" />
-      <Text style={{ fontFamily: fonts.light, fontSize: 120, letterSpacing: -6, color: colors.goldLight, lineHeight: 124 }}>404</Text>
+      <Text style={{ fontFamily: fonts.light, fontSize: 120, letterSpacing: -6, color: colors.goldText, lineHeight: 124 }}>404</Text>
       <Text style={[t.bodySm, { marginVertical: space.xl }]}>
         The page you're looking for doesn't exist, has been moved, or is temporarily unavailable. Don't worry — we'll help you get back on track.
       </Text>

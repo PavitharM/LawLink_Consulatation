@@ -107,7 +107,7 @@ export default function Payment() {
         <Divider />
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={t.h3}>Total</Text>
-          <Text style={[t.h2, { color: colors.goldLight }]}>{formatLKR(pkg?.price)}</Text>
+          <Text style={[t.h2, { color: colors.goldText }]}>{formatLKR(pkg?.price)}</Text>
         </View>
         {pkg?.features?.length ? (
           <>

@@ -50,13 +50,13 @@ const Login = ({ onLogin }) => {
   return (
     <div className="min-h-screen flex bg-surface-container-low">
       {/* Left Branding Panel */}
-      <div className="hidden lg:flex w-[440px] xl:w-[500px] shrink-0 bg-gradient-to-br from-primary via-primary-container to-[#1a2f7a] flex-col justify-between gap-2xl p-2xl xl:p-3xl text-on-primary relative overflow-y-auto">
+      <div className="hidden lg:flex w-[440px] xl:w-[500px] shrink-0 bg-gradient-to-br from-primary via-primary to-primary-container border-r-4 border-gold-500 flex-col justify-between gap-2xl p-2xl xl:p-3xl text-on-primary relative overflow-y-auto">
         {/* Decorative circles */}
         <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/5 pointer-events-none" />
         <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-white/5 pointer-events-none" />
 
         <Link to="/" className="relative z-10 flex items-center gap-sm text-on-primary no-underline">
-          <Scale size={28} />
+          <Scale size={28} className="text-gold-400" />
           <span className="text-headline-sm font-bold">LawLink</span>
         </Link>
 
@@ -99,7 +99,7 @@ const Login = ({ onLogin }) => {
         <div className="w-full max-w-[440px] animate-slide-up">
           {/* Mobile Logo */}
           <Link to="/" className="lg:hidden flex items-center gap-sm mb-xl no-underline">
-            <Scale size={24} className="text-primary" />
+            <Scale size={24} className="text-gold-600" />
             <span className="text-headline-sm font-bold text-primary">LawLink</span>
           </Link>
 

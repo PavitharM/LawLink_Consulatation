@@ -93,7 +93,7 @@ const Sidebar = ({ role, onClose }) => {
       {/* Mobile close button */}
       <div className="flex items-center justify-between px-lg mb-md lg:hidden">
         <div className="flex items-center gap-sm text-primary">
-          <Scale size={20} />
+          <Scale size={20} className="text-gold-600" />
           <span className="text-headline-sm font-bold">LawLink</span>
         </div>
         <button

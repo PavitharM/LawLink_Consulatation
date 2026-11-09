@@ -69,9 +69,9 @@ const Register = ({ onLogin }) => {
   return (
     <div className="min-h-screen flex bg-surface-container-low">
       {/* Left Panel */}
-      <div className="hidden lg:flex w-[420px] shrink-0 bg-gradient-to-br from-primary via-primary-container to-[#1a2f7a] flex-col justify-between p-3xl text-on-primary">
+      <div className="hidden lg:flex w-[420px] shrink-0 bg-gradient-to-br from-primary via-primary to-primary-container border-r-4 border-gold-500 flex-col justify-between p-3xl text-on-primary">
         <div className="flex items-center gap-sm">
-          <Scale size={28} />
+          <Scale size={28} className="text-gold-400" />
           <span className="text-headline-sm font-bold">LawLink</span>
         </div>
         <div>
@@ -98,7 +98,7 @@ const Register = ({ onLogin }) => {
         <div className="w-full max-w-[520px]">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center gap-sm mb-xl">
-            <Scale size={24} className="text-primary" />
+            <Scale size={24} className="text-gold-600" />
             <span className="text-headline-sm font-bold text-primary">LawLink</span>
           </div>
 

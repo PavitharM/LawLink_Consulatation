@@ -128,7 +128,7 @@ export function ChatThread({
           return (
             <View style={{ flexDirection: mine ? 'row-reverse' : 'row', alignItems: 'flex-end', gap: 8 }}>
               <View style={[styles.chatAvatar, mine && { backgroundColor: colors.gold }]}>
-                <Text style={{ fontFamily: fonts.bold, fontSize: 10, color: mine ? colors.onGold : colors.goldLight }}>
+                <Text style={{ fontFamily: fonts.bold, fontSize: 10, color: mine ? colors.onGold : colors.goldText }}>
                   {mine ? myLabel : theirLabel}
                 </Text>
               </View>

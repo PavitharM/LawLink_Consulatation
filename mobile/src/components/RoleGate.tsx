@@ -17,7 +17,7 @@ export const tabScreenOptions = {
   headerShown: false,
   // White tab bar — black active, grey inactive, gold badges
   tabBarActiveTintColor: colors.onWhite,
-  tabBarInactiveTintColor: '#9A9A9A',
+  tabBarInactiveTintColor: colors.textDim,
   tabBarStyle: {
     backgroundColor: colors.white,
     borderTopColor: colors.whiteBorder,

@@ -53,7 +53,7 @@ export default function RootLayout() {
     <SafeAreaProvider style={{ backgroundColor: colors.bg }}>
       <AuthProvider>
         <NotificationProvider>
-          <StatusBar style="light" />
+          <StatusBar style="dark" />
           <RootNavigator />
         </NotificationProvider>
       </AuthProvider>

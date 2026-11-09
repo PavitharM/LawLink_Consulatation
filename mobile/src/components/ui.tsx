@@ -194,7 +194,7 @@ export const Card = ({
         : variant === 'outline'
           ? { backgroundColor: 'transparent', borderColor: colors.border }
           : variant === 'danger'
-            ? { backgroundColor: colors.dangerDim, borderColor: 'rgba(240,106,106,0.35)' }
+            ? { backgroundColor: colors.dangerDim, borderColor: colors.dangerBorder }
             : { backgroundColor: colors.surface, borderColor: colors.border };
   if (onPress) {
     return (
@@ -215,7 +215,7 @@ export const Divider = ({ style }: { style?: StyleProp<ViewStyle> }) => (
 );
 
 /* ─── Buttons ───────────────────────────────────────────────── */
-type BtnVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'white' | 'success' | 'dark' | 'outlineDark';
+type BtnVariant = 'primary' | 'gold' | 'secondary' | 'ghost' | 'danger' | 'white' | 'success' | 'dark' | 'outlineDark';
 
 export const Button = ({
   title,
@@ -241,12 +241,13 @@ export const Button = ({
   style?: StyleProp<ViewStyle>;
 }) => {
   const palette: Record<BtnVariant, { bg: string; fg: string; border: string }> = {
-    primary: { bg: colors.gold, fg: colors.onGold, border: colors.gold },
-    white: { bg: colors.text, fg: colors.onGold, border: colors.text },
+    primary: { bg: colors.onWhite, fg: colors.white, border: colors.onWhite },
+    gold: { bg: colors.gold, fg: colors.onGold, border: colors.gold },
+    white: { bg: colors.white, fg: colors.onWhite, border: colors.borderStrong },
     secondary: { bg: 'transparent', fg: colors.text, border: colors.borderStrong },
-    ghost: { bg: 'transparent', fg: colors.gold, border: 'transparent' },
-    danger: { bg: colors.dangerDim, fg: colors.danger, border: 'rgba(240,106,106,0.4)' },
-    success: { bg: colors.successDim, fg: colors.success, border: 'rgba(127,196,138,0.4)' },
+    ghost: { bg: 'transparent', fg: colors.goldText, border: 'transparent' },
+    danger: { bg: colors.dangerDim, fg: colors.danger, border: colors.dangerBorder },
+    success: { bg: colors.successDim, fg: colors.success, border: colors.successBorder },
     dark: { bg: colors.onWhite, fg: colors.white, border: colors.onWhite },
     outlineDark: { bg: 'transparent', fg: colors.onWhite, border: colors.onWhite },
   };
@@ -578,7 +579,7 @@ export const Avatar = ({ name, uri, size = 44, gold }: { name?: string; uri?: st
         justifyContent: 'center',
       }}
     >
-      <Text style={{ fontFamily: fonts.medium, fontSize: size * 0.38, color: gold ? colors.onGold : colors.goldLight }}>
+      <Text style={{ fontFamily: fonts.medium, fontSize: size * 0.38, color: gold ? colors.onGold : colors.goldText }}>
         {name ? name.split(' ').filter(Boolean).map((w) => w[0]).join('').toUpperCase().slice(0, 2) : 'U'}
       </Text>
     </View>

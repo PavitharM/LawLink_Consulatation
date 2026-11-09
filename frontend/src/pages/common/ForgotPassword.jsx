@@ -58,7 +58,7 @@ const ForgotPassword = () => {
       {/* Left Branding */}
       <div className="hidden lg:flex w-[380px] shrink-0 bg-gradient-to-br from-primary to-primary-container flex-col justify-between p-3xl text-on-primary">
         <div className="flex items-center gap-sm">
-          <Scale size={28} />
+          <Scale size={28} className="text-gold-400" />
           <span className="text-headline-sm font-bold">LawLink</span>
         </div>
         <div>
