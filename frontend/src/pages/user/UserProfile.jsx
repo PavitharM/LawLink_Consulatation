@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getMe, updateMe, uploadAvatar } from '../../services/user.service';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
+import { fileUrl } from '../../services/api';
 
 /* ─── Tabs ───────────────────────────────────────────────────── */
 const TABS = [
@@ -112,7 +113,7 @@ const UserProfile = () => {
             language: user.clientProfile?.preferredLanguage || '',
             address: user.clientProfile?.address || '',
             bio: user.clientProfile?.bio || '',
-            avatarUrl: user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}${user.avatar}`) : null,
+            avatarUrl: fileUrl(user.avatar),
           };
           setProfile(p);
           setDraft(p);
@@ -186,7 +187,7 @@ const UserProfile = () => {
     try {
       const response = await uploadAvatar(f);
       if (response.success) {
-        const remoteUrl = response.data.avatarUrl.startsWith('http') ? response.data.avatarUrl : `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}${response.data.avatarUrl}`;
+        const remoteUrl = fileUrl(response.data.avatarUrl);
         setProfile(p => ({ ...p, avatarUrl: remoteUrl }));
         setDraft(p => ({ ...p, avatarUrl: remoteUrl }));
       } else {

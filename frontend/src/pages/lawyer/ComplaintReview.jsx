@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FileText, Clock, CheckCircle, Paperclip, Send, ArrowLeft, Calendar, User, Loader2, X, Eye } from 'lucide-react';
 import { getComplaintById, updateComplaintStatus, rejectAssignment } from '../../services/complaint.service';
 import { getMessages, sendMessage } from '../../services/message.service';
+import { fileUrl } from '../../services/api';
 
 const ComplaintReview = () => {
   const { id } = useParams();
@@ -274,7 +275,7 @@ const ComplaintReview = () => {
                 <p className="text-body-sm text-on-surface-variant">Uploaded {new Date(doc.createdAt).toLocaleDateString('en-GB')}</p>
               </div>
               <button 
-                onClick={() => setViewingDoc(`${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}${doc.url}`)} 
+                onClick={() => setViewingDoc(fileUrl(doc.url))} 
                 className="flex items-center gap-xs px-md py-sm rounded-lg border border-outline-variant text-body-sm hover:bg-surface-container transition-colors">
                 <Eye size={14} /> View
               </button>

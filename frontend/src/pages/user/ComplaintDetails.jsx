@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Clock, FileText, User, Calendar, MessageSquare, Paperclip, Download, Upload, Loader2 } from 'lucide-react';
 import { getComplaintById } from '../../services/complaint.service';
+import { fileUrl } from '../../services/api';
 
 const statusConfig = {
   'OPEN': { color: 'bg-blue-100 text-blue-700', label: 'Open' },
@@ -102,8 +103,7 @@ const ComplaintDetails = () => {
                     </div>
                   </div>
                   <button onClick={() => {
-                    const baseUrl = import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace('/api', '') : 'http://localhost:5001';
-                    window.open(`${baseUrl}${doc.url}`, '_blank');
+                    window.open(fileUrl(doc.url), '_blank', 'noopener');
                   }} className="flex items-center gap-xs px-md py-sm rounded-lg border border-outline-variant text-body-sm hover:bg-surface-container transition-colors">
                     <Download size={14} /> Download
                   </button>

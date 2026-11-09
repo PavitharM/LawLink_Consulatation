@@ -1,7 +1,16 @@
 import axios from 'axios';
 
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+
+/** Absolute URL for a file the API serves (avatars, uploaded documents). */
+export const fileUrl = (path) => {
+  if (!path) return null;
+  if (/^https?:\/\//.test(path)) return path;
+  return `${API_BASE_URL.replace(/\/api\/?$/, '')}${path.startsWith('/') ? '' : '/'}${path}`;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api',
+  baseURL: API_BASE_URL,
   withCredentials: true, // For HTTP-only cookies (refreshToken)
   headers: {
     'Content-Type': 'application/json',

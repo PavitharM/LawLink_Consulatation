@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Shield, Mail, Key, Edit2, Save, X, CheckCircle, Smartphone, Globe, AlertCircle, Eye, EyeOff, Loader2, Camera } from 'lucide-react';
 import { getMe, updateMe, uploadAvatar } from '../../services/user.service';
 import { useToast } from '../../contexts/ToastContext';
+import { fileUrl } from '../../services/api';
 
 const AdminProfile = () => {
   const toast = useToast();
@@ -33,7 +34,7 @@ const AdminProfile = () => {
             email: user.email,
             phone: user.phone || '',
             role: user.role,
-            avatarUrl: user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}${user.avatar}`) : null,
+            avatarUrl: fileUrl(user.avatar),
           };
           setProfile(p);
           setDraft(p);
@@ -58,7 +59,7 @@ const AdminProfile = () => {
     try {
       const response = await uploadAvatar(f);
       if (response.success) {
-        const remoteUrl = response.data.avatarUrl.startsWith('http') ? response.data.avatarUrl : `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}${response.data.avatarUrl}`;
+        const remoteUrl = fileUrl(response.data.avatarUrl);
         setProfile(p => ({ ...p, avatarUrl: remoteUrl }));
         setDraft(p => ({ ...p, avatarUrl: remoteUrl }));
       } else {

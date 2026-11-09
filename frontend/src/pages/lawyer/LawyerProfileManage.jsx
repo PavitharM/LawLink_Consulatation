@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useContext } from 'react';
-import { User, Mail, Phone, MapPin, Edit2, Save, X, Briefcase, Star, Award, GraduationCap, FileText, Shield, Bell, Camera, CheckCircle, Eye, EyeOff, Lock, AlertCircle, ChevronRight, Upload, Loader2, LogOut } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Edit2, Save, X, Briefcase, Star, Award, GraduationCap, FileText, Shield, Bell, Camera, CheckCircle, Eye, EyeOff, Lock, AlertCircle, ChevronRight, Upload, Loader2, LogOut, CheckCircle2, Clock3 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getMe, updateLawyerProfile, uploadAvatar } from '../../services/user.service';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
+import { fileUrl } from '../../services/api';
 
 /* ─── Toggle ─────────────────────────────────────────────────── */
 function Toggle({ checked, onChange }) {
@@ -98,7 +99,8 @@ const LawyerProfileManage = () => {
             availability: user.lawyerProfile?.availability || '',
             linkedIn: user.lawyerProfile?.linkedIn || '',
             website: user.lawyerProfile?.website || '',
-            avatarUrl: user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}${user.avatar}`) : null,
+            avatarUrl: fileUrl(user.avatar),
+            isVerified: !!user.lawyerProfile?.isVerified,
           };
           setProfile(p);
           setDraft(p);
@@ -176,7 +178,7 @@ const LawyerProfileManage = () => {
     try {
       const response = await uploadAvatar(f);
       if (response.success) {
-        const remoteUrl = response.data.avatarUrl.startsWith('http') ? response.data.avatarUrl : `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}${response.data.avatarUrl}`;
+        const remoteUrl = fileUrl(response.data.avatarUrl);
         setProfile(p => ({ ...p, avatarUrl: remoteUrl }));
         setDraft(p => ({ ...p, avatarUrl: remoteUrl }));
       } else {
@@ -252,9 +254,11 @@ const LawyerProfileManage = () => {
               <MapPin size={13} /> {profile.location}, {profile.state}
             </div>
 
-            <div className="mt-md bg-green-50 border border-green-200 rounded-xl p-sm">
-              <p className="text-label-sm text-green-700 font-semibold">✅ Verified Lawyer</p>
-              <p className="text-body-sm text-green-600 mt-xs">{profile.barCouncilId}</p>
+            <div className={`mt-md rounded-xl p-sm border ${profile.isVerified ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'}`}>
+              <p className={`text-label-sm font-semibold flex items-center justify-center gap-xs ${profile.isVerified ? 'text-green-700' : 'text-amber-800'}`}>
+                {profile.isVerified ? <><CheckCircle2 size={14} /> Verified Lawyer</> : <><Clock3 size={14} /> Verification pending</>}
+              </p>
+              {profile.barCouncilId && <p className={`text-body-sm mt-xs ${profile.isVerified ? 'text-green-600' : 'text-amber-700'}`}>{profile.barCouncilId}</p>}
             </div>
           </div>
 
@@ -590,13 +594,17 @@ const LawyerProfileManage = () => {
               {/* Bar Association ID */}
               <div className="bg-white border border-surface-container-high rounded-2xl p-xl shadow-card">
                 <h3 className="text-headline-sm text-on-surface mb-md">Bar Association Registration</h3>
-                <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl p-lg">
+                <div className={`flex items-center justify-between rounded-xl p-lg border ${profile.isVerified ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'}`}>
                   <div>
-                    <p className="text-label-sm text-green-700">Registered ID</p>
-                    <p className="text-body-md font-bold text-on-surface mt-xs">{profile.barCouncilId}</p>
-                    <p className="text-body-sm text-green-600 mt-xs">✅ Verified by LawLink on June 15, 2024</p>
+                    <p className={`text-label-sm ${profile.isVerified ? 'text-green-700' : 'text-amber-800'}`}>Registered ID</p>
+                    <p className="text-body-md font-bold text-on-surface mt-xs">{profile.barCouncilId || '—'}</p>
+                    <p className={`text-body-sm mt-xs flex items-center gap-xs ${profile.isVerified ? 'text-green-600' : 'text-amber-700'}`}>
+                      {profile.isVerified
+                        ? <><CheckCircle2 size={14} /> Verified by LawLink</>
+                        : <><Clock3 size={14} /> Awaiting verification by the LawLink team</>}
+                    </p>
                   </div>
-                  <Shield size={32} className="text-green-600 opacity-40" />
+                  <Shield size={32} className={`${profile.isVerified ? 'text-green-600' : 'text-amber-600'} opacity-40`} />
                 </div>
               </div>
             </div>
