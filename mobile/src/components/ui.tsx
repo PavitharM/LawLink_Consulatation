@@ -197,7 +197,11 @@ export const Card = ({
             : { backgroundColor: colors.surface, borderColor: colors.border };
   if (onPress) {
     return (
-      <Pressable onPress={onPress} style={({ pressed }) => [styles.card, v, pressed && { opacity: 0.75 }, style]}>
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        style={({ pressed }) => [styles.card, v, pressed && styles.pressedCard, style]}
+      >
         {children}
       </Pressable>
     );
@@ -222,9 +226,11 @@ export const Button = ({
   disabled,
   small,
   style,
+  accessibilityLabel,
 }: {
   title: string;
   onPress?: () => void;
+  accessibilityLabel?: string;
   variant?: BtnVariant;
   icon?: IconName;
   iconRight?: IconName;
@@ -248,12 +254,16 @@ export const Button = ({
   return (
     <Pressable
       onPress={off ? undefined : onPress}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel || title}
+      accessibilityState={{ disabled: !!off, busy: !!loading }}
+      hitSlop={small ? 4 : 0}
       style={({ pressed }) => [
         styles.btn,
         small && styles.btnSm,
         { backgroundColor: p.bg, borderColor: p.border },
-        off && { opacity: 0.4 },
-        pressed && !off && { opacity: 0.8 },
+        off && { opacity: loading ? 0.7 : 0.4 },
+        pressed && !off && styles.pressed,
         style,
       ]}
     >
@@ -277,6 +287,7 @@ export const IconButton = ({
   bg = colors.surface2,
   size = 18,
   badge,
+  label,
 }: {
   name: IconName;
   onPress?: () => void;
@@ -284,8 +295,18 @@ export const IconButton = ({
   bg?: string;
   size?: number;
   badge?: number;
+  /** Spoken by screen readers; defaults to a readable form of the icon name. */
+  label?: string;
 }) => (
-  <Pressable onPress={onPress} hitSlop={6} style={({ pressed }) => [styles.iconBtn, { backgroundColor: bg }, pressed && { opacity: 0.7 }]}>
+  <Pressable
+    onPress={onPress}
+    hitSlop={6}
+    accessibilityRole="button"
+    accessibilityLabel={
+      (label || ICON_LABELS[name] || String(name).replace(/-/g, ' ')) + (badge ? `, ${badge} new` : '')
+    }
+    style={({ pressed }) => [styles.iconBtn, { backgroundColor: bg }, pressed && styles.pressed]}
+  >
     <Feather name={name} size={size} color={color} />
     {badge ? (
       <View style={styles.dotBadge}>
@@ -294,6 +315,23 @@ export const IconButton = ({
     ) : null}
   </Pressable>
 );
+
+/** Friendly screen-reader names for icons commonly used as standalone buttons. */
+const ICON_LABELS: Partial<Record<IconName, string>> = {
+  plus: 'Add',
+  bell: 'Notifications',
+  'arrow-left': 'Back',
+  'chevron-left': 'Back',
+  x: 'Close',
+  edit: 'Edit',
+  'edit-2': 'Edit',
+  'trash-2': 'Delete',
+  'log-out': 'Sign out',
+  settings: 'Settings',
+  search: 'Search',
+  send: 'Send',
+  'more-horizontal': 'More options',
+};
 
 /* ─── Inputs ────────────────────────────────────────────────── */
 export const Label = ({ children, required }: { children: React.ReactNode; required?: boolean }) => (
@@ -418,7 +456,14 @@ export const SelectField = ({
 
 /* ─── Chips / badges ────────────────────────────────────────── */
 export const Chip = ({ label, active, onPress, count }: { label: string; active?: boolean; onPress?: () => void; count?: number }) => (
-  <Pressable onPress={onPress} style={[styles.chip, active && styles.chipActive]}>
+  <Pressable
+    onPress={onPress}
+    accessibilityRole="button"
+    accessibilityLabel={count ? `${label}, ${count}` : label}
+    accessibilityState={{ selected: !!active }}
+    hitSlop={{ top: 6, bottom: 6 }}
+    style={({ pressed }) => [styles.chip, active && styles.chipActive, pressed && !active && styles.pressed]}
+  >
     <Text style={[styles.chipText, active && { color: colors.onGold }]}>{label}</Text>
     {count ? (
       <View style={[styles.chipCount, active && { backgroundColor: colors.onGold }]}>
@@ -600,7 +645,13 @@ export const ButtonRow = ({ children }: { children: React.ReactNode }) => (
 
 /* ─── Misc ──────────────────────────────────────────────────── */
 export const Toggle = ({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) => (
-  <Pressable onPress={() => onChange(!value)} hitSlop={8} style={[styles.toggle, value && { backgroundColor: colors.gold }]}>
+  <Pressable
+    onPress={() => onChange(!value)}
+    hitSlop={8}
+    accessibilityRole="switch"
+    accessibilityState={{ checked: value }}
+    style={[styles.toggle, value && { backgroundColor: colors.gold }]}
+  >
     <View style={[styles.toggleKnob, value && { transform: [{ translateX: 18 }], backgroundColor: colors.onGold }]} />
   </Pressable>
 );
@@ -619,7 +670,12 @@ export const ToggleRow = ({ label, desc, value, onChange, badge }: { label: stri
 );
 
 export const Checkbox = ({ checked, onChange, children }: { checked: boolean; onChange: (v: boolean) => void; children: React.ReactNode }) => (
-  <Pressable onPress={() => onChange(!checked)} style={{ flexDirection: 'row', gap: space.md, alignItems: 'flex-start', marginBottom: space.lg }}>
+  <Pressable
+    onPress={() => onChange(!checked)}
+    accessibilityRole="checkbox"
+    accessibilityState={{ checked }}
+    style={{ flexDirection: 'row', gap: space.md, alignItems: 'flex-start', marginBottom: space.lg }}
+  >
     <View style={[styles.checkbox, checked && { backgroundColor: colors.gold, borderColor: colors.gold }]}>
       {checked ? <Feather name="check" size={12} color={colors.onGold} /> : null}
     </View>
@@ -689,6 +745,8 @@ const styles = StyleSheet.create({
   },
   btnSm: { paddingHorizontal: space.lg, paddingVertical: 9 },
   btnText: { fontFamily: fonts.semibold, fontSize: 15, letterSpacing: -0.1 },
+  pressed: { opacity: 0.85, transform: [{ scale: 0.97 }] },
+  pressedCard: { opacity: 0.9, transform: [{ scale: 0.985 }] },
   iconBtn: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
   dotBadge: {
     position: 'absolute',
