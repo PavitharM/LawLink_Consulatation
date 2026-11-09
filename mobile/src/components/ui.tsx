@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Animated,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -577,17 +578,104 @@ export const Avatar = ({ name, uri, size = 44, gold }: { name?: string; uri?: st
 };
 
 /* ─── Feedback ──────────────────────────────────────────────── */
-export const Loader = () => (
-  <View style={[styles.screen, { alignItems: 'center', justifyContent: 'center' }]}>
-    <ActivityIndicator size="large" color={colors.gold} />
+/** Shared pulse so every skeleton block on screen breathes in sync. */
+const usePulse = () => {
+  const [v] = useState(() => new Animated.Value(0.45));
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(v, { toValue: 1, duration: 700, useNativeDriver: true }),
+        Animated.timing(v, { toValue: 0.45, duration: 700, useNativeDriver: true }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [v]);
+  return v;
+};
+
+type SkeletonProps = {
+  width?: number | `${number}%`;
+  height?: number;
+  r?: number;
+  style?: StyleProp<ViewStyle>;
+};
+
+/** Block driven by a pulse owned by the parent (keeps many blocks in sync with one loop). */
+const SkeletonBlock = ({ width = '100%', height = 14, r = radius.sm, style, opacity }: SkeletonProps & { opacity: Animated.Value }) => (
+  <Animated.View style={[{ width, height, borderRadius: r, backgroundColor: colors.surface3, opacity }, style]} />
+);
+
+/** Standalone pulsing placeholder. */
+export const Skeleton = (props: SkeletonProps) => <SkeletonBlock {...props} opacity={usePulse()} />;
+
+/**
+ * Full-screen loading placeholder shaped like a typical page
+ * (header, stat tiles, list cards) so content doesn't jump in.
+ */
+export const Loader = ({ rows = 3 }: { rows?: number }) => {
+  const insets = useSafeAreaInsets();
+  const o = usePulse();
+  return (
+    <View
+      style={[styles.screen, { paddingTop: insets.top + space.md, paddingHorizontal: space.lg }]}
+      accessible
+      accessibilityRole="progressbar"
+      accessibilityLabel="Loading"
+    >
+      <SkeletonBlock opacity={o} width={90} height={10} style={{ marginBottom: space.md }} />
+      <SkeletonBlock opacity={o} width="70%" height={30} r={radius.sm} style={{ marginBottom: space.sm }} />
+      <SkeletonBlock opacity={o} width="55%" height={12} style={{ marginBottom: space.xl }} />
+      <View style={{ flexDirection: 'row', gap: space.md, marginBottom: space.xl }}>
+        <SkeletonBlock opacity={o} width="48%" height={78} r={radius.lg} style={{ flex: 1 }} />
+        <SkeletonBlock opacity={o} width="48%" height={78} r={radius.lg} style={{ flex: 1 }} />
+      </View>
+      {Array.from({ length: rows }).map((_, i) => (
+        <View key={i} style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border, marginBottom: space.md }]}>
+          <View style={{ flexDirection: 'row', gap: 6, marginBottom: space.md }}>
+            <SkeletonBlock opacity={o} width={64} height={18} r={radius.pill} />
+            <SkeletonBlock opacity={o} width={80} height={18} r={radius.pill} />
+          </View>
+          <SkeletonBlock opacity={o} width="80%" height={16} style={{ marginBottom: space.sm }} />
+          <SkeletonBlock opacity={o} width="50%" height={12} />
+        </View>
+      ))}
+    </View>
+  );
+};
+
+/** Inline spinner for sections that load inside an already-rendered screen. */
+export const InlineLoader = () => (
+  <View style={{ paddingVertical: space.xl, alignItems: 'center' }}>
+    <ActivityIndicator color={colors.gold} />
   </View>
 );
 
-export const Empty = ({ icon = 'inbox', title, subtitle, children }: { icon?: IconName; title: string; subtitle?: string; children?: React.ReactNode }) => (
+export const Empty = ({
+  icon = 'inbox',
+  title,
+  subtitle,
+  children,
+  action,
+}: {
+  icon?: IconName;
+  title: string;
+  subtitle?: string;
+  children?: React.ReactNode;
+  /** Optional primary call-to-action rendered under the copy. */
+  action?: { label: string; onPress: () => void; icon?: IconName };
+}) => (
   <View style={styles.empty}>
-    <Feather name={icon} size={40} color={colors.textDim} />
-    <Text style={[t.h3, { marginTop: space.md, textAlign: 'center' }]}>{title}</Text>
-    {subtitle ? <Text style={[t.bodySm, { textAlign: 'center', marginTop: 4 }]}>{subtitle}</Text> : null}
+    <View style={styles.emptyHalo}>
+      <View style={styles.emptyIcon}>
+        <Feather name={icon} size={24} color={colors.gold} />
+      </View>
+    </View>
+    <Text style={[t.h3, { marginTop: space.lg, textAlign: 'center' }]}>{title}</Text>
+    {subtitle ? <Text style={[t.bodySm, { textAlign: 'center', marginTop: 6, maxWidth: 280 }]}>{subtitle}</Text> : null}
+    {action ? (
+      <Button title={action.label} icon={action.icon} small onPress={action.onPress} style={{ marginTop: space.lg, paddingHorizontal: space.xl }} />
+    ) : null}
     {children}
   </View>
 );
@@ -813,6 +901,17 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.border,
   },
   empty: { alignItems: 'center', paddingVertical: space.xxxl, paddingHorizontal: space.xl },
+  emptyHalo: { width: 84, height: 84, borderRadius: 42, backgroundColor: colors.goldDim, alignItems: 'center', justifyContent: 'center' },
+  emptyIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 18,
+    backgroundColor: colors.surface2,
+    borderWidth: 1,
+    borderColor: colors.goldBorder,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   banner: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: space.md, borderRadius: radius.md, borderWidth: 1, marginBottom: space.lg },
   overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: colors.overlay },
   sheet: {
