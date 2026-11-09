@@ -7,7 +7,7 @@ import {
 import { useNotifications } from '../contexts/NotificationContext';
 import { AuthContext } from '../App';
 
-const notifRoutes  = { user: '/user/notifications', lawyer: '/lawyer/notifications', admin: '/admin' };
+const notifRoutes  = { user: '/user/notifications', lawyer: '/lawyer/notifications', admin: '/admin/notifications' };
 
 /* icon helper — keeps JSX out of the data store */
 const typeIcon = (type) => {

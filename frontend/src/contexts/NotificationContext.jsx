@@ -3,18 +3,30 @@
  * Centralised notification store shared between Navbar badge and Notification page.
  * Both components consume the same state — marking read in one immediately reflects in the other.
  */
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { 
   getNotifications, 
   markNotificationRead, 
   markAllNotificationsRead, 
   dismissNotification 
 } from '../services/notification.service';
+import { relativeTime } from '../utils/time';
 
 const NotificationContext = createContext(null);
 
-export const NotificationProvider = ({ children }) => {
-  const [notifications, setNotifications] = useState([]);
+/** Fallback destinations when the server did not attach a link. */
+const fallbackLinks = {
+  user:   { case: '/user/complaints', lawyer: '/user/complaints', payment: '/user/complaints', message: '/user/consultation' },
+  lawyer: { case: '/lawyer/assigned-complaints', payment: '/lawyer/assigned-complaints', message: '/lawyer/assigned-complaints' },
+  admin:  { case: '/admin/complaints', lawyer: '/admin/lawyers' },
+};
+
+const POLL_MS = 60_000;
+
+export const NotificationProvider = ({ children, userId, role }) => {
+  const [items, setNotifications] = useState([]);
+  // Never surface a previous account's notifications after logout.
+  const notifications = userId ? items : [];
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
@@ -28,9 +40,9 @@ export const NotificationProvider = ({ children }) => {
           const d = new Date(n.createdAt);
           return {
             ...n,
-            time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            time: relativeTime(d),
             date: d.toLocaleDateString([], { month: 'short', day: '2-digit', year: 'numeric' }),
-            link: n.type === 'case' || n.type === 'lawyer' ? '/user/complaints' : (n.type === 'message' ? '/user/consultation' : null)
+            link: n.link || fallbackLinks[role]?.[n.type] || null,
           };
         });
         setNotifications(mapped);
@@ -38,12 +50,20 @@ export const NotificationProvider = ({ children }) => {
     } catch (err) {
       console.error('Failed to fetch notifications', err);
     }
-  }, []);
+  }, [role]);
 
+  // Refetch whenever the signed-in account changes; clear on logout.
   useEffect(() => {
+    if (!userId) return undefined;
     fetchNotifications();
-    // Optional: setup polling or websockets here for real-time updates
-  }, [fetchNotifications]);
+    const tick = () => { if (document.visibilityState === 'visible') fetchNotifications(); };
+    const timer = setInterval(tick, POLL_MS);
+    document.addEventListener('visibilitychange', tick);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener('visibilitychange', tick);
+    };
+  }, [userId, fetchNotifications]);
 
   const markRead = useCallback(async (id) => {
     setNotifications((prev) =>
@@ -75,7 +95,7 @@ export const NotificationProvider = ({ children }) => {
   }, []);
 
   const addNotificationLocally = useCallback((notif) => {
-    setNotifications((prev) => [{...notif, id: Date.now().toString(), read: false, createdAt: new Date().toISOString()}, ...prev]);
+    setNotifications((prev) => [{ time: 'Just now', ...notif, id: Date.now().toString(), read: false, createdAt: new Date().toISOString() }, ...prev]);
   }, []);
 
   return (

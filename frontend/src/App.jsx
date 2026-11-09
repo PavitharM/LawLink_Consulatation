@@ -110,7 +110,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ user, role, setAuth: handleAuthChange }}>
-      <NotificationProvider>
+      <NotificationProvider userId={user?.id} role={role}>
         <Router>
           <Suspense fallback={<PageLoader fullScreen />}>
           <Routes>
