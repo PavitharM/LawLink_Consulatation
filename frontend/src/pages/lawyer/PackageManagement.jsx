@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { PlusCircle, Edit2, Trash2, CheckCircle, Clock, Star, TrendingUp, DollarSign, Loader2 } from 'lucide-react';
 import { getAllPackagesAdmin, createPackage, updatePackage, deletePackage } from '../../services/package.service';
+import { useToast } from '../../contexts/ToastContext';
+import { useConfirm } from '../../contexts/ConfirmContext';
 
 const PackageManagement = () => {
+  const toast = useToast();
+  const confirm = useConfirm();
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -30,9 +34,12 @@ const PackageManagement = () => {
     try {
       const pkg = packages.find(p => p.id === id);
       const res = await updatePackage(id, { active: !pkg.active });
-      if (res.success) fetchPackages();
+      if (res.success) {
+        fetchPackages();
+        toast.success(`"${pkg.name}" is now ${pkg.active ? 'hidden from' : 'visible to'} clients.`);
+      }
     } catch (err) {
-      console.error(err);
+      toast.error(err?.message || 'Could not update the package.');
     }
   };
 
@@ -49,12 +56,22 @@ const PackageManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this package?')) return;
+    const pkg = packages.find(p => p.id === id);
+    const ok = await confirm({
+      title: 'Delete this package?',
+      message: `"${pkg?.name || 'This package'}" will be removed permanently. Clients who already purchased it are not affected.`,
+      confirmLabel: 'Delete package',
+      danger: true,
+    });
+    if (!ok) return;
     try {
       const res = await deletePackage(id);
-      if (res.success) fetchPackages();
+      if (res.success) {
+        fetchPackages();
+        toast.success('Package deleted.');
+      }
     } catch (err) {
-      console.error(err);
+      toast.error(err?.message || 'Could not delete the package.');
     }
   };
 
@@ -77,8 +94,9 @@ const PackageManagement = () => {
       setEditItem(null);
       setForm({ name: '', price: '', period: 'per case', description: '', features: '' });
       fetchPackages();
+      toast.success(editItem ? 'Package updated.' : 'Package created.');
     } catch (err) {
-      console.error(err);
+      toast.error(err?.message || 'Could not save the package. Check the fields and try again.');
     }
   };
 

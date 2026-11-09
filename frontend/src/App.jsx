@@ -8,6 +8,7 @@ import RouteEffects from './components/RouteEffects';
 import ProtectedRoute from './components/ProtectedRoute';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { ToastProvider } from './contexts/ToastContext';
+import { ConfirmProvider } from './contexts/ConfirmContext';
 
 // Common Pages
 const Home = lazy(() => import('./pages/common/Home'));
@@ -113,6 +114,7 @@ function App() {
   return (
     <AuthContext.Provider value={{ user, role, setAuth: handleAuthChange }}>
       <ToastProvider>
+      <ConfirmProvider>
       <NotificationProvider userId={user?.id} role={role}>
         <Router>
           <RouteEffects />
@@ -169,6 +171,7 @@ function App() {
           </Suspense>
         </Router>
       </NotificationProvider>
+      </ConfirmProvider>
       </ToastProvider>
     </AuthContext.Provider>
   );

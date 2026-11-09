@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { createComplaint } from '../../services/complaint.service';
 import { uploadFile } from '../../services/upload.service';
+import { useToast } from '../../contexts/ToastContext';
 
 /* ─── Categories ─────────────────────────────────────────────── */
 const categories = [
@@ -169,6 +170,7 @@ function StepBar({ step }) {
 
 /* ─── Main Component ─────────────────────────────────────────── */
 const SubmitComplaint = () => {
+  const toast = useToast();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -218,12 +220,12 @@ const SubmitComplaint = () => {
       const payload = { ...formData };
       
       if (payload.title.length < 5) {
-        alert("Title must be at least 5 characters.");
+        toast.error("Give your complaint a title of at least 5 characters.");
         setSubmitting(false);
         return;
       }
       if (payload.description.length < 10) {
-        alert("Description must be at least 10 characters.");
+        toast.error("Please describe the issue in at least 10 characters.");
         setSubmitting(false);
         return;
       }

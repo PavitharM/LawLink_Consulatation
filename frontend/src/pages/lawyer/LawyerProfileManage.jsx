@@ -9,6 +9,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { getMe, updateLawyerProfile, uploadAvatar } from '../../services/user.service';
 import { AuthContext } from '../../App';
+import { useToast } from '../../contexts/ToastContext';
 
 /* ─── Toggle ─────────────────────────────────────────────────── */
 function Toggle({ checked, onChange }) {
@@ -51,6 +52,7 @@ const TABS = [
 
 /* ─── Main ───────────────────────────────────────────────────── */
 const LawyerProfileManage = () => {
+  const toast = useToast();
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const avatarRef = useRef(null);
@@ -188,7 +190,7 @@ const LawyerProfileManage = () => {
       }
     } catch (err) {
       console.error('Failed to upload avatar', err);
-      alert('Failed to save profile picture. If using Cloudinary, check your API keys in .env!');
+      toast.error(err?.message || 'Please try a different image or try again later.', { title: 'Profile photo not saved' });
       setProfile(p => ({ ...p, avatarUrl: profile.avatarUrl }));
       setDraft(p => ({ ...p, avatarUrl: draft.avatarUrl }));
     }

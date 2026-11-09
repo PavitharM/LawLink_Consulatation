@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Shield, Mail, Key, Edit2, Save, X, CheckCircle, Smartphone, Globe, AlertCircle, Eye, EyeOff, Loader2, Camera } from 'lucide-react';
 import { getMe, updateMe, uploadAvatar } from '../../services/user.service';
+import { useToast } from '../../contexts/ToastContext';
 
 const AdminProfile = () => {
+  const toast = useToast();
   const [editing, setEditing] = useState(false);
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -64,7 +66,7 @@ const AdminProfile = () => {
       }
     } catch (err) {
       console.error('Failed to upload avatar', err);
-      alert('Failed to save profile picture. If using Cloudinary, check your API keys in .env!');
+      toast.error(err?.message || 'Please try a different image or try again later.', { title: 'Profile photo not saved' });
       setProfile(p => ({ ...p, avatarUrl: profile.avatarUrl }));
       setDraft(p => ({ ...p, avatarUrl: draft.avatarUrl }));
     }
