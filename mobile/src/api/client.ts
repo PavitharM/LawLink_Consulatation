@@ -56,12 +56,22 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && authToken && onUnauthorized) {
       onUnauthorized();
     }
+    const status: number | undefined = error.response?.status;
     const body = error.response?.data;
-    const message =
-      body?.message || body?.error || (error.message === 'Network Error'
-        ? `Cannot reach the server at ${API_BASE_URL}`
-        : error.message);
-    return Promise.reject({ ...(body || {}), message });
+    let message: string;
+    if (!error.response) {
+      message = error.message === 'Network Error' || error.code === 'ECONNABORTED'
+        ? 'Cannot reach the LawLink server. Check your connection and try again.'
+        : error.message;
+      console.warn(`[api] ${error.message} (${API_BASE_URL})`);
+    } else if (status && status >= 500) {
+      // Never show server internals (stack traces, DB errors) to the user.
+      console.warn(`[api] ${status} ${error.config?.method?.toUpperCase()} ${error.config?.url}:`, body?.message || body?.error);
+      message = 'Something went wrong on our side. Please try again in a moment.';
+    } else {
+      message = body?.message || body?.error || error.message;
+    }
+    return Promise.reject({ ...(body || {}), message, status });
   }
 );
 
