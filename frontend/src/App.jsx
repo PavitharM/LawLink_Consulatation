@@ -7,6 +7,7 @@ import RouteEffects from './components/RouteEffects';
 // Layout & Components
 import ProtectedRoute from './components/ProtectedRoute';
 import { NotificationProvider } from './contexts/NotificationContext';
+import { ToastProvider } from './contexts/ToastContext';
 
 // Common Pages
 const Home = lazy(() => import('./pages/common/Home'));
@@ -111,6 +112,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ user, role, setAuth: handleAuthChange }}>
+      <ToastProvider>
       <NotificationProvider userId={user?.id} role={role}>
         <Router>
           <RouteEffects />
@@ -167,6 +169,7 @@ function App() {
           </Suspense>
         </Router>
       </NotificationProvider>
+      </ToastProvider>
     </AuthContext.Provider>
   );
 }
