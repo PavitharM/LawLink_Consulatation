@@ -50,10 +50,10 @@ const Login = ({ onLogin }) => {
   return (
     <div className="min-h-screen flex bg-surface-container-low">
       {/* Left Branding Panel */}
-      <div className="hidden lg:flex w-[420px] shrink-0 bg-gradient-to-br from-primary via-primary-container to-[#1a2f7a] flex-col justify-between p-3xl text-on-primary relative overflow-hidden">
+      <div className="hidden lg:flex w-[440px] xl:w-[500px] shrink-0 bg-gradient-to-br from-primary via-primary-container to-[#1a2f7a] flex-col justify-between gap-2xl p-2xl xl:p-3xl text-on-primary relative overflow-y-auto">
         {/* Decorative circles */}
-        <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/5" />
-        <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-white/5" />
+        <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/5 pointer-events-none" />
+        <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-white/5 pointer-events-none" />
 
         <Link to="/" className="relative z-10 flex items-center gap-sm text-on-primary no-underline">
           <Scale size={28} />
@@ -83,12 +83,12 @@ const Login = ({ onLogin }) => {
           </ul>
         </div>
 
-          <div className="relative z-10">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-xl border border-white/20">
+          <div className="relative z-10 [@media(max-height:820px)]:hidden">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-lg border border-white/20">
               <div className="flex gap-xs text-yellow-400 mb-md">
                 {'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}
               </div>
-              <p className="text-body-lg font-medium leading-relaxed mb-md">"LawLink made finding the right lawyer incredibly simple. The platform is seamless and the professionals are top-notch."</p>
+              <p className="text-body-md font-medium leading-relaxed mb-md">"LawLink made finding the right lawyer incredibly simple. The platform is seamless and the professionals are top-notch."</p>
               <p className="text-label-md text-on-primary font-semibold">— Kavindu Perera, Colombo</p>
             </div>
           </div>
