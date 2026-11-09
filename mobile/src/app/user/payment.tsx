@@ -67,7 +67,7 @@ export default function Payment() {
             <Feather name="check-circle" size={48} color={colors.success} />
           </View>
           <Text style={[t.h1, { marginTop: space.xl }]}>Payment Successful!</Text>
-          {complaintId ? <View style={{ marginTop: space.lg, alignSelf: 'stretch' }}><Banner text="🎉 Your complaint was submitted successfully!" /></View> : null}
+          {complaintId ? <View style={{ marginTop: space.lg, alignSelf: 'stretch' }}><Banner text="Your complaint was submitted successfully!" /></View> : null}
           <Text style={[t.bodySm, { textAlign: 'center', marginTop: space.sm }]}>
             Your payment of <Text style={{ color: colors.text }}>{formatLKR(pkg?.price)}</Text> was received. You'll be redirected shortly...
           </Text>
@@ -111,7 +111,7 @@ export default function Payment() {
         </View>
         {pkg?.features?.length ? (
           <>
-            <Text style={[t.label, { marginTop: space.lg, marginBottom: 4 }]}>✅ What's Included</Text>
+            <Text style={[t.label, { marginTop: space.lg, marginBottom: 4 }]}>What's Included</Text>
             {pkg.features.map((f: string, i: number) => (
               <Text key={i} style={t.bodySm}>
                 • {f}

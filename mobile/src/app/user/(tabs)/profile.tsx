@@ -238,7 +238,7 @@ export default function UserProfile() {
             <SectionTitle title="Account Details" />
             <InfoRow label="Account Type" value="Registered User" />
             <InfoRow label="Member Since" value="January 12, 2024" />
-            <InfoRow label="Account Status" value="Active ✅" />
+            <InfoRow label="Account Status" value="Active" />
             <InfoRow label="User ID" value="USR-00847" last />
           </Card>
           <Card style={{ marginBottom: space.lg }}>

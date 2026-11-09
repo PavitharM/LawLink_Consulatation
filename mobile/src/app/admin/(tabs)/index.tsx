@@ -114,12 +114,12 @@ export default function AdminDashboard() {
         {unassigned > 0 ? (
           <AlertCard tone="danger" title={`🔴 ${unassigned} Complaints Unassigned`} desc="Cases waiting for a lawyer to be assigned." action="Assign Now →" onPress={() => router.push('/admin/complaints')} />
         ) : (
-          <AlertCard tone="success" title="✅ All complaints assigned" desc="No unassigned cases right now." />
+          <AlertCard tone="success" title="All complaints assigned" desc="No unassigned cases right now." />
         )}
         {open > 0 ? (
           <AlertCard tone="warning" title={`⚠️ ${open} Open Complaints`} desc="These are awaiting review or assignment." action="Review Now →" onPress={() => router.push('/admin/complaints')} />
         ) : null}
-        {unassigned === 0 && open === 0 ? <AlertCard tone="success" title="✅ No alerts" desc="Platform is running smoothly." /> : null}
+        {unassigned === 0 && open === 0 ? <AlertCard tone="success" title="No alerts" desc="Platform is running smoothly." /> : null}
       </View>
 
       <SectionTitle title="Quick Manage" />

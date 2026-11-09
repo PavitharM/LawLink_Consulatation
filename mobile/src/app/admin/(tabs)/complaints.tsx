@@ -3,7 +3,7 @@ import { useFocusEffect } from 'expo-router';
 import { Alert, Pressable, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { assignLawyer, getComplaints, getLawyers, updateComplaintStatus } from '@/api/services';
-import { Avatar, Badge, Banner, Button, Card, Chip, ChipRow, Empty, IconName, InfoGrid, Input, Loader, Meta, MonoTag, PageHeader, Screen, Sheet, Stat, StatGrid } from '@/components/ui';
+import { Avatar, Badge, Banner, Button, Card, Chip, ChipRow, Empty, IconName, InfoGrid, Input, Loader, Meta, MetaBit, MonoTag, PageHeader, Screen, Sheet, Stat, StatGrid } from '@/components/ui';
 import { colors, radius, space, type as t } from '@/theme';
 import { PRIORITY_TONE, shortId, STATUS } from '@/utils/format';
 
@@ -157,7 +157,7 @@ export default function ManageComplaints() {
                 <Badge label={st.label} tone={st.tone} icon={st.icon as IconName} />
                 <Badge label={c.priority} tone={PRIORITY_TONE[c.priority]} />
                 <Badge label={c.category} tone="neutral" />
-                <Badge label={`📦 ${c.package}`} tone="neutral" />
+                <Badge label={c.package} icon="package" tone="neutral" />
                 {isUnassigned(c) ? <Badge label="Unassigned" tone="danger" /> : null}
               </View>
               <Text style={t.h3}>{c.title}</Text>
@@ -165,9 +165,9 @@ export default function ManageComplaints() {
                 {c.description}
               </Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.md, marginTop: space.sm }}>
-                <Text style={t.meta}>👤 {c.user}</Text>
-                <Text style={t.meta}>📅 {c.date}</Text>
-                <Text style={[t.meta, !c.assignedTo && { color: colors.danger }]}>⚖️ {c.assignedTo || 'Unassigned'}</Text>
+                <MetaBit icon="user" text={c.user} />
+                <MetaBit icon="calendar" text={c.date} />
+                <MetaBit icon="briefcase" text={c.assignedTo || 'Unassigned'} color={!c.assignedTo ? colors.danger : undefined} />
               </View>
               <View style={{ flexDirection: 'row', gap: space.sm, marginTop: space.lg }}>
                 {isUnassigned(c) ? <Button title="Assign" icon="user-plus" small style={{ flex: 1 }} onPress={() => openAssign(c)} /> : null}

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
 import { Alert, Text, View } from 'react-native';
 import { createArticle, deleteArticle, getAllArticlesAdmin, updateArticle } from '@/api/services';
-import { Badge, Banner, Button, Card, Empty, IconButton, Input, Loader, PageHeader, Screen, SelectField, Sheet, Stat, StatGrid } from '@/components/ui';
+import { Badge, Banner, Button, Card, Empty, IconButton, Input, Loader, MetaBit, PageHeader, Screen, SelectField, Sheet, Stat, StatGrid } from '@/components/ui';
 import { colors, space, type as t } from '@/theme';
 
 const CATEGORIES = ['Civil Law', 'Criminal Law', 'Family Law', 'Labour Law', 'Consumer Law', 'Property Law', 'Corporate Law'];
@@ -118,11 +118,11 @@ export default function ManageArticles() {
             {a.excerpt}
           </Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: space.md }}>
-            <Text style={t.meta}>✍️ {a.author?.name || 'Admin'}</Text>
-            <Text style={t.meta}>
-              📅 {new Date(a.createdAt).toLocaleDateString('en-IN', { month: 'short', day: '2-digit', year: 'numeric' })}
-              {a.status === 'PUBLISHED' ? `  👁️ ${a.views || 0}` : ''}
-            </Text>
+            <MetaBit icon="edit-3" text={a.author?.name || 'Admin'} />
+            <View style={{ flexDirection: 'row', gap: space.md }}>
+              <MetaBit icon="calendar" text={new Date(a.createdAt).toLocaleDateString('en-GB', { month: 'short', day: '2-digit', year: 'numeric' })} />
+              {a.status === 'PUBLISHED' ? <MetaBit icon="eye" text={String(a.views || 0)} /> : null}
+            </View>
           </View>
         </Card>
       ))}

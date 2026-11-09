@@ -22,6 +22,7 @@ const empty = {
   name: '', email: '', phone: '', barCouncilId: '', specialization: 'Civil Law', experience: '' as string | number,
   location: '', state: '', languages: '' as any, education: '', bio: '', consultationFee: '' as string | number,
   availability: '', linkedIn: '', website: '', avatarUrl: null as string | null,
+  isVerified: false,
 };
 
 export default function LawyerProfile() {
@@ -53,6 +54,7 @@ export default function LawyerProfile() {
             education: lp.education || '', bio: lp.bio || '', consultationFee: lp.consultationFee ?? '',
             availability: lp.availability || '', linkedIn: lp.linkedIn || '', website: lp.website || '',
             avatarUrl: fileUrl(u.avatar),
+            isVerified: !!lp.isVerified,
           };
           setProfile(p);
           setDraft(p);
@@ -135,7 +137,11 @@ export default function LawyerProfile() {
           </View>
         ) : null}
         <View style={{ marginTop: space.sm, alignItems: 'center', gap: 4 }}>
-          <Badge label="✅ Verified Lawyer" tone="success" />
+          {profile.isVerified ? (
+            <Badge label="Verified Lawyer" icon="check-circle" tone="success" />
+          ) : (
+            <Badge label="Verification pending" icon="clock" tone="warning" />
+          )}
           {profile.barCouncilId ? <Text style={t.meta}>{profile.barCouncilId}</Text> : null}
         </View>
       </Card>
@@ -267,7 +273,12 @@ export default function LawyerProfile() {
             <SectionTitle title="Bar Association Registration" icon="shield" />
             <Meta>Registered ID</Meta>
             <Text style={[t.h2, { marginTop: 4 }]}>{profile.barCouncilId || '—'}</Text>
-            <Text style={[t.bodySm, { color: colors.success, marginTop: space.sm }]}>✅ Verified by LawLink on June 15, 2024</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: space.sm }}>
+              <Feather name={profile.isVerified ? 'check-circle' : 'clock'} size={14} color={profile.isVerified ? colors.success : colors.warning} />
+              <Text style={[t.bodySm, { color: profile.isVerified ? colors.success : colors.warning }]}>
+                {profile.isVerified ? 'Verified by LawLink' : 'Awaiting verification by the LawLink team'}
+              </Text>
+            </View>
           </Card>
         </>
       )}

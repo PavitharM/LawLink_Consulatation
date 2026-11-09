@@ -251,7 +251,7 @@ export default function ManageLawyers() {
             ) : null}
             <Meta style={{ marginTop: space.xl, marginBottom: 4 }}>Account Info</Meta>
             <InfoRow label="Registered On" value={new Date(selected.createdAt).toLocaleDateString('en-IN', { dateStyle: 'long' } as any)} />
-            <InfoRow label="Verification" value={selected.isVerified ? '✅ Verified' : '⏳ Not yet verified'} last />
+            <InfoRow label="Verification" value={selected.isVerified ? 'Verified' : 'Not yet verified'} last />
           </>
         ) : null}
       </Sheet>

@@ -70,7 +70,7 @@ export default function ComplaintDetails() {
           </View>
         ) : (
           <>
-            <Text style={t.h3}>⏳ Pending Assignment</Text>
+            <Text style={t.h3}>Pending Assignment</Text>
             <Text style={t.bodySm}>A lawyer will be assigned soon.</Text>
           </>
         )}

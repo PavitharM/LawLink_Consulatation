@@ -493,6 +493,14 @@ export const Badge = ({ label, tone = 'neutral', icon }: { label: string; tone?:
   );
 };
 
+/** Small icon + text pair for meta rows (author, date, views…). */
+export const MetaBit = ({ icon, text, color }: { icon: IconName; text: string; color?: string }) => (
+  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+    <Feather name={icon} size={11} color={color || colors.textDim} />
+    <Text style={[t.meta, { textTransform: 'none' }, color ? { color } : null]}>{text}</Text>
+  </View>
+);
+
 export const MonoTag = ({ label }: { label: string }) => (
   <View style={styles.monoTag}>
     <Text style={styles.monoTagText}>{label}</Text>
