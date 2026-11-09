@@ -313,7 +313,7 @@ const Home = () => {
             {[
               { title: 'Platform', links: ['For Users', 'For Lawyers', 'Admin Panel', 'Pricing'] },
               { title: 'Legal', links: ['Privacy Policy', 'Terms of Service', 'Disclaimer', 'Cookie Policy'] },
-              { title: 'Contact', links: ['help@lawlink.in', '+91-80-4567-8901', 'colombo, Sri Lanka'] },
+              { title: 'Contact', links: ['help@lawlink.lk', '+94-11-4567-890', 'Colombo, Sri Lanka'] },
             ].map((col, i) => (
               <div key={i}>
                 <h4 className="text-label-md text-inverse-on-surface mb-md">{col.title}</h4>

@@ -10,7 +10,7 @@ const AdminProfile = () => {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState({
     name: 'Admin',
-    email: 'admin@lawlink.in',
+    email: 'admin@lawlink.lk',
     phone: '',
     role: 'ADMIN',
     avatarUrl: null,

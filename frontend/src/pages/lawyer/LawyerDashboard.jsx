@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Briefcase, CheckCircle, Star, TrendingUp, Users, Calendar, ArrowRight, Bell, Loader2 } from 'lucide-react';
 import { getComplaints } from '../../services/complaint.service';
 import { AuthContext } from '../../contexts/AuthContext';
+import { formatLKR } from '../../utils/currency';
 
 const LawyerDashboard = () => {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ const LawyerDashboard = () => {
           { label: 'Active Cases', value: activeCases.length, icon: <Briefcase size={24} className="text-primary" />, bg: 'bg-primary/5' },
           { label: 'Resolved Cases', value: resolvedCases, icon: <CheckCircle size={24} className="text-green-600" />, bg: 'bg-green-50' },
           { label: 'Avg Rating', value: '4.8 ⭐', icon: <Star size={24} className="text-yellow-500" />, bg: 'bg-yellow-50' },
-          { label: 'Total Earnings', value: `₹${(resolvedCases * (user?.lawyerProfile?.consultationFee || 1500)).toLocaleString()}`, icon: <TrendingUp size={24} className="text-blue-600" />, bg: 'bg-blue-50' },
+          { label: 'Total Earnings', value: formatLKR(resolvedCases * (user?.lawyerProfile?.consultationFee || 1500)), icon: <TrendingUp size={24} className="text-blue-600" />, bg: 'bg-blue-50' },
         ].map((s, i) => (
           <div key={i} className="bg-white border border-surface-container-high rounded-xl p-lg shadow-card">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-md`}>{s.icon}</div>

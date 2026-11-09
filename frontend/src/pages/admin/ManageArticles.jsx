@@ -146,7 +146,7 @@ const ManageArticles = () => {
               <div className="flex items-center justify-between text-body-sm text-on-surface-variant border-t border-surface-container-high pt-md mt-auto">
                 <span className="font-medium">✍️ {article.author?.name || 'Admin'}</span>
                 <span className="flex gap-md">
-                  <span>📅 {new Date(article.createdAt).toLocaleDateString('en-IN', { month: 'short', day: '2-digit', year: 'numeric' })}</span>
+                  <span>📅 {new Date(article.createdAt).toLocaleDateString('en-GB', { month: 'short', day: '2-digit', year: 'numeric' })}</span>
                   {article.status === 'PUBLISHED' && <span>👁️ {article.views || 0}</span>}
                 </span>
               </div>

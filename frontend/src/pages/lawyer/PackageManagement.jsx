@@ -3,6 +3,7 @@ import { PlusCircle, Edit2, Trash2, CheckCircle, Star, TrendingUp, DollarSign, L
 import { getAllPackagesAdmin, createPackage, updatePackage, deletePackage } from '../../services/package.service';
 import { useToast } from '../../contexts/ToastContext';
 import { useConfirm } from '../../contexts/ConfirmContext';
+import { formatLKR } from '../../utils/currency';
 
 const PackageManagement = () => {
   const toast = useToast();
@@ -127,7 +128,7 @@ const PackageManagement = () => {
           { label: 'Total Packages', value: packages.length, icon: <Star size={20} className="text-primary" />, bg: 'bg-primary/5' },
           { label: 'Active', value: packages.filter(p => p.active).length, icon: <CheckCircle size={20} className="text-green-600" />, bg: 'bg-green-50' },
           { label: 'Total Bookings', value: totalBookings, icon: <TrendingUp size={20} className="text-blue-600" />, bg: 'bg-blue-50' },
-          { label: 'Total Revenue', value: `₹${totalRevenue.toLocaleString()}`, icon: <DollarSign size={20} className="text-yellow-600" />, bg: 'bg-yellow-50' },
+          { label: 'Total Revenue', value: formatLKR(totalRevenue), icon: <DollarSign size={20} className="text-yellow-600" />, bg: 'bg-yellow-50' },
         ].map((s, i) => (
           <div key={i} className="bg-white border border-surface-container-high rounded-xl p-lg shadow-card">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-md`}>{s.icon}</div>
@@ -147,7 +148,7 @@ const PackageManagement = () => {
               <div>
                 <h3 className="text-headline-sm text-on-surface">{pkg.name}</h3>
                 <div className="flex items-baseline gap-xs mt-xs">
-                  <span className="text-display font-bold text-primary">₹{pkg.price.toLocaleString()}</span>
+                  <span className="text-display font-bold text-primary">{formatLKR(pkg.price)}</span>
                   <span className="text-body-sm text-on-surface-variant">{pkg.period}</span>
                 </div>
               </div>
@@ -173,7 +174,7 @@ const PackageManagement = () => {
               </div>
               <div>
                 <p className="text-label-sm text-on-surface-variant">Revenue</p>
-                <p className="text-headline-sm font-bold text-primary">₹{(pkg.price * (pkg._count?.complaints || 0)).toLocaleString()}</p>
+                <p className="text-headline-sm font-bold text-primary">{formatLKR(pkg.price * (pkg._count?.complaints || 0))}</p>
               </div>
             </div>
 
@@ -216,7 +217,7 @@ const PackageManagement = () => {
               </div>
               <div className="grid grid-cols-2 gap-md">
                 <div>
-                  <label className="text-label-sm text-on-surface-variant mb-xs block">Price (₹) *</label>
+                  <label className="text-label-sm text-on-surface-variant mb-xs block">Price (LKR) *</label>
                   <input type="number" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })}
                     placeholder="e.g., 1999"
                     className="w-full border border-outline-variant rounded-lg p-md text-body-md focus:outline-none focus:border-primary" />

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Package, Plus, Edit2, Trash2, CheckCircle, X, Save, Star, Zap, Shield, Crown, Eye, EyeOff, Check, Users, TrendingUp, Loader2 } from 'lucide-react';
 import { getAllPackagesAdmin, createPackage, updatePackage, deletePackage } from '../../services/package.service';
+import { formatLKR } from '../../utils/currency';
 
 const ICON_OPTIONS = [
   { value: 'shield', icon: Shield, label: 'Shield' },
@@ -45,7 +46,7 @@ function PkgCard({ pkg, onEdit, onToggle, onDelete }) {
       <p className="text-body-sm text-on-surface-variant mb-lg leading-relaxed">{pkg.description}</p>
 
       <div className="flex items-baseline gap-xs mb-lg">
-        <span className="text-display font-bold text-primary">₹{pkg.price.toLocaleString('en-IN')}</span>
+        <span className="text-display font-bold text-primary">{formatLKR(pkg.price)}</span>
         <span className="text-body-sm text-on-surface-variant">{pkg.period}</span>
       </div>
 
@@ -56,7 +57,7 @@ function PkgCard({ pkg, onEdit, onToggle, onDelete }) {
           <p className="text-label-sm text-on-surface-variant">Usage (Cases)</p>
         </div>
         <div className="flex-1 bg-surface-container-low rounded-xl p-sm text-center">
-          <p className="text-body-md font-bold text-green-600">₹{((pkg._count?.complaints || 0) * pkg.price).toLocaleString('en-IN')}</p>
+          <p className="text-body-md font-bold text-green-600">{formatLKR((pkg._count?.complaints || 0) * pkg.price)}</p>
           <p className="text-label-sm text-on-surface-variant">Est. Revenue</p>
         </div>
       </div>
@@ -154,7 +155,7 @@ function PackageModal({ pkg, onSave, onClose }) {
           {/* Price + period */}
           <div className="grid grid-cols-2 gap-md">
             <div>
-              <label className="text-label-sm text-on-surface-variant mb-xs block">Price (₹) *</label>
+              <label className="text-label-sm text-on-surface-variant mb-xs block">Price (LKR) *</label>
               <input type="number" value={form.price} onChange={e => set('price', e.target.value)} placeholder="e.g., 1999" className={inputCls} />
               {errors.price && <p className="text-body-sm text-red-500 mt-xs">{errors.price}</p>}
             </div>
@@ -319,7 +320,7 @@ const ManagePackages = () => {
 
   const totalSubs = packages.reduce((s, p) => s + (p._count?.complaints || 0), 0);
   const totalRevenueNum = packages.reduce((s, p) => s + ((p._count?.complaints || 0) * p.price), 0);
-  const totalRevenue = `₹${totalRevenueNum.toLocaleString('en-IN')}`;
+  const totalRevenue = formatLKR(totalRevenueNum);
 
   if (loading) return <div className="flex justify-center p-xl"><Loader2 className="animate-spin text-primary" size={32} /></div>;
   

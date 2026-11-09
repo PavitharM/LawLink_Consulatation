@@ -61,7 +61,7 @@ function NotifRow({ id, label, desc, checked, onChange, badge }) {
 const AdminNotificationSettings = () => {
   const navigate = useNavigate();
   const [saved, setSaved] = useState(false);
-  const [email, setEmail] = useState('admin@lawlink.in');
+  const [email, setEmail] = useState('admin@lawlink.lk');
   const [stats, setStats] = useState(null);
   const [loadingStats, setLoadingStats] = useState(true);
 
@@ -142,7 +142,7 @@ const AdminNotificationSettings = () => {
         text: `${u.name} registered as a ${u.role === 'LAWYER' ? 'Lawyer' : 'Client'}.`,
         action: u.role === 'LAWYER' ? 'View Lawyers' : 'View Users',
         link: u.role === 'LAWYER' ? '/admin/lawyers' : '/admin/users',
-        time: new Date(u.createdAt).toLocaleDateString('en-IN'),
+        time: new Date(u.createdAt).toLocaleDateString('en-GB'),
       });
     });
     (stats.recentComplaints || []).forEach(c => {
@@ -153,7 +153,7 @@ const AdminNotificationSettings = () => {
         text: `${c.client?.name || 'A user'} submitted: "${c.title}"`,
         action: 'View Complaints',
         link: '/admin/complaints',
-        time: new Date(c.createdAt).toLocaleDateString('en-IN'),
+        time: new Date(c.createdAt).toLocaleDateString('en-GB'),
       });
     });
   }

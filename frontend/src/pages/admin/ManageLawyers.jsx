@@ -423,7 +423,7 @@ const ManageLawyers = () => {
                   <div className="bg-surface-container-low rounded-xl p-md">
                     <p className="text-label-sm text-on-surface-variant">Registered On</p>
                     <p className="text-body-md text-on-surface font-medium mt-xs">
-                      {new Date(selected.createdAt).toLocaleDateString('en-IN', { dateStyle: 'long' })}
+                      {new Date(selected.createdAt).toLocaleDateString('en-GB', { dateStyle: 'long' })}
                     </p>
                   </div>
                   <div className="bg-surface-container-low rounded-xl p-md">

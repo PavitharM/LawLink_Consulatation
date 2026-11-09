@@ -41,10 +41,10 @@ const Footer = () => {
             <h4 className="text-label-md text-inverse-on-surface mb-md">Contact</h4>
             <ul className="space-y-sm">
               <li className="flex items-center gap-sm text-body-sm text-inverse-on-surface/60">
-                <Mail size={14} /> help@lawlink.in
+                <Mail size={14} /> help@lawlink.lk
               </li>
               <li className="flex items-center gap-sm text-body-sm text-inverse-on-surface/60">
-                <Phone size={14} /> +91-80-4567-8901
+                <Phone size={14} /> +94-11-4567-890
               </li>
             </ul>
           </div>

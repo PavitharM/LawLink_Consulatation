@@ -3,6 +3,7 @@ import { Search, Star, MapPin, Filter, CheckCircle, Loader2 } from 'lucide-react
 import { useNavigate } from 'react-router-dom';
 import { getLawyers } from '../../services/user.service';
 import { getComplaints, assignLawyer } from '../../services/complaint.service';
+import { formatLKR } from '../../utils/currency';
 
 const specializations = ['All', 'Civil Law', 'Criminal Law', 'Family Law', 'Labour Law', 'Property Law', 'Corporate Law'];
 
@@ -172,7 +173,7 @@ const SearchLawyers = () => {
                 </div>
                 <div className="text-center">
                   <p className="text-label-sm text-on-surface-variant">Fee</p>
-                  <p className="text-body-sm font-bold text-primary mt-xs">₹{profile.consultationFee || '500'}</p>
+                  <p className="text-body-sm font-bold text-primary mt-xs">{formatLKR(profile.consultationFee || 500)}</p>
                 </div>
               </div>
 
@@ -218,7 +219,7 @@ const SearchLawyers = () => {
                   { label: 'Experience', value: `${profile.experience || 0} yrs` },
                   { label: 'Cases Handled', value: '20+' },
                   { label: 'Rating', value: `4.8 ⭐ (15+ reviews)` },
-                  { label: 'Consultation Fee', value: `₹${profile.consultationFee || '500'}` },
+                  { label: 'Consultation Fee', value: formatLKR(profile.consultationFee || 500) },
                   { label: 'Languages', value: (profile.languages || []).join(', ') },
                 ].map((item, i) => (
                   <div key={i} className={i === 4 ? 'col-span-2' : ''}>

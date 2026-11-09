@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { TrendingUp, Users, Scale, FileText, DollarSign, CheckCircle, BarChart3, Download, Loader2 } from 'lucide-react';
 import { getReportData } from '../../services/admin.service';
+import { formatLKRCompact } from '../../utils/currency';
 
 const CATEGORY_COLORS = [
   'bg-blue-500', 'bg-purple-500', 'bg-red-500', 'bg-yellow-500',
@@ -20,11 +21,7 @@ const SimpleBar = ({ value, max, color }) => (
   </div>
 );
 
-const formatCurrency = (amount) => {
-  if (amount >= 100000) return `₹${(amount / 100000).toFixed(2)}L`;
-  if (amount >= 1000) return `₹${(amount / 1000).toFixed(1)}k`;
-  return `₹${amount}`;
-};
+const formatCurrency = formatLKRCompact;
 
 const calcChange = (current, previous) => {
   if (previous === 0) return current > 0 ? '+100%' : '0%';
@@ -107,9 +104,9 @@ const Report = () => {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-md mb-xl">
         {[
-          { label: 'Total Users', value: kpis.totalUsers.toLocaleString('en-IN'), change: null, positive: true, icon: Users, color: 'text-primary', bg: 'bg-primary/10' },
-          { label: 'Active Lawyers', value: kpis.totalLawyers.toLocaleString('en-IN'), change: null, positive: true, icon: Scale, color: 'text-green-600', bg: 'bg-green-100' },
-          { label: 'Cases This Month', value: kpis.casesThisMonth.toLocaleString('en-IN'), change: casesChange, positive: casesPositive, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-100' },
+          { label: 'Total Users', value: kpis.totalUsers.toLocaleString('en-LK'), change: null, positive: true, icon: Users, color: 'text-primary', bg: 'bg-primary/10' },
+          { label: 'Active Lawyers', value: kpis.totalLawyers.toLocaleString('en-LK'), change: null, positive: true, icon: Scale, color: 'text-green-600', bg: 'bg-green-100' },
+          { label: 'Cases This Month', value: kpis.casesThisMonth.toLocaleString('en-LK'), change: casesChange, positive: casesPositive, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-100' },
           { label: 'Total Revenue', value: formatCurrency(kpis.totalRevenue), change: revenueChange, positive: revenuePositive, icon: DollarSign, color: 'text-yellow-600', bg: 'bg-yellow-100' },
         ].map((kpi, i) => (
           <div key={i} className="bg-white border border-surface-container-high rounded-2xl p-lg shadow-card hover:shadow-md transition-shadow">
@@ -137,7 +134,7 @@ const Report = () => {
               <TrendingUp size={20} className="text-primary" /> User Growth
             </h2>
             <span className="text-label-sm text-on-surface-variant bg-surface-container px-sm py-xs rounded">
-              Total: {kpis.totalUsers.toLocaleString('en-IN')}
+              Total: {kpis.totalUsers.toLocaleString('en-LK')}
             </span>
           </div>
           {userGrowth.length > 0 ? (
@@ -164,7 +161,7 @@ const Report = () => {
         <div className="bg-white border border-surface-container-high rounded-2xl p-xl shadow-card">
           <div className="flex items-center justify-between mb-xl">
             <h2 className="text-headline-sm text-on-surface flex items-center gap-sm">
-              <BarChart3 size={20} className="text-primary" /> Revenue (₹)
+              <BarChart3 size={20} className="text-primary" /> Revenue (LKR)
             </h2>
             {revenueChange && (
               <span className={`text-label-sm px-sm py-xs rounded font-semibold ${revenuePositive ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'}`}>

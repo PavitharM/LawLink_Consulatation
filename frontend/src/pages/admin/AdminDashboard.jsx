@@ -46,7 +46,7 @@ const AdminDashboard = () => {
       type: 'complaint',
       user: c.client?.name || 'Unknown',
       action: `Submitted complaint: "${c.title}"`,
-      time: new Date(c.createdAt).toLocaleDateString('en-IN'),
+      time: new Date(c.createdAt).toLocaleDateString('en-GB'),
       link: `/admin/complaints`,
     })),
     ...(stats?.recentUsers || []).map(u => ({
@@ -54,7 +54,7 @@ const AdminDashboard = () => {
       type: u.role === 'LAWYER' ? 'lawyer' : 'user',
       user: u.name,
       action: `Registered as ${u.role === 'LAWYER' ? 'a Lawyer' : 'a User'}`,
-      time: new Date(u.createdAt).toLocaleDateString('en-IN'),
+      time: new Date(u.createdAt).toLocaleDateString('en-GB'),
       link: u.role === 'LAWYER' ? '/admin/lawyers' : '/admin/users',
     })),
   ].slice(0, 8);
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
           </p>
         </div>
         <div className="text-body-sm text-on-surface-variant bg-white border border-surface-container-high rounded-xl px-lg py-sm shadow-card">
-          📅 {new Date().toLocaleDateString('en-IN', { dateStyle: 'full' })}
+          📅 {new Date().toLocaleDateString('en-GB', { dateStyle: 'full' })}
         </div>
       </div>
 
