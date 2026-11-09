@@ -1,14 +1,8 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import {
-  User, Mail, Phone, MapPin, Edit2, Save, X,
-  Briefcase, Star, Award, GraduationCap, FileText,
-  Shield, Bell, Camera, CheckCircle, Eye, EyeOff,
-  Lock, AlertCircle, ChevronRight, Upload, Trash2,
-  Clock, Settings, Loader2, LogOut
-} from 'lucide-react';
+import { useState, useRef, useEffect, useContext } from 'react';
+import { User, Mail, Phone, MapPin, Edit2, Save, X, Briefcase, Star, Award, GraduationCap, FileText, Shield, Bell, Camera, CheckCircle, Eye, EyeOff, Lock, AlertCircle, ChevronRight, Upload, Loader2, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getMe, updateLawyerProfile, uploadAvatar } from '../../services/user.service';
-import { AuthContext } from '../../App';
+import { AuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 
 /* ─── Toggle ─────────────────────────────────────────────────── */

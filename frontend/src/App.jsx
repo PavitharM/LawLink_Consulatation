@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { getMe } from './services/user.service';
 import PageLoader from './components/PageLoader';
@@ -6,6 +6,7 @@ import RouteEffects from './components/RouteEffects';
 
 // Layout & Components
 import ProtectedRoute from './components/ProtectedRoute';
+import { AuthContext } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { ToastProvider } from './contexts/ToastContext';
 import { ConfirmProvider } from './contexts/ConfirmContext';
@@ -50,7 +51,6 @@ const PackageManagement = lazy(() => import('./pages/lawyer/PackageManagement'))
 const LawyerNotifications = lazy(() => import('./pages/lawyer/LawyerNotifications'));
 const LawyerProfileManage = lazy(() => import('./pages/lawyer/LawyerProfileManage'));
 
-export const AuthContext = React.createContext({ user: null, role: null, setAuth: () => {} });
 
 function App() {
   const [role, setRole] = useState(null);

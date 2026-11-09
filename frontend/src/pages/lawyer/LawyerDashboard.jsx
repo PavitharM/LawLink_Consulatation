@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Briefcase, Clock, CheckCircle, Star, TrendingUp, Users, Calendar, ArrowRight, MessageSquare, Bell, Loader2 } from 'lucide-react';
+import { Briefcase, CheckCircle, Star, TrendingUp, Users, Calendar, ArrowRight, Bell, Loader2 } from 'lucide-react';
 import { getComplaints } from '../../services/complaint.service';
-import { AuthContext } from '../../App';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const LawyerDashboard = () => {
   const navigate = useNavigate();

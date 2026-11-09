@@ -1,10 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  FileText, ArrowRight, AlertCircle, ChevronRight, Upload,
-  File, FileImage, FileVideo, FileBadge, CheckCircle, Trash2,
-  Eye, X, PlusCircle, Check, Loader2
-} from 'lucide-react';
+import { FileText, ArrowRight, AlertCircle, ChevronRight, Upload, File, FileImage, FileVideo, FileBadge, CheckCircle, Trash2, Eye, X, Check, Loader2 } from 'lucide-react';
 import { createComplaint } from '../../services/complaint.service';
 import { uploadFile } from '../../services/upload.service';
 import { useToast } from '../../contexts/ToastContext';

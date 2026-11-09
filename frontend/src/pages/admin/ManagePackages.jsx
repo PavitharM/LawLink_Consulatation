@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Package, Plus, Edit2, Trash2, CheckCircle, X,
-  Save, Star, Zap, Shield, Crown, Eye, EyeOff,
-  AlertCircle, Check, DollarSign, Users, TrendingUp, Loader2
-} from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Package, Plus, Edit2, Trash2, CheckCircle, X, Save, Star, Zap, Shield, Crown, Eye, EyeOff, Check, Users, TrendingUp, Loader2 } from 'lucide-react';
 import { getAllPackagesAdmin, createPackage, updatePackage, deletePackage } from '../../services/package.service';
 
 const ICON_OPTIONS = [

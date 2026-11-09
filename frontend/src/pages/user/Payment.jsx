@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { CreditCard, Lock, CheckCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getPackages } from '../../services/package.service';
@@ -15,6 +15,8 @@ const Payment = () => {
   const [form, setForm] = useState({ name: '', card: '', expiry: '', cvv: '', upi: '' });
   const [pkg, setPkg] = useState(null);
   const [loading, setLoading] = useState(true);
+  // Stable for the lifetime of the page (previously regenerated on every render).
+  const [txnId] = useState(() => `TXN-${Date.now().toString(36).toUpperCase()}-LLK`);
 
   useEffect(() => {
     const fetchPkg = async () => {
@@ -89,7 +91,7 @@ const Payment = () => {
         )}
         <p className="text-body-lg text-on-surface-variant mb-xl">Your payment of <strong>{formatCurrency(pkg?.price)}</strong> was received. You'll be redirected shortly...</p>
         <div className="bg-green-50 border border-green-200 rounded-xl p-lg w-full text-left">
-          <p className="text-label-md text-green-700">Transaction ID: TXN-{Date.now()}-LLK</p>
+          <p className="text-label-md text-green-700">Transaction ID: {txnId}</p>
           <p className="text-body-sm text-green-600 mt-xs">{pkg?.name} Package — {formatDate()}</p>
         </div>
       </div>

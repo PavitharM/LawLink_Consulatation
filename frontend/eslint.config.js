@@ -17,5 +17,11 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // Pages load data with the fetch-on-mount pattern (effect -> async
+      // loader -> setState). Keep it visible as a warning rather than an
+      // error until data fetching moves to a query library.
+      'react-hooks/set-state-in-effect': 'warn',
+    },
   },
 ])

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, Users, Scale, FileText, Briefcase, FileQuestion,
   Bell, PlusCircle, BarChart3, Package, MessageSquare, User, X

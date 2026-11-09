@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Star, MapPin, Briefcase, Filter, ArrowRight, CheckCircle, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Star, MapPin, Filter, CheckCircle, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getLawyers } from '../../services/user.service';
 import { getComplaints, assignLawyer } from '../../services/complaint.service';

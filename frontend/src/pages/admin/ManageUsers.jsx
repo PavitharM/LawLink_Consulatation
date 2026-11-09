@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Eye, UserX, UserCheck, Filter, Phone, Mail, Calendar, ShieldAlert, CheckCircle, AlertTriangle, ArrowRight, X, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Eye, Filter, Phone, Mail, Calendar, ShieldAlert, CheckCircle, AlertTriangle, ArrowRight, X, Loader2 } from 'lucide-react';
 import { getUsers, toggleUserStatus } from '../../services/user.service';
 
 const statusConfig = {

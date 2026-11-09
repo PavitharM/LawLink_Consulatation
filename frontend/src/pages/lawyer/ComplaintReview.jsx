@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FileText, MessageSquare, Clock, CheckCircle, AlertTriangle, Paperclip, Send, ArrowLeft, Calendar, User, Loader2, X, Eye } from 'lucide-react';
+import { FileText, Clock, CheckCircle, Paperclip, Send, ArrowLeft, Calendar, User, Loader2, X, Eye } from 'lucide-react';
 import { getComplaintById, updateComplaintStatus, rejectAssignment } from '../../services/complaint.service';
 import { getMessages, sendMessage } from '../../services/message.service';
 

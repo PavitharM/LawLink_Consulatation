@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import {
   Upload, File, FileText, FileImage, FileVideo,
   FileBadge, CheckCircle, Trash2, AlertCircle,

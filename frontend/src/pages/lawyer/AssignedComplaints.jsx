@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Search, Filter, Eye, Clock, CheckCircle, AlertTriangle,
-  ArrowRight, Calendar, User, MessageSquare, FileText,
-  ChevronDown, ChevronUp, Briefcase, BarChart2, SortAsc,
-  Loader2
-} from 'lucide-react';
+import { Search, Filter, Eye, Clock, CheckCircle, AlertTriangle, ArrowRight, Calendar, User, MessageSquare, FileText, ChevronDown, ChevronUp, Briefcase, SortAsc, Loader2 } from 'lucide-react';
 import { getComplaints } from '../../services/complaint.service';
 
 /* ─── Config maps ────────────────────────────────────────────── */
@@ -148,7 +143,6 @@ const AssignedComplaints = () => {
   const [priorityFilter, setPriorityFilter] = useState('All');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [sortBy,       setSortBy]       = useState('filed');
-  const [view,         setView]         = useState('list'); // 'list' | 'board'
   const [cases,        setCases]        = useState([]);
   const [loading,      setLoading]      = useState(true);
 

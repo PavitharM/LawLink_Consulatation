@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, Send, FileText, Clock, CheckCircle, User, Paperclip, Loader2 } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { MessageSquare, Send, FileText, Clock, Paperclip, Loader2 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
-import { useNotifications } from '../../contexts/NotificationContext';
 import { getLawyerById } from '../../services/user.service';
 import { getMessages, sendMessage } from '../../services/message.service';
 
@@ -13,7 +12,6 @@ const ConsultationResponse = () => {
   
   const [searchParams] = useSearchParams();
   const lawyerId = searchParams.get('lawyerId');
-  const { addNotificationLocally } = useNotifications();
   const chatEndRef = useRef(null);
 
   useEffect(() => {

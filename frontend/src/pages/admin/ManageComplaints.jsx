@@ -1,11 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Search, Eye, Clock, CheckCircle, XCircle, AlertTriangle,
-  Filter, UserPlus, ChevronDown, ChevronUp, MessageSquare,
-  Calendar, FileText, User, X, Check, ArrowRight, Briefcase,
-  Scale, Loader2
-} from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Eye, Clock, CheckCircle, XCircle, AlertTriangle, Filter, UserPlus, Calendar, User, X, Check, Briefcase, Scale, Loader2 } from 'lucide-react';
 import { getComplaints, updateComplaintStatus, assignLawyer } from '../../services/complaint.service';
 import { getLawyers } from '../../services/user.service';
 
@@ -176,7 +170,6 @@ function DetailModal({ c, lawyersList, onClose, onStatusChange, onAssign }) {
 
 /* ─── Main Component ─────────────────────────────────────────── */
 const ManageComplaints = () => {
-  const navigate = useNavigate();
   const [complaints, setComplaints] = useState([]);
   const [lawyers, setLawyers] = useState([]);
   const [loading, setLoading] = useState(true);

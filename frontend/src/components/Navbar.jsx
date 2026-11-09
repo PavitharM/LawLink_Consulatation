@@ -5,7 +5,7 @@ import {
   User, Briefcase, MessageSquare, CreditCard, Clock, CheckCheck, X
 } from 'lucide-react';
 import { useNotifications } from '../contexts/NotificationContext';
-import { AuthContext } from '../App';
+import { AuthContext } from '../contexts/AuthContext';
 
 const notifRoutes  = { user: '/user/notifications', lawyer: '/lawyer/notifications', admin: '/admin/notifications' };
 

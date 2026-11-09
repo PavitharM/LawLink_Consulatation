@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { TrendingUp, Users, Scale, FileText, DollarSign, CheckCircle, BarChart3, Download, Loader2 } from 'lucide-react';
 import { getReportData } from '../../services/admin.service';
 

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Scale, Users, Briefcase, FileText, TrendingUp, AlertTriangle, Bell, Loader2, ArrowRight } from 'lucide-react';
 import { getAdminStats } from '../../services/admin.service';
 import { getNotifications, markNotificationRead } from '../../services/notification.service';
-import { AuthContext } from '../../App';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();

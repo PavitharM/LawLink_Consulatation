@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { PlusCircle, Edit2, Trash2, Search, Clock, CheckCircle, XCircle, FileText, X, Save, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { PlusCircle, Edit2, Trash2, Search, Clock, CheckCircle, X, Save, Loader2 } from 'lucide-react';
 import { getAllArticlesAdmin, createArticle, updateArticle, deleteArticle } from '../../services/article.service';
 
 const statusConfig = {

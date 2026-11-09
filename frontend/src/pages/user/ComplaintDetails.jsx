@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Clock, AlertTriangle, FileText, User, Calendar, MessageSquare, Paperclip, Download, Upload, Loader2, XCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, FileText, User, Calendar, MessageSquare, Paperclip, Download, Upload, Loader2 } from 'lucide-react';
 import { getComplaintById } from '../../services/complaint.service';
 
 const statusConfig = {

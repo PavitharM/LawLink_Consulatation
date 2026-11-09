@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { PlusCircle, Edit2, Trash2, CheckCircle, Clock, Star, TrendingUp, DollarSign, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { PlusCircle, Edit2, Trash2, CheckCircle, Star, TrendingUp, DollarSign, Loader2 } from 'lucide-react';
 import { getAllPackagesAdmin, createPackage, updatePackage, deletePackage } from '../../services/package.service';
 import { useToast } from '../../contexts/ToastContext';
 import { useConfirm } from '../../contexts/ConfirmContext';

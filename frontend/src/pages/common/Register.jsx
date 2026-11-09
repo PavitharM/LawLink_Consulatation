@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../services/auth.service';
-import { Scale, Eye, EyeOff, CheckCircle, User, Briefcase, Shield } from 'lucide-react';
+import { Scale, Eye, EyeOff, User, Briefcase } from 'lucide-react';
 
 const roles = [
   { value: 'user', label: 'Client / User', icon: <User size={22} />, desc: 'I need legal help and want to file complaints or find a lawyer.' },

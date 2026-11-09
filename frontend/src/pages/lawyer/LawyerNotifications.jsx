@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Bell, CheckCheck, Clock, User, Briefcase,
-  Calendar, MessageSquare, CreditCard, Star, X
-} from 'lucide-react';
+import { Bell, CheckCheck, Briefcase, Calendar, MessageSquare, CreditCard, Star, X } from 'lucide-react';
 
 /* ── icon / colour helpers (no JSX in state) ───────────────── */
 const typeIcon = (type) => {
@@ -34,6 +31,7 @@ const typeLabel = {
 
 import { getNotifications, markNotificationRead, markAllNotificationsRead, dismissNotification } from '../../services/notification.service';
 import { useNavigate } from 'react-router-dom';
+import { Skeleton } from '../../components/ui/Skeleton';
 
 /* ── component ──────────────────────────────────────────────── */
 const LawyerNotifications = () => {
@@ -147,7 +145,11 @@ const LawyerNotifications = () => {
       </div>
 
       {/* List */}
-      {Object.keys(grouped).length === 0 ? (
+      {loading ? (
+        <div className="space-y-sm" aria-label="Loading notifications">
+          {[0, 1, 2].map(i => <Skeleton key={i} className="h-20 w-full rounded-xl" />)}
+        </div>
+      ) : Object.keys(grouped).length === 0 ? (
         <div className="bg-white border border-surface-container-high rounded-2xl py-3xl px-xl text-center shadow-card">
           <Bell size={48} className="mx-auto text-on-surface-variant mb-lg opacity-20" />
           <p className="text-headline-sm text-on-surface-variant">No notifications</p>

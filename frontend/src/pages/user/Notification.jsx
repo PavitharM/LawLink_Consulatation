@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Bell, CheckCheck, Clock, Briefcase, MessageSquare,
-  CreditCard, User, X, Trash2
-} from 'lucide-react';
+import { Bell, CheckCheck, Clock, Briefcase, MessageSquare, CreditCard, User, X } from 'lucide-react';
 import { useNotifications } from '../../contexts/NotificationContext';
 
 /* ── icon & colour helpers (kept outside state) ────────────── */

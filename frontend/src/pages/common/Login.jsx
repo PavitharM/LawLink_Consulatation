@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login as loginApi } from '../../services/auth.service';
 import { Scale, Eye, EyeOff, Mail, Lock, User, Briefcase, Shield } from 'lucide-react';
@@ -11,7 +11,6 @@ const roles = [
 
 const Login = ({ onLogin }) => {
   const navigate = useNavigate();
-  const [role, setRole] = useState('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);

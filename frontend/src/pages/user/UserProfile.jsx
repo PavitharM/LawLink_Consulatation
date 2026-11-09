@@ -1,13 +1,8 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import {
-  User, Mail, Phone, MapPin, Edit2, Save, X,
-  Shield, Clock, Briefcase, Camera, CheckCircle,
-  Eye, EyeOff, AlertCircle, Bell, BellOff, Lock,
-  Trash2, ChevronRight, LogOut, Loader2
-} from 'lucide-react';
+import { useState, useRef, useEffect, useContext } from 'react';
+import { User, Mail, Phone, MapPin, Edit2, Save, X, Shield, Clock, Briefcase, Camera, CheckCircle, Eye, EyeOff, AlertCircle, Bell, Lock, Trash2, ChevronRight, LogOut, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getMe, updateMe, uploadAvatar } from '../../services/user.service';
-import { AuthContext } from '../../App';
+import { AuthContext } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 
 /* ─── Tabs ───────────────────────────────────────────────────── */

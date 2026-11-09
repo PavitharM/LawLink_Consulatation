@@ -1,6 +1,4 @@
-import React from 'react';
 import { Scale, Mail, Phone } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (

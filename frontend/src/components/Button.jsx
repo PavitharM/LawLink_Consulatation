@@ -1,4 +1,3 @@
-import React from 'react';
 
 const Button = ({ children, variant = 'primary', type = 'button', onClick, className = '', ...props }) => {
   let variantClasses = '';
