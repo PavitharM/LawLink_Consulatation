@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Scale, Shield, Users, BookOpen, ArrowRight, Star, MapPin, Menu, X } from 'lucide-react';
+import { Scale, Shield, Users, BookOpen, ArrowRight, Star, MapPin, Menu, X, UserPlus, FileText, Package, BadgeCheck, CheckCircle2, MessageSquare, LayoutDashboard } from 'lucide-react';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const features = [
   { icon: <Shield size={32} className="text-primary" />, title: 'Verified Lawyers', desc: 'Every lawyer on LawLink is Bar Council verified and background-checked for your safety.' },
@@ -24,6 +25,8 @@ const testimonials = [
 const Home = () => {
   const navigate = useNavigate();
   const [mobileMenu, setMobileMenu] = useState(false);
+  const { role } = useContext(AuthContext);
+  const dashboard = role ? `/${role}` : null;
 
   return (
     <div className="min-h-screen bg-background font-sans">
@@ -39,17 +42,41 @@ const Home = () => {
             <a href="#testimonials" className="text-body-md text-on-surface-variant hover:text-primary transition-colors no-underline">Reviews</a>
           </div>
           <div className="hidden md:flex items-center gap-sm">
-            <Link to="/login" className="px-lg py-sm rounded-lg border border-primary text-primary text-body-md no-underline hover:bg-primary/5 transition-colors">Login</Link>
-            <Link to="/register" className="px-lg py-sm rounded-lg bg-primary text-on-primary text-body-md no-underline hover:opacity-90 transition-opacity">Get Started</Link>
+            {dashboard ? (
+              <Link to={dashboard} className="flex items-center gap-sm px-lg py-sm rounded-lg bg-primary text-on-primary text-body-md no-underline hover:bg-primary-container transition-colors">
+                <LayoutDashboard size={16} /> Go to dashboard
+              </Link>
+            ) : (
+              <>
+                <Link to="/login" className="px-lg py-sm rounded-lg border border-primary text-primary text-body-md no-underline hover:bg-primary/5 transition-colors">Login</Link>
+                <Link to="/register" className="px-lg py-sm rounded-lg bg-primary text-on-primary text-body-md no-underline hover:bg-primary-container transition-colors">Get Started</Link>
+              </>
+            )}
           </div>
-          <button className="md:hidden p-sm rounded-lg hover:bg-surface-container" onClick={() => setMobileMenu(!mobileMenu)}>
+          <button
+            className="md:hidden p-sm rounded-lg hover:bg-surface-container"
+            onClick={() => setMobileMenu(!mobileMenu)}
+            aria-label={mobileMenu ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenu}
+          >
             {mobileMenu ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
         {mobileMenu && (
-          <div className="md:hidden bg-white border-t border-surface-container-high px-lg py-md space-y-sm">
-            <Link to="/login" className="block px-md py-sm rounded-lg text-body-md text-on-surface hover:bg-surface-container no-underline">Login</Link>
-            <Link to="/register" className="block px-md py-sm rounded-lg bg-primary text-on-primary text-body-md no-underline text-center">Get Started</Link>
+          <div className="md:hidden bg-white border-t border-surface-container-high px-lg py-md space-y-xs animate-fade-in">
+            {[['#features', 'Features'], ['#lawyers', 'Lawyers'], ['#testimonials', 'Reviews']].map(([href, label]) => (
+              <a key={href} href={href} onClick={() => setMobileMenu(false)} className="block px-md py-sm rounded-lg text-body-md text-on-surface-variant hover:bg-surface-container no-underline">{label}</a>
+            ))}
+            <div className="pt-sm mt-sm border-t border-surface-container-high space-y-sm">
+              {dashboard ? (
+                <Link to={dashboard} className="block px-md py-sm rounded-lg bg-primary text-on-primary text-body-md no-underline text-center">Go to dashboard</Link>
+              ) : (
+                <>
+                  <Link to="/login" className="block px-md py-sm rounded-lg text-body-md text-on-surface hover:bg-surface-container no-underline">Login</Link>
+                  <Link to="/register" className="block px-md py-sm rounded-lg bg-primary text-on-primary text-body-md no-underline text-center">Get Started</Link>
+                </>
+              )}
+            </div>
           </div>
         )}
       </nav>
@@ -57,31 +84,71 @@ const Home = () => {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-container to-[#1a2f7a] text-on-primary py-3xl px-lg">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top_right,_#90a8ff_0%,_transparent_60%)]" />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="max-w-3xl">
+        <div className="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-[1.15fr_1fr] gap-3xl items-center">
+          <div className="max-w-3xl animate-slide-up">
             <div className="inline-flex items-center gap-sm bg-white/10 border border-white/20 rounded-full px-md py-xs mb-xl text-body-sm">
-              ⚖️ Trusted Legal Platform Across Sri Lanka.
+              <BadgeCheck size={14} /> Trusted legal platform across Sri Lanka
             </div>
             <h1 className="text-display text-on-primary leading-tight mb-lg">
               Get Expert Legal Help,<br />
               <span className="text-on-primary-container">Right When You Need It</span>
             </h1>
             <p className="text-body-lg text-on-primary/80 mb-2xl max-w-xl leading-relaxed">
-              Connect with verified lawyers, file complaints, and resolve your legal matters — all in one secure, easy-to-use platform built for every Srilankan citizen.
+              Connect with verified lawyers, file complaints, and resolve your legal matters — all in one secure, easy-to-use platform built for every Sri Lankan.
             </p>
             <div className="flex flex-col sm:flex-row gap-md">
-              <button
-                onClick={() => navigate('/register')}
-                className="flex items-center justify-center gap-sm px-2xl py-md rounded-xl bg-white text-primary text-body-lg font-semibold hover:bg-on-primary-container transition-colors"
+              <Link
+                to={dashboard || '/register'}
+                className="group flex items-center justify-center gap-sm px-2xl py-md rounded-xl bg-white text-primary text-body-lg font-semibold no-underline shadow-lg shadow-black/10 hover:bg-primary-fixed transition-colors"
               >
-                Get Started Free <ArrowRight size={20} />
-              </button>
-              <button
-                onClick={() => navigate('/login')}
-                className="flex items-center justify-center gap-sm px-2xl py-md rounded-xl border-2 border-white/40 text-on-primary text-body-lg hover:bg-white/10 transition-colors"
-              >
-                Login
-              </button>
+                {dashboard ? 'Open your dashboard' : 'Get Started Free'} <ArrowRight size={20} className="group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              {!dashboard && (
+                <Link
+                  to="/login"
+                  className="flex items-center justify-center gap-sm px-2xl py-md rounded-xl border-2 border-white/40 text-on-primary text-body-lg no-underline hover:bg-white/10 transition-colors"
+                >
+                  Login
+                </Link>
+              )}
+            </div>
+          </div>
+
+          {/* Product preview */}
+          <div className="hidden lg:block relative animate-slide-up" style={{ animationDelay: '120ms' }} aria-hidden="true">
+            <div className="absolute -inset-6 bg-white/5 rounded-[2rem] blur-2xl" />
+            <div className="relative bg-white text-on-surface rounded-2xl shadow-2xl shadow-black/30 p-xl rotate-[1.5deg]">
+              <div className="flex items-center justify-between mb-lg">
+                <span className="text-label-sm font-mono font-semibold text-primary bg-primary/5 px-sm py-0.5 rounded">#4F2A91C3</span>
+                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-semibold bg-amber-50 text-amber-800 ring-1 ring-inset ring-amber-600/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> In Review
+                </span>
+              </div>
+              <p className="text-headline-sm mb-xs">Land boundary dispute</p>
+              <p className="text-body-sm text-on-surface-variant mb-lg">Property Law · Filed 12 Oct</p>
+              <ol className="space-y-md mb-lg">
+                {[
+                  ['Complaint submitted', true],
+                  ['Lawyer assigned — Adv. Nishal', true],
+                  ['Documents reviewed', true],
+                  ['Hearing scheduled', false],
+                ].map(([label, done]) => (
+                  <li key={label} className="flex items-center gap-md text-body-sm">
+                    {done
+                      ? <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+                      : <span className="w-[18px] h-[18px] rounded-full border-2 border-dashed border-outline-variant shrink-0" />}
+                    <span className={done ? 'text-on-surface' : 'text-on-surface-variant'}>{label}</span>
+                  </li>
+                ))}
+              </ol>
+              <div className="flex items-center gap-md p-md rounded-xl bg-surface-container-low">
+                <div className="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-label-sm font-bold">AN</div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-label-sm font-semibold">Adv. Nishal</p>
+                  <p className="text-body-sm text-on-surface-variant truncate">I've reviewed the deed — we have a strong case.</p>
+                </div>
+                <MessageSquare size={16} className="text-primary shrink-0" />
+              </div>
             </div>
           </div>
         </div>
@@ -133,14 +200,14 @@ const Home = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-lg">
             {[
-              { step: '01', title: 'Register', desc: 'Create your free account in minutes.', icon: '📝' },
-              { step: '02', title: 'File a Complaint', desc: 'Describe your legal issue clearly.', icon: '⚖️' },
-              { step: '03', title: 'Choose a Package', desc: 'Select the plan that suits your needs.', icon: '📦' },
-              { step: '04', title: 'Get Legal Help', desc: 'A verified lawyer is assigned to your case.', icon: '✅' },
+              { step: '01', title: 'Register', desc: 'Create your free account in minutes.', icon: <UserPlus size={26} /> },
+              { step: '02', title: 'File a Complaint', desc: 'Describe your legal issue clearly.', icon: <FileText size={26} /> },
+              { step: '03', title: 'Choose a Package', desc: 'Select the plan that suits your needs.', icon: <Package size={26} /> },
+              { step: '04', title: 'Get Legal Help', desc: 'A verified lawyer is assigned to your case.', icon: <BadgeCheck size={26} /> },
             ].map((s, i) => (
               <div key={i} className="relative text-center">
-                {i < 3 && <div className="hidden md:block absolute top-8 left-[60%] w-[40%] h-0.5 bg-surface-container-high" />}
-                <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-2xl mx-auto mb-lg relative z-10">
+                {i < 3 && <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-to-r from-primary/30 to-surface-container-high" />}
+                <div className="w-16 h-16 rounded-full bg-primary text-on-primary ring-8 ring-white flex items-center justify-center mx-auto mb-lg relative z-10">
                   {s.icon}
                 </div>
                 <div className="text-label-sm text-primary mb-xs">STEP {s.step}</div>

@@ -1,7 +1,23 @@
-import { Link } from 'react-router-dom';
-import { Scale, Home, ArrowLeft, Search } from 'lucide-react';
+import { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Scale, Home, ArrowLeft, LogIn, UserPlus, LayoutDashboard } from 'lucide-react';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const NotFound = () => {
+  const navigate = useNavigate();
+  const { role } = useContext(AuthContext);
+  const actions = role
+    ? [
+        { label: 'Dashboard', icon: <LayoutDashboard size={18} />, to: `/${role}`, primary: true },
+        { label: 'Go back', icon: <ArrowLeft size={18} />, onClick: () => navigate(-1) },
+        { label: 'Home', icon: <Home size={18} />, to: '/' },
+      ]
+    : [
+        { label: 'Go Home', icon: <Home size={18} />, to: '/', primary: true },
+        { label: 'Login', icon: <LogIn size={18} />, to: '/login' },
+        { label: 'Register', icon: <UserPlus size={18} />, to: '/register' },
+      ];
+
   return (
     <div className="min-h-screen flex flex-col bg-surface-container-low">
       {/* Nav */}
@@ -31,18 +47,13 @@ const NotFound = () => {
 
         {/* Quick Links */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-md mb-2xl w-full max-w-lg">
-          {[
-            { label: 'Go Home', icon: <Home size={18} />, to: '/', primary: true },
-            { label: 'Login', icon: <ArrowLeft size={18} />, to: '/login', primary: false },
-            { label: 'Register', icon: <Search size={18} />, to: '/register', primary: false },
-          ].map((btn, i) => (
-            <Link key={i} to={btn.to} className="no-underline">
-              <button className={`w-full flex items-center justify-center gap-sm py-md rounded-xl text-body-md font-semibold transition-all
-                ${btn.primary ? 'bg-primary text-on-primary hover:opacity-90' : 'bg-white border border-surface-container-high text-on-surface hover:bg-surface-container-low hover:border-primary/30'}`}>
-                {btn.icon} {btn.label}
-              </button>
-            </Link>
-          ))}
+          {actions.map((btn) => {
+            const cls = `w-full flex items-center justify-center gap-sm py-md rounded-xl text-body-md font-semibold no-underline transition-all
+                ${btn.primary ? 'bg-primary text-on-primary hover:bg-primary-container' : 'bg-white border border-surface-container-high text-on-surface hover:bg-surface-container-low hover:border-primary/30'}`;
+            return btn.to
+              ? <Link key={btn.label} to={btn.to} className={cls}>{btn.icon} {btn.label}</Link>
+              : <button key={btn.label} type="button" onClick={btn.onClick} className={cls}>{btn.icon} {btn.label}</button>;
+          })}
         </div>
 
         {/* Help Text */}
