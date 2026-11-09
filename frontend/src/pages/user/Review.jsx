@@ -1,79 +1,85 @@
-import { useState } from 'react';
-import { CheckCircle, User, Briefcase, CreditCard, FileText, Edit2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
+import { CheckCircle2, Clock3, User, Briefcase, Package, FileText, Upload, ArrowRight, RefreshCw, WifiOff } from 'lucide-react';
+import { getComplaintById } from '../../services/complaint.service';
+import { fileUrl } from '../../services/api';
+import { formatLKR } from '../../utils/currency';
+import { StatusBadge, PriorityBadge } from '../../components/ui/Badge';
+import { caseRef } from '../../components/ui/status';
+import EmptyState from '../../components/ui/EmptyState';
+import { PageSkeleton } from '../../components/ui/Skeleton';
 
+const DOC_LABELS = { id: 'ID proof', idProof: 'ID proof', complaint: 'Complaint letter', evidence: 'Evidence', other: 'Other' };
+const fileName = (url = '') => decodeURIComponent(url.split('/').pop()?.split('?')[0] || 'document');
+const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+/**
+ * Summary of a submitted case (?case=<id>). Previously this page showed
+ * hard-coded sample data; without a case id there is nothing to review.
+ */
 const Review = () => {
-  const navigate = useNavigate();
-  const [submitted, setSubmitted] = useState(false);
+  const [params] = useSearchParams();
+  const caseId = params.get('case');
+  const [c, setC] = useState(null);
+  const [loading, setLoading] = useState(!!caseId);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = () => {
-    setSubmitted(true);
-  };
+  const load = useCallback(async () => {
+    if (!caseId) return;
+    setLoading(true);
+    try {
+      const res = await getComplaintById(caseId);
+      if (res.success) setC(res.data);
+      setError(null);
+    } catch (err) {
+      setError(err?.message || 'Could not load this case.');
+    } finally {
+      setLoading(false);
+    }
+  }, [caseId]);
 
-  if (submitted) {
+  useEffect(() => { load(); }, [load]);
+
+  if (!caseId) return <Navigate to="/user/complaints" replace />;
+  if (loading) return <PageSkeleton stats={0} rows={3} />;
+  if (!c) {
     return (
-      <div className="w-full max-w-lg mx-auto flex flex-col items-center text-center py-3xl">
-        <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mb-xl animate-bounce">
-          <CheckCircle size={56} className="text-green-600" />
-        </div>
-        <h2 className="text-headline-lg text-on-surface mb-md">Case Submitted!</h2>
-        <p className="text-body-lg text-on-surface-variant mb-xl">
-          Your case has been successfully submitted. A lawyer will be assigned to your case within 24 hours. You will receive a notification once assigned.
-        </p>
-        <div className="bg-white border border-surface-container-high rounded-xl p-xl w-full text-left shadow-card mb-xl">
-          <div className="flex items-center justify-between mb-md">
-            <span className="text-label-md text-on-surface-variant">Case Reference ID</span>
-            <span className="text-label-md font-bold text-primary bg-primary/10 px-md py-xs rounded">CMP-2024-00847</span>
-          </div>
-          <div className="space-y-sm text-body-sm text-on-surface-variant">
-            <div className="flex justify-between"><span>Status</span><span className="text-blue-600 font-medium">Open — Awaiting Assignment</span></div>
-            <div className="flex justify-between"><span>Package</span><span className="font-medium text-on-surface">Standard Representation</span></div>
-            <div className="flex justify-between"><span>Submitted</span><span className="font-medium text-on-surface">Jun 08, 2024</span></div>
-          </div>
-        </div>
-        <button onClick={() => navigate('/user')} className="px-2xl py-md rounded-xl bg-primary text-on-primary text-body-lg font-semibold hover:opacity-90 transition-opacity">
-          Go to Dashboard
-        </button>
+      <div className="bg-white border border-surface-container-high rounded-xl shadow-card max-w-3xl mx-auto">
+        <EmptyState
+          icon={WifiOff}
+          title="Can't load this case"
+          description={error || 'It may have been removed.'}
+          action={{ label: 'Try again', onClick: load, icon: <RefreshCw size={16} /> }}
+        />
       </div>
     );
   }
 
+  const docs = c.documents || [];
   const sections = [
     {
-      icon: <User size={20} className="text-primary" />,
-      title: 'Your Information',
+      icon: User,
+      title: 'Your information',
+      items: [['Full name', c.client?.name], ['Email', c.client?.email], ['Phone', c.client?.phone]],
+    },
+    {
+      icon: Briefcase,
+      title: 'Case details',
       items: [
-        { label: 'Full Name', value: 'John Doe' },
-        { label: 'Email', value: 'john.doe@email.com' },
-        { label: 'Phone', value: '+91 98765 43210' },
+        ['Category', c.category],
+        ['Title', c.title],
+        ['Description', c.description],
+        ...(c.location ? [['Location', c.location]] : []),
+        ...(c.incidentDate ? [['Incident date', fmt(c.incidentDate)]] : []),
       ],
     },
     {
-      icon: <Briefcase size={20} className="text-primary" />,
-      title: 'Case Details',
+      icon: Package,
+      title: 'Package & lawyer',
       items: [
-        { label: 'Category', value: 'Civil Law' },
-        { label: 'Title', value: 'Property Dispute with Neighbor' },
-        { label: 'Priority', value: 'High' },
-        { label: 'Description', value: 'I am facing a property boundary dispute with my neighbor who has encroached on my land. Need legal advice urgently.' },
-      ],
-    },
-    {
-      icon: <CreditCard size={20} className="text-primary" />,
-      title: 'Payment',
-      items: [
-        { label: 'Package', value: 'Standard Representation' },
-        { label: 'Amount Paid', value: '₹1,999' },
-        { label: 'Transaction ID', value: 'TXN-2024-LLK-00842' },
-      ],
-    },
-    {
-      icon: <FileText size={20} className="text-primary" />,
-      title: 'Documents',
-      items: [
-        { label: 'ID Proof', value: 'aadhaar_card.pdf ✅' },
-        { label: 'Complaint', value: 'complaint_letter.pdf ✅' },
-        { label: 'Evidence', value: 'property_photos.jpg ✅' },
+        ['Package', c.package?.name || 'Not selected'],
+        ...(c.package ? [['Price', `${formatLKR(c.package.price)} ${c.package.period || ''}`.trim()]] : []),
+        ['Lawyer', c.assignedTo?.name || 'Awaiting assignment'],
       ],
     },
   ];
@@ -81,60 +87,78 @@ const Review = () => {
   return (
     <div className="w-full max-w-3xl mx-auto">
       <div className="mb-xl">
-        <h1 className="text-headline-lg text-on-surface">Review & Submit</h1>
-        <p className="text-body-md text-on-surface-variant mt-xs">Please review all the details below before submitting your case.</p>
+        <p className="text-label-sm uppercase tracking-widest text-on-surface-variant mb-xs">Case summary</p>
+        <h1 className="text-headline-lg text-on-surface">{c.title}</h1>
+        <div className="flex flex-wrap items-center gap-sm mt-md">
+          <span className="text-label-sm font-mono font-semibold text-primary bg-primary/5 px-sm py-0.5 rounded">{caseRef(c.id)}</span>
+          <StatusBadge status={c.status} />
+          <PriorityBadge priority={c.priority} />
+          <span className="text-body-sm text-on-surface-variant">Filed {fmt(c.createdAt)}</span>
+        </div>
       </div>
 
-      <div className="bg-primary/5 border border-primary/20 rounded-xl p-lg mb-xl flex items-center gap-md">
-        <CheckCircle size={20} className="text-primary" />
-        <p className="text-body-md text-primary font-medium">Step 4 of 4 — Final Review. Everything looks good!</p>
+      <div className={`rounded-xl p-lg mb-xl flex items-center gap-md border ${c.assignedTo ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-primary/5 border-primary/20 text-primary'}`}>
+        {c.assignedTo ? <CheckCircle2 size={20} /> : <Clock3 size={20} />}
+        <p className="text-body-md font-medium">
+          {c.assignedTo
+            ? `${c.assignedTo.name} is handling your case.`
+            : "Your case is submitted — we'll notify you as soon as a lawyer is assigned."}
+        </p>
       </div>
 
       <div className="space-y-lg mb-xl">
-        {sections.map((section, i) => (
-          <div key={i} className="bg-white border border-surface-container-high rounded-xl p-xl shadow-card">
-            <div className="flex items-center justify-between mb-lg">
-              <div className="flex items-center gap-sm">
-                {section.icon}
-                <h3 className="text-headline-sm text-on-surface">{section.title}</h3>
-              </div>
-              <button className="flex items-center gap-xs text-body-sm text-primary hover:underline">
-                <Edit2 size={14} /> Edit
-              </button>
-            </div>
-            <div className="space-y-md">
-              {section.items.map((item, j) => (
-                <div key={j} className="flex flex-col sm:flex-row sm:items-start gap-xs">
-                  <span className="text-label-sm text-on-surface-variant min-w-[160px]">{item.label}</span>
-                  <span className="text-body-md text-on-surface flex-1">{item.value}</span>
+        {sections.map(({ icon: Icon, title, items }) => (
+          <section key={title} className="bg-white border border-surface-container-high rounded-xl p-xl shadow-card">
+            <h2 className="text-headline-sm text-on-surface flex items-center gap-sm mb-lg">
+              <Icon size={20} className="text-primary" /> {title}
+            </h2>
+            <dl className="space-y-md">
+              {items.map(([label, value]) => (
+                <div key={label} className="flex flex-col sm:flex-row sm:items-start gap-xs">
+                  <dt className="text-label-sm text-on-surface-variant min-w-[160px]">{label}</dt>
+                  <dd className="text-body-md text-on-surface flex-1 whitespace-pre-line">{value || '—'}</dd>
                 </div>
               ))}
-            </div>
-          </div>
+            </dl>
+          </section>
         ))}
+
+        <section className="bg-white border border-surface-container-high rounded-xl p-xl shadow-card">
+          <div className="flex items-center justify-between mb-lg">
+            <h2 className="text-headline-sm text-on-surface flex items-center gap-sm">
+              <FileText size={20} className="text-primary" /> Documents ({docs.length})
+            </h2>
+            <Link to={`/user/upload?case=${c.id}&from=details`} className="flex items-center gap-xs text-body-sm text-primary font-medium no-underline hover:underline">
+              <Upload size={14} /> Add documents
+            </Link>
+          </div>
+          {docs.length === 0 ? (
+            <p className="text-body-md text-on-surface-variant">No documents uploaded yet.</p>
+          ) : (
+            <ul className="divide-y divide-surface-container-high">
+              {docs.map((d) => (
+                <li key={d.id} className="flex items-center gap-md py-sm">
+                  <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-label-md text-on-surface">{DOC_LABELS[d.type] || d.type}</p>
+                    <a href={fileUrl(d.url)} target="_blank" rel="noopener noreferrer" className="text-body-sm text-on-surface-variant hover:text-primary truncate block no-underline">
+                      {fileName(d.url)}
+                    </a>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
 
-      <div className="bg-white border border-surface-container-high rounded-xl p-xl shadow-card mb-xl">
-        <label className="flex items-start gap-md cursor-pointer">
-          <input type="checkbox" className="mt-xs accent-primary" required />
-          <span className="text-body-md text-on-surface-variant">
-            I confirm that all the information provided is accurate and I agree to the{' '}
-            <span className="text-primary underline cursor-pointer">Terms of Service</span> and{' '}
-            <span className="text-primary underline cursor-pointer">Privacy Policy</span> of LawLink.
-          </span>
-        </label>
-      </div>
-
-      <div className="flex gap-md justify-end">
-        <button onClick={() => navigate('/user/upload')} className="px-xl py-md rounded-xl border border-outline-variant text-body-md hover:bg-surface-container transition-colors">
-          Back
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="px-2xl py-md rounded-xl bg-primary text-on-primary text-body-lg font-semibold hover:opacity-90 transition-opacity"
-        >
-          Submit Case
-        </button>
+      <div className="flex flex-col-reverse sm:flex-row gap-md justify-end">
+        <Link to="/user" className="text-center px-xl py-md rounded-xl border border-outline-variant text-body-md font-semibold text-on-surface no-underline hover:bg-surface-container-low transition-colors">
+          Go to dashboard
+        </Link>
+        <Link to={`/user/complaints/${c.id}`} className="flex items-center justify-center gap-sm px-2xl py-md rounded-xl bg-primary text-on-primary text-body-md font-semibold no-underline hover:bg-primary-container transition-colors">
+          View case <ArrowRight size={16} />
+        </Link>
       </div>
     </div>
   );

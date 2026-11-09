@@ -477,7 +477,7 @@ export default function UploadDocuments() {
                 setIsUploading(false);
               }
             } else {
-              navigate('/user/review');
+              navigate(caseId ? `/user/review?case=${caseId}` : '/user/complaints');
             }
           }}
           className={`flex items-center gap-sm px-xl py-md rounded-xl text-body-md font-semibold transition-all
