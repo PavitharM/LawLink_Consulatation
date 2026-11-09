@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import { getComplaints, getMe, triggerEmergencyAlert } from '@/api/services';
 import { useNotifications } from '@/context/NotificationContext';
 import { ComplaintRow } from '@/components/shared';
-import { Button, Card, Empty, IconButton, IconName, InfoRow, Loader, PageHeader, Screen, SectionTitle, Sheet, Stat, StatGrid } from '@/components/ui';
+import { Banner, Button, Card, Empty, IconButton, IconName, InfoRow, Loader, PageHeader, Screen, SectionTitle, Sheet, Stat, StatGrid } from '@/components/ui';
 import { colors, space, type as t } from '@/theme';
 
 export default function UserDashboard() {
@@ -17,14 +17,17 @@ export default function UserDashboard() {
   const [refreshing, setRefreshing] = useState(false);
   const [showEmergency, setShowEmergency] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
       const [meRes, compRes] = await Promise.all([getMe(), getComplaints()]);
       if (meRes.success) setProfile(meRes.data);
       if (compRes.success) setComplaints(compRes.data);
-    } catch (err) {
-      console.warn(err);
+      setError(null);
+    } catch (err: any) {
+      // Keep whatever we showed last; just tell the user it may be stale.
+      setError(err?.message || 'Could not load your dashboard.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -39,7 +42,23 @@ export default function UserDashboard() {
 
   if (loading) return <Loader />;
 
-  const firstName = profile?.name?.split(' ')[0] || 'User';
+  const retry = () => { setLoading(true); load(); };
+  if (error && !profile) {
+    return (
+      <Screen>
+        <Empty
+          icon="wifi-off"
+          title="Can't load your dashboard"
+          subtitle={error}
+          action={{ label: 'Try again', icon: 'refresh-cw', onPress: retry }}
+        />
+      </Screen>
+    );
+  }
+
+  const firstName = profile?.name?.split(' ')[0] || 'there';
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
   const active = complaints.filter((c) => c.status !== 'RESOLVED' && c.status !== 'CLOSED').length;
   const inReview = complaints.filter((c) => c.status === 'IN_REVIEW').length;
   const resolved = complaints.filter((c) => c.status === 'RESOLVED').length;
@@ -55,10 +74,14 @@ export default function UserDashboard() {
     try {
       setSending(true);
       await triggerEmergencyAlert();
-      Alert.alert('Alert sent', 'Emergency alert successfully dispatched to the admin team!');
       setShowEmergency(false);
-    } catch {
-      Alert.alert('Error', 'Failed to send emergency alert.');
+      Alert.alert('Emergency alert sent', 'The admin team has been alerted and will contact you shortly.');
+    } catch (err: any) {
+      Alert.alert(
+        'Could not send alert',
+        `${err?.message || 'Please try again.'}\n\nIf you are in immediate danger, call 119.`,
+        [{ text: 'Call 119', onPress: () => Linking.openURL('tel:119') }, { text: 'OK', style: 'cancel' }]
+      );
     } finally {
       setSending(false);
     }
@@ -68,23 +91,30 @@ export default function UserDashboard() {
     <Screen refreshing={refreshing} onRefresh={() => { setRefreshing(true); load(); }}>
       <PageHeader
         index="001"
-        eyebrow="My Account"
+        eyebrow={greeting}
         title={`Welcome back,\n${firstName}`}
         subtitle="Here's an overview of your active cases and recent activity."
-        right={<IconButton name="plus" bg={colors.gold} color={colors.onGold} onPress={() => router.push('/user/new-complaint')} />}
+        right={<IconButton name="plus" label="New complaint" bg={colors.gold} color={colors.onGold} onPress={() => router.push('/user/new-complaint')} />}
       />
 
+      {error ? <Banner tone="warning" icon="wifi-off" text="Showing saved data — pull down to refresh." /> : null}
+
       <StatGrid>
-        <Stat label="Active Cases" value={active} icon="briefcase" hint="Current active" />
-        <Stat label="In Review" value={inReview} icon="clock" tone="warning" hint="Lawyer reviewing" />
-        <Stat label="Resolved" value={resolved} icon="check-circle" tone="success" hint="All time" />
-        <Stat label="Unread" value={unreadCount} icon="bell" tone="info" hint="View all" onPress={() => router.push('/user/notifications')} />
+        <Stat label="Active Cases" value={active} icon="briefcase" hint="Currently open" onPress={() => router.push('/user/complaints')} />
+        <Stat label="In Review" value={inReview} icon="clock" tone="warning" hint="With a lawyer" onPress={() => router.push('/user/complaints')} />
+        <Stat label="Resolved" value={resolved} icon="check-circle" tone="success" hint="All time" onPress={() => router.push('/user/complaints')} />
+        <Stat label="Unread" value={unreadCount} icon="bell" tone="info" hint="Notifications" onPress={() => router.push('/user/notifications')} />
       </StatGrid>
 
       <SectionTitle title="Recent Complaints" action="View all" onAction={() => router.push('/user/complaints')} />
       {complaints.length === 0 ? (
         <Card>
-          <Empty icon="file-text" title="No recent complaints found." />
+          <Empty
+            icon="file-text"
+            title="No complaints yet"
+            subtitle="File a complaint and we'll match you with a verified lawyer."
+            action={{ label: 'File your first complaint', icon: 'plus', onPress: () => router.push('/user/new-complaint') }}
+          />
         </Card>
       ) : (
         complaints.slice(0, 3).map((c) => <ComplaintRow key={c.id} c={c} onPress={() => router.push(`/user/complaint/${c.id}`)} />)
@@ -96,6 +126,8 @@ export default function UserDashboard() {
           <Pressable
             key={a.label}
             onPress={() => router.push(a.to as any)}
+            accessibilityRole="button"
+            accessibilityLabel={a.label}
             style={({ pressed }) => [
               {
                 flexDirection: 'row',
@@ -107,7 +139,7 @@ export default function UserDashboard() {
                 borderWidth: 1,
                 borderColor: a.primary ? colors.gold : colors.border,
               },
-              pressed && { opacity: 0.8 },
+              pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] },
             ]}
           >
             <Feather name={a.icon} size={18} color={a.primary ? colors.onGold : colors.gold} />
