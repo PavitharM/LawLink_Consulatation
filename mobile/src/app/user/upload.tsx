@@ -21,7 +21,7 @@ export default function UploadDocuments() {
   };
 
   const handleNext = async () => {
-    if (!fromDetails) return router.push('/user/review');
+    if (!fromDetails) return router.replace(caseId ? `/user/review?case=${caseId}` : '/user/complaints');
     setUploading(true);
     try {
       const jobs = Object.entries(docs.uploads).flatMap(([slotId, files]) =>
